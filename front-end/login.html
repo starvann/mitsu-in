@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>MITSU.IN – Login</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="screen-auth">
+  <main class="auth-page">
+    <h1 class="title-jp">こんにちは!</h1>
+    <p class="subtitle">
+      Siap memulai perjalanan kariermu? Yuk, gabung bareng kami!
+    </p>
+
+    <form id="loginForm" class="card auth-card">
+      <label>Email
+        <input type="email" name="email" required>
+      </label>
+
+      <label>Password
+        <input type="password" name="password" required>
+      </label>
+
+      <label>Kode
+        <input
+          type="text"
+          name="roleCode"
+          placeholder="Masukkan kode akses"
+          required
+        >
+      </label>
+      
+
+      <button type="submit" class="btn-primary">Sign In</button>
+
+      <p class="helper">
+        Belum memiliki akun?
+        <a href="register.html">Daftar di sini</a>
+      </p>
+    </form>
+  </main>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/auth.js"></script>
+</body>
+</html>
