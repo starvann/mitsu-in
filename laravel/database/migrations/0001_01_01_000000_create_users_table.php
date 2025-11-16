@@ -13,23 +13,24 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name', 256);
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password', 1024);
             $table->string('hp_number', 16);
+            $table->string('ref_code', 16);
             $table->unsignedTinyInteger('age');
             $table->enum('role', ['admin', 'user', 'ref_user']);
             $table->enum('gender', ['laki-laki', 'perempuan']);
-            $table->enum('stat', ['pending', 'accepted']);
+            $table->enum('stat', ['terdaftar', '']);
             $table->unsignedSmallInteger('body_h');
             $table->unsignedSmallInteger('body_w');
-            $table->boolean('married');# ambigue in the ref: married/almost married/not married/have married/etc...
+            $table->boolean('have_married');
             $table->string('blood_t', 2);
             $table->string('religion', 32);
             $table->boolean('have_came_to_jp');
             $table->boolean('have_pasport');
-            $table->boolean('tangan_ahli');# what is this? 
+            $table->enum('main_hand', ['kanan', 'kiri']);
             $table->text('address');
             /* education structure: [{
             'year': 2000, 
