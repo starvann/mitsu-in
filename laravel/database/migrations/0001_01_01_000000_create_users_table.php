@@ -20,25 +20,25 @@ return new class extends Migration
             $table->string('hp_number', 16);
             $table->string('ref_code', 16);
             $table->unsignedTinyInteger('age');
-            $table->enum('role', ['admin', 'user', 'ref_user']);
+            $table->enum('role', ['admn', 'user', 'rfrl']);
             $table->enum('gender', ['laki-laki', 'perempuan']);
-            $table->enum('stat', ['terdaftar', '']);
+            $table->enum('stat', ['terdaftar', 'daftar_ulang']);
             $table->unsignedSmallInteger('body_h');
             $table->unsignedSmallInteger('body_w');
             $table->boolean('have_married');
             $table->string('blood_t', 2);
             $table->string('religion', 32);
             $table->boolean('have_came_to_jp');
-            $table->boolean('have_pasport');
+            $table->boolean('have_passport');
             $table->enum('main_hand', ['kanan', 'kiri']);
-            $table->text('address');
+            $table->string('address', 512);
             /* education structure: [{
             'year': 2000, 
             'school_name': 'Idk Bruv', 
             'major': 'Software Engineering'
             }, ...]*/
             $table->json('education');
-            $table->json('experience'); # ['exp1', 'exp2', 'etc...']
+            $table->json('experience')->nullable(); # ['exp1', 'exp2', 'etc...']
             /* family structure: [{
             'relation': 'Father', 
             'name': 'Lloyd', 
@@ -49,11 +49,11 @@ return new class extends Migration
             $table->json('family_structure');
             $table->string('purpose_to_jp', 256);
             $table->string('purpose_after_comeback', 256);
-            $table->string('excess', 256);
-            $table->string('lackness', 256);
+            $table->string('strengths', 256);
+            $table->string('weaknesses', 256);
             $table->string('hobies', 256);
-            $table->string('jlpt_cert', 256)->nullable();
-            $table->string('sim', 256)->nullable();
+            $table->boolean('has_jlpt_cert');
+            $table->boolean('has_sim_a');
             $table->string('other_cert', 256)->nullable();
             /* japan relation structure: {
             'name': 'Izumi Fujimiya', 
@@ -63,7 +63,7 @@ return new class extends Migration
             'address': 'idk bruv'
             }*/
             $table->json('jp_relations')->nullable();
-            $table->string('extra_notes', 512);
+            $table->string('extra_notes', 512)->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
