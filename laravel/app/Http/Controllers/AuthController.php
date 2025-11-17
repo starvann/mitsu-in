@@ -57,10 +57,12 @@ class AuthController extends Controller
         'have_passport' => 'required|boolean',
         'main_hand' => ['required', Rule::in(['kanan', 'kiri'])],
         'address' => 'required|string|min:9|max:512',
+        'education' => 'required|array',
         'education.*.year' => 'required|numeric|integer|max_digits:4',
         'education.*.school_name' => 'required|string|min:4',
         'education.*.major' => 'required|string|min:3',
         'experience' => 'required|array|list',
+        'family_structure' => 'required|array',
         'family_structure.*.relation' => 'required|string|min:3',
         'family_structure.*.name' => 'required|string|min:3',
         'family_structure.*.age' => 'required|numeric|integer|max_digits:3',
@@ -74,6 +76,7 @@ class AuthController extends Controller
         'has_jlpt_cert' => 'required|boolean',
         'has_sim_a' => 'required|boolean',
         'other_cert' => 'nullable|max:256',
+        'jp_relations' => 'required|array',
         'jp_relations.name' => 'nullable|string|min:3',
         'jp_relations.relation' => 'nullable|string|min:3',
         'jp_relations.job' => 'nullable|string|min:3',
@@ -81,18 +84,13 @@ class AuthController extends Controller
         'jp_relations.address' => 'nullable|string|min:3',
         'extra_notes' => 'nullable|max:512',
       ]);
-      if(!in_array($data['code'], ['admn', 'user', 'rfrl'])) return redirect('/register');
+      if(!in_array($data['code'], ['admn', 'stdn', 'refl'])) return redirect('/register');
       // set role
       $data['role'] = $data['code'];
       unset($data['code']);
       // hash password and delete the session
       $data['password'] = Hash::make($data['password']);
       Session::forget('password');
-      // convert arr to json
-      // foreach($data['education'])
-      $data['education'] = json_encode($data['education']);
-      $data['family_structure'] = json_encode($data['family_structure']);
-      $data['jp_relations'] = json_encode($data['jp_relations']);
       User::create($data);
       return redirect('/login')->with('success', "Pendaftaran Berhasil!");
     }

@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Role;
 
 return new class extends Migration
 {
@@ -18,11 +19,12 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password', 1024);
             $table->string('hp_number', 16);
-            $table->string('ref_code', 16);
+            $table->string('my_ref_code', 16)->nullable();
+            $table->string('ref_code', 16)->nullable();
             $table->unsignedTinyInteger('age');
-            $table->enum('role', ['admn', 'user', 'rfrl']);
+            $table->enum('role', ['admn', 'stdn', 'refl']);
             $table->enum('gender', ['laki-laki', 'perempuan']);
-            $table->enum('stat', ['terdaftar', 'daftar_ulang']);
+            $table->enum('stat', ['pending', 'accepted'])->default('pending');
             $table->unsignedSmallInteger('body_h');
             $table->unsignedSmallInteger('body_w');
             $table->boolean('have_married');

@@ -16,7 +16,6 @@ class User extends Authenticatable
     protected $guarded = [
         'id',
         'stat',
-        'role',
     ];
 
     protected $hidden = [
@@ -33,6 +32,10 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'education' => 'array',
+            'family_structure' => 'array',
+            'jp_relations' => 'array',
+            'experience' => 'array'
         ];
     }
 }
