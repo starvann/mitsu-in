@@ -1,11 +1,11 @@
 <x-base title="Register">
   <form action="{{ url('register2') }}" method="post">
     <h1>Register</h1>
-    {{-- @isset($errors) {{ dump($errors->all()) }} @endisset --}}
+    {{ dump($errors) }}
     @csrf
     {{-- Login Credential --}}
     <input type="hidden" name="email" value="{{ old('email') }}">
-    <input type="hidden" name="password" value="{{ old('password') }}">
+    <input type="hidden" name="password" value="{{ session('password') }}">
     <input type="hidden" name="code" value="{{ old('code') }}">
     {{-- Others --}}
     <input type="text" name="ref_code" placeholder="Kode Referensi..." value="{{ old('ref_code') }}">
@@ -19,18 +19,18 @@
     <input type="text" name="body_h" placeholder="Tinggi Badan..." inputmode="numeric" value="{{ old('body_h') }}" required>
     <input type="text" name="body_w" placeholder="Berat Badan..." inputmode="numeric" value="{{ old('body_w') }}" required>
     <select name="have_married">
-      <option value="true" @selected(old('have_married') == 'true')>Pernah Menikah</option>
-      <option value="false" @selected(!old('have_married'))>Belum Pernah Menikah</option>
+      <option value="1" @selected(old('have_married') == true)>Pernah Menikah</option>
+      <option value="0" @selected(!old('have_married'))>Belum Pernah Menikah</option>
     </select>
     <input type="text" name="blood_type" placeholder="Golongan Darah..." value="{{ old('blood_type') }}" required>
     <input type="text" name="religion" placeholder="Agama..." value="{{ old('religion') }}" required>
     <select name="have_come_to_jp">
-      <option value="true" @selected(old('have_come_to_jp') == 'true')>Pernah ke Jepang</option>
-      <option value="false" @selected(!old('have_come_to_jp'))>Belum Pernah ke Jepang</option>
+      <option value="1" @selected(old('have_come_to_jp') == true)>Pernah ke Jepang</option>
+      <option value="0" @selected(!old('have_come_to_jp'))>Belum Pernah ke Jepang</option>
     </select>
     <select name="have_passport">
-      <option value="true" @selected(old('have_passport') == 'true')>Punya Paspor</option>
-      <option value="false" @selected(!old('have_passport'))>Belum Punya Paspor</option>
+      <option value="1" @selected(old('have_passport') == true)>Punya Paspor</option>
+      <option value="0" @selected(!old('have_passport'))>Belum Punya Paspor</option>
     </select>
     <select name="main_hand">
       <option value="kanan" @selected(old('main_hand') != 'kiri')>Kanan</option>
@@ -101,12 +101,12 @@
     <div>
       <h2>Sertifikat yang Dimiliki</h2>
       <select name="has_jlpt_cert">
-        <option value="true" @if(old('has_jlpt_cert') == 'true') selected @endif>Punya JLPT/Setara</option>
-        <option value="false" @if(!old('has_jlpt_cert')) selected @endif>Belum Punya JLPT/Setara</option>
+        <option value="1" @selected(old('has_jlpt_cert') == true)>Punya JLPT/Setara</option>
+        <option value="0" @selected(!old('has_jlpt_cert'))>Belum Punya JLPT/Setara</option>
       </select>
       <select name="has_sim_a">
-        <option value="true" @if(old('has_sim_a') == 'true') selected @endif>Punya SIM A</option>
-        <option value="false" @if(!old('has_sim_a')) selected @endif>Belum Punya SIM A</option>
+        <option value="1" @selected(old('has_sim_a') == true)>Punya SIM A</option>
+        <option value="0" @selected(!old('has_sim_a'))>Belum Punya SIM A</option>
       </select>
       <input type="text" name="other_cert" placeholder="Sertifikat Lainnya..." value="{{ old('other_cert') }}">
     </div>
