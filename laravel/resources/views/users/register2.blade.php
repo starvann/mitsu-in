@@ -1,7 +1,6 @@
 <x-base title="Register">
   <form action="{{ url('register2') }}" method="post">
     <h1>Register</h1>
-    {{ dump($errors) }}
     @csrf
     {{-- Login Credential --}}
     <input type="hidden" name="email" value="{{ old('email') }}">
