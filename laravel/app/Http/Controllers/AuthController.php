@@ -18,9 +18,19 @@ class AuthController extends Controller
       return view('home');
     }
     public function login() {
+      if(Auth::viaRemember()) return redirect()->intended('dashboard');
       return view('users.login');
     }
-    public function try_login() {
+    public function try_login(Request $req) {
+      $credential = $req->validate([
+        'email' => 'required|email',
+        'password' => 'required|string|min:8',
+      ]);
+      if(Auth::attempt($credential, $req->input('remember_me', false))) {
+        $req->session()->regenerate();
+        return redirect()->intended('dashboard');
+      }
+      return back()->with('err', 'Login gagal.');
       
     }
     public function register() {

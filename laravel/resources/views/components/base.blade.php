@@ -10,8 +10,8 @@
 </head>
 <body>
   {{--  Content  --}}
-  <div class="container">
+  <main class="container">
     {!! $slot !!}
-  </div>
+  </main>
 </body>
 </html>

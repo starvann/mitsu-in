@@ -1,5 +1,8 @@
 # Mitsu-in
 
+> woy jangan lupa edit .env LOCALE ke id!
+
+
 # Feature List (todo)
 ## Sistem Auth
 - Login
