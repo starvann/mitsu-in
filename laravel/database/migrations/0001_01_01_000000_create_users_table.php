@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 256);
+            $table->string('name', 256)->default("Tebak?");
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password', 1024);
@@ -51,9 +51,9 @@ return new class extends Migration
             $table->json('family_structure')->default('[{"relation":"Teman","name":"Sisi Lain diriku","age":20,"job":"ga ada","salary":"ga ada"}]');
             $table->string('purpose_to_jp', 256)->default("Menjadi manusia biasa");
             $table->string('purpose_after_comeback', 256)->default("Menjadi manusia sedikit tak biasa");
-            $table->string('strengths', 256)->default("Dapat menahan intusive thought");
-            $table->string('weaknesses', 256)->default("Intrusive thought terlalu berbahaya");
-            $table->string('hobies', 256)->default("Melihat orang berangkat kerja");
+            $table->string('strengths', 256)->default("Dapat menahan intrusive thought");
+            $table->string('weaknesses', 256)->default("Memiliki intrusive thought yang berbahaya");
+            $table->string('hobies', 256)->default("Menikmati Keindahan Alam");
             $table->boolean('has_jlpt_cert')->default(false);
             $table->boolean('has_sim_a')->default(false);
             $table->string('other_cert', 256)->nullable();

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
@@ -30,18 +31,25 @@ class AuthController extends Controller
       return view('users.register2');
     }
     public function create_user(Request $req) {
-      $req->validate([
+      $data = $req->validate([
         'email' => 'email|unique:users,email',
-        'password' => 'required|min:8',
+        'password' => ['required', 'string', Password::min(8)->mixedCase()->numbers()->symbols()],
         'code' => 'required|max:4',
       ]);
+      if(!in_array($data['code'], ['admn', 'stdn', 'refl'])) return redirect('/register');
+      if($data['code'] == 'admn') {
+        $data['role'] = $data['code'];
+        unset($data['code']);
+        User::create($data);
+        return redirect('login');
+      }
       Session::put('password', $req->input('password'));
       return redirect('/register2')->withInput();
     }
     public function create_user2(Request $req) {
       $data = $req->validate([
         'email' => 'required|email|unique:users,email',
-        'password' => 'required|string|min:8',
+        'password' => ['required', 'string', Password::min(8)->mixedCase()->numbers()->symbols()],
         'code' => 'required|string|max:4',
         'ref_code' => 'nullable|max:16',
         'name' => 'required|string|min:3',
