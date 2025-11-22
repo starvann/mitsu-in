@@ -3,16 +3,23 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PresenceController;
 
 Route::get('/', [AuthController::class, 'home']);
 # auth
 Route::middleware('guest')->group(function()  {
-    Route::get('/login', [AuthController::class, 'login']);
+    Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/login', [AuthController::class, 'try_login']);
     Route::get('/register', [AuthController::class, 'register']);
     Route::post('/register', [AuthController::class, 'create_user']);
     Route::get('/register2', [AuthController::class, 'register2']);
     Route::post('/register2', [AuthController::class, 'create_user2']);
 });
-# dashboard
-Route::get('/dashboard', [DashboardController::class, 'index']);
+Route::middleware('auth')->group(function() {
+  # dashboard
+  Route::get('/dashboard', [DashboardController::class, 'index']);
+  Route::get('/logout', [AuthController::class, 'logout']);
+  Route::get('/presence', [PresenceController::class, 'store_presence']);
+  Route::post('/presence', [PresenceController::class, 'store_presence']);
+});
+Route::get('/presence-qr/{id}', [PresenceController::class, 'generate_presence_qr']);

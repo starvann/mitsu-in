@@ -32,10 +32,10 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'education' => 'array',
-            'family_structure' => 'array',
-            'jp_relations' => 'array',
-            'experience' => 'array'
+            'pendidikan' => 'array',
+            'struktur_keluarga' => 'array',
+            'relasi_di_jepang' => 'array',
+            'pengalaman' => 'array'
         ];
     }
 }

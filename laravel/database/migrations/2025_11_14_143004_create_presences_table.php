@@ -15,9 +15,9 @@ return new class extends Migration
         Schema::create('presences', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
-            $table->enum('stat', ['hadir', 'sakit', 'izin', 'alpha']);
-            $table->string('reason', 384)->nullable();
-            $table->string('extra_docs', 256)->nullable();
+            $table->enum('status', ['hadir', 'sakit', 'izin', 'alpha']);
+            $table->string('alasan', 384)->nullable();
+            $table->string('doc_xtra', 256)->nullable();
             $table->timestamps();
         });
     }

@@ -7,18 +7,26 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Str;
+
 
 class AuthController extends Controller
 {
     public function home() {
       return view('home');
     }
+    public function logout(Request $req) {
+      Auth::logout();
+      $req->session()->invalidate();
+      $req->session()->regenerateToken();
+      return redirect('/');
+    }
     public function login() {
       if(Auth::viaRemember()) return redirect()->intended('dashboard');
+      if(Session::has('password')) Session::forget('password');
       return view('users.login');
     }
     public function try_login(Request $req) {
@@ -31,7 +39,6 @@ class AuthController extends Controller
         return redirect()->intended('dashboard');
       }
       return back()->with('err', 'Login gagal.');
-      
     }
     public function register() {
       return view('users.register');
@@ -61,54 +68,61 @@ class AuthController extends Controller
         'email' => 'required|email|unique:users,email',
         'password' => ['required', 'string', Password::min(8)->mixedCase()->numbers()->symbols()],
         'code' => 'required|string|max:4',
-        'ref_code' => 'nullable|max:16',
-        'name' => 'required|string|min:3',
-        'hp_number' => 'required|string|digits_between:9,16',
+        'kode_ref' => 'nullable|max:8|exists:users,kode_ref_saya',
+        'nama' => 'required|string|min:3',
+        'no_hp' => 'required|string|digits_between:9,16',
+        'gmb_profil' => 'nullable|file|image|max:2048',
         'gender' => ['required', Rule::in(['laki-laki', 'perempuan'])],
-        'age' => 'required|numeric|integer|min:1',
-        'body_h' => 'required|numeric|integer|min:1',
-        'body_w' => 'required|numeric|integer|min:1',
-        'have_married' => 'required|boolean',
-        'blood_type' => 'required|max:2|alpha:ascii|uppercase',
-        'religion' => 'required|string|max:32',
-        'have_come_to_jp' => 'required|boolean',
-        'have_passport' => 'required|boolean',
-        'main_hand' => ['required', Rule::in(['kanan', 'kiri'])],
-        'address' => 'required|string|min:9|max:512',
-        'education' => 'required|array',
-        'education.*.year' => 'required|numeric|integer|digits:4',
-        'education.*.school_name' => 'required|string|min:4',
-        'education.*.major' => 'required|string|min:3',
-        'experience' => 'required|array|list',
-        'family_structure' => 'required|array',
-        'family_structure.*.relation' => 'required|string|min:3',
-        'family_structure.*.name' => 'required|string|min:3',
-        'family_structure.*.age' => 'required|numeric|integer|max_digits:3',
-        'family_structure.*.job' => 'required|string|min:3',
-        'family_structure.*.salary' => 'required|string',
-        'purpose_to_jp' => 'required|max:256',
-        'purpose_after_comeback' => 'required|max:256',
-        'strengths' => 'required|max:256',
-        'weaknesses' => 'required|max:256',
-        'hobies' => 'required|max:256',
-        'has_jlpt_cert' => 'required|boolean',
-        'has_sim_a' => 'required|boolean',
-        'other_cert' => 'nullable|max:256',
-        'jp_relations' => 'required|array',
-        'jp_relations.name' => 'nullable|string|min:3',
-        'jp_relations.relation' => 'nullable|string|min:3',
-        'jp_relations.job' => 'nullable|string|min:3',
-        'jp_relations.age' => 'nullable|numeric|integer|max_digits:3',
-        'jp_relations.address' => 'nullable|string|min:3',
-        'extra_notes' => 'nullable|max:512',
+        'umur' => 'required|numeric|integer|min:1',
+        'tinggi_badan' => 'required|numeric|integer|min:1',
+        'berat_badan' => 'required|numeric|integer|min:1',
+        'pernah_menikah' => 'required|boolean',
+        'gol_darah' => 'required|max:2|alpha:ascii|uppercase',
+        'agama' => 'required|string|max:32',
+        'pernah_ke_jepang' => 'required|boolean',
+        'punya_paspor' => 'required|boolean',
+        'tangan_utama' => ['required', Rule::in(['kanan', 'kiri'])],
+        'alamat' => 'required|string|min:9|max:512',
+        'pendidikan' => 'required|array',
+        'pendidikan.*.tahun' => 'required|numeric|integer|digits:4',
+        'pendidikan.*.nama_sekolah' => 'required|string|min:4',
+        'pendidikan.*.jurusan' => 'required|string|min:3',
+        'pengalaman' => 'nullable|array|list',
+        'struktur_keluarga' => 'required|array',
+        'struktur_keluarga.*.relasi' => 'required|string|min:3',
+        'struktur_keluarga.*.nama' => 'required|string|min:3',
+        'struktur_keluarga.*.umur' => 'required|numeric|integer|max_digits:3',
+        'struktur_keluarga.*.pekerjaan' => 'required|string|min:3',
+        'struktur_keluarga.*.gaji' => 'required|string',
+        'tujuan_ke_jepang' => 'required|max:256',
+        'tujuan_stlh_kembali' => 'required|max:256',
+        'kelebihan' => 'required|max:256',
+        'kekurangan' => 'required|max:256',
+        'hobi' => 'required|max:256',
+        'punya_sertif_jlpt' => 'required|boolean',
+        'punya_sim_a' => 'required|boolean',
+        'sertif_lain' => 'nullable|max:256',
+        'relasi_di_jepang' => 'required|array',
+        'relasi_di_jepang.nama' => 'nullable|string|min:3',
+        'relasi_di_jepang.relasi' => 'nullable|string|min:3',
+        'relasi_di_jepang.pekerjaan' => 'nullable|string|min:3',
+        'relasi_di_jepang.umur' => 'nullable|numeric|integer|max_digits:3',
+        'relasi_di_jepang.alamat' => 'nullable|string|min:3',
+        'catatan_xtra' => 'nullable|max:512',
       ]);
       if(!in_array($data['code'], ['admn', 'stdn', 'refl'])) return redirect('/register');
       // set role
       $data['role'] = $data['code'];
       unset($data['code']);
+      // if role is referral set the ref code
+      if($data['role'] == 'refl') $data['kode_ref_saya'] = Str::random(8);
       // hash password and delete the session
       $data['password'] = Hash::make($data['password']);
       Session::forget('password');
+      // upload profile picture if exists
+      if($req->hasFile('gmb_profil')) $data['gmb_profil'] = $req->file('gmb_profil')->store('assets/profiles');
+      else unset($data['gmb_profil']);
+      // create and redirect
       User::create($data);
       return redirect('/login')->with('success', "Pendaftaran Berhasil!");
     }

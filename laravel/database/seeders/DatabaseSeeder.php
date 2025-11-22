@@ -18,14 +18,29 @@ class DatabaseSeeder extends Seeder
     {
         // admin account
         User::create([
-            'email' => 'firstadmin@domain.org',
+            'email' => 'spombob@gmail.com',
+            'nama' => 'Mimin no 9',
             'password' => Hash::make('12345678'),
             'role' => 'admn'
         ]);
         // user account
         User::create([
             'email' => 'adinugroho12@gmail.com',
+            'nama' => 'Adi Nugroho',
             'password' => Hash::make('12345678')
+        ]);
+        User::create([
+            'email' => 'galihakmal90@gmail.com',
+            'nama' => 'Galih Akmal',
+            'password' => Hash::make('12345678'),
+            'role' => 'refl',
+            'kode_ref_saya' => 'asdfqw'
+        ]);
+        User::create([
+            'email' => 'johnbergstein@gmail.com',
+            'nama' => 'John Bergstein',
+            'password' => Hash::make('12345678'),
+            'kode_ref' => 'asdfqw'
         ]);
     }
 }

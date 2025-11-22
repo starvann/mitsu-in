@@ -1,6 +1,7 @@
 <x-base title="Register 2">
-  <form action="{{ url('register2') }}" method="post">
+  <form action="{{ url('register2') }}" method="post" enctype="multipart/form-data">
     <h1>Register</h1>
+    @csrf
     @if(!empty($errors->all()))
     <ul>
       @foreach($errors->all() as $err_msg)
@@ -13,119 +14,114 @@
     <input type="hidden" name="password" value="{{ session('password') }}">
     <input type="hidden" name="code" value="{{ old('code') }}">
     {{-- Part 1 --}}
-    <input type="text" name="ref_code" placeholder="Kode Referensi..." @error('ref_code') aria-invalid="true" @enderror value="{{ old('ref_code') }}">
-    <input type="text" name="name" placeholder="Nama..." @error('name') aria-invalid="true" @enderror value="{{ old('name') }}" required>
-    <input type="text" name="hp_number" placeholder="No. HP..." @error('hp_number') aria-invalid="true" @enderror value="{{ old('hp_number') }}" required>
+    <input type="text" name="kode_ref" placeholder="Kode Referensi..." @error('kode_ref') aria-invalid="true" @enderror value="{{ old('kode_ref') }}">
+    <input type="text" name="nama" placeholder="Nama..." @error('nama') aria-invalid="true" @enderror value="{{ old('nama') }}" required>
+    <input type="file" name="gmb_profil" @error('gmb_profil') aria-invalid="true" @enderror accept="image/png,image/jpeg,image/webp" required>
+    <input type="text" name="no_hp" placeholder="No. HP..." @error('no_hp') aria-invalid="true" @enderror value="{{ old('no_hp') }}" required>
     <select name="gender" @error('gender') aria-invalid="true" @enderror>
       <option value="laki-laki" @selected(old('gender') != 'perempuan')>Laki-Laki</option>
       <option value="perempuan" @selected(old('gender') == 'perempuan')>Perempuan</option>
     </select>
-    <input type="text" name="age" placeholder="Usia..." inputmode="numeric" @error('age') aria-invalid="true" @enderror value="{{ old('age') }}" required>
-    <input type="text" name="body_h" placeholder="Tinggi Badan..." inputmode="numeric" @error('body_h') aria-invalid="true" @enderror value="{{ old('body_h') }}" required>
-    <input type="text" name="body_w" placeholder="Berat Badan..." inputmode="numeric" @error('body_w') aria-invalid="true" @enderror value="{{ old('body_w') }}" required>
-    <select name="have_married" @error('have_married') aria-invalid="true" @enderror>
-      <option value="1" @selected(old('have_married') == true)>Pernah Menikah</option>
-      <option value="0" @selected(!old('have_married'))>Belum Pernah Menikah</option>
+    <input type="text" name="umur" placeholder="Usia..." inputmode="numeric" @error('umur') aria-invalid="true" @enderror value="{{ old('umur') }}" required>
+    <input type="text" name="tinggi_badan" placeholder="Tinggi Badan..." inputmode="numeric" @error('tinggi_badan') aria-invalid="true" @enderror value="{{ old('tinggi_badan') }}" required>
+    <input type="text" name="berat_badan" placeholder="Berat Badan..." inputmode="numeric" @error('berat_badan') aria-invalid="true" @enderror value="{{ old('berat_badan') }}" required>
+    <select name="pernah_menikah" @error('pernah_menikah') aria-invalid="true" @enderror>
+      <option value="1" @selected(old('pernah_menikah') == true)>Pernah Menikah</option>
+      <option value="0" @selected(!old('pernah_menikah'))>Belum Pernah Menikah</option>
     </select>
-    <input type="text" name="blood_type" placeholder="Golongan Darah..." @error('blood_type') aria-invalid="true" @enderror value="{{ old('blood_type') }}" required>
-    <input type="text" name="religion" placeholder="Agama..." @error('religion') aria-invalid="true" @enderror value="{{ old('religion') }}" required>
-    <select name="have_come_to_jp" @error('have_come_to_jp') aria-invalid="true" @enderror>
-      <option value="1" @selected(old('have_come_to_jp') == true)>Pernah ke Jepang</option>
-      <option value="0" @selected(!old('have_come_to_jp'))>Belum Pernah ke Jepang</option>
+    <input type="text" name="gol_darah" placeholder="Golongan Darah..." @error('gol_darah') aria-invalid="true" @enderror value="{{ old('gol_darah') }}" required>
+    <input type="text" name="agama" placeholder="Agama..." @error('agama') aria-invalid="true" @enderror value="{{ old('agama') }}" required>
+    <select name="pernah_ke_jepang" @error('pernah_ke_jepang') aria-invalid="true" @enderror>
+      <option value="1" @selected(old('pernah_ke_jepang') == true)>Pernah ke Jepang</option>
+      <option value="0" @selected(!old('pernah_ke_jepang'))>Belum Pernah ke Jepang</option>
     </select>
-    <select name="have_passport" @error('have_passport') aria-invalid="true" @enderror>
-      <option value="1" @selected(old('have_passport') == true)>Punya Paspor</option>
-      <option value="0" @selected(!old('have_passport'))>Belum Punya Paspor</option>
+    <select name="punya_paspor" @error('punya_paspor') aria-invalid="true" @enderror>
+      <option value="1" @selected(old('punya_paspor') == true)>Punya Paspor</option>
+      <option value="0" @selected(!old('punya_paspor'))>Belum Punya Paspor</option>
     </select>
-    <select name="main_hand" @error('main_hand') aria-invalid="true" @enderror>
-      <option value="kanan" @selected(old('main_hand') != 'kiri')>Kanan</option>
-      <option value="kiri" @selected(old('main_hand') == 'kiri')>Kiri</option>
+    <select name="tangan_utama" @error('tangan_utama') aria-invalid="true" @enderror>
+      <option value="kanan" @selected(old('tangan_utama') != 'kiri')>Kanan</option>
+      <option value="kiri" @selected(old('tangan_utama') == 'kiri')>Kiri</option>
     </select>
     {{-- Part 2 --}}
-    <textarea name="address" rows="10" placeholder="Alamat..." @error('address') aria-invalid="true" @enderror>{{ old('address') }}</textarea>
+    <textarea name="alamat" rows="10" placeholder="Alamat..." @error('alamat') aria-invalid="true" @enderror>{{ old('alamat') }}</textarea>
     <div>
       <h2>Pendidikan</h2>
-      @if(old('education'))
-        @foreach(old('education') as $edu)
+      @forelse((old('pendidikan') ?? []) as $edu)
       <div>
-        <input type="text" name="education[{{ $loop->iteration }}][year]" inputmode="numeric" placeholder="Tahun..." value="{{ $edu['year'] }}" required>
-        <input type="text" name="education[{{ $loop->iteration }}][school_name]" placeholder="Nama Sekolah..." value="{{ $edu['school_name'] }}" required>
-        <input type="text" name="education[{{ $loop->iteration }}][major]" placeholder="Jurusan..." value="{{ $edu['major'] }}" required>
+        <input type="text" name="pendidikan[{{ $loop->iteration }}][tahun]" inputmode="numeric" placeholder="Tahun..." value="{{ $edu['tahun'] }}" required>
+        <input type="text" name="pendidikan[{{ $loop->iteration }}][nama_sekolah]" placeholder="Nama Sekolah..." value="{{ $edu['nama_sekolah'] }}" required>
+        <input type="text" name="pendidikan[{{ $loop->iteration }}][jurusan]" placeholder="Jurusan..." value="{{ $edu['jurusan'] }}" required>
       </div>
-        @endforeach
-      @else
+      @empty
       <div>
-        <input type="text" name="education[0][year]" inputmode="numeric" placeholder="Tahun..." required>
-        <input type="text" name="education[0][school_name]" placeholder="Nama Sekolah..." required>
-        <input type="text" name="education[0][major]" placeholder="Jurusan..." required>
+        <input type="text" name="pendidikan[0][tahun]" inputmode="numeric" placeholder="Tahun..." required>
+        <input type="text" name="pendidikan[0][nama_sekolah]" placeholder="Nama Sekolah..." required>
+        <input type="text" name="pendidikan[0][jurusan]" placeholder="Jurusan..." required>
       </div>
-      @endif
+      @endforelse
       <button type="button" id="edu_add">Tambah Informasi</button>
     </div>
     <div>
       <h2>Pengalaman</h2>
-      @if(old('experience'))
-        @foreach(old('experience') as $exp)
-      <input type="text" name="experience[]" placeholder="Pengalaman..." value="{{ $exp }}" required>
-        @endforeach
-      @else
-      <input type="text" name="experience[]" placeholder="Pengalaman..." required>
-      @endif
+      @forelse((old('pengalaman') ?? []) as $exp)
+      <input type="text" name="pengalaman[]" placeholder="Pengalaman..." value="{{ $exp }}">
+      @empty
+      <input type="text" name="pengalaman[]" placeholder="Pengalaman...">
+      @endforelse
       <button type="button" id="exp_add">Tambah Informasi</button>
     </div>
     <div>
       <h2>Susunan Keluarga</h2>
-      @if(old('family_structure'))
-        @foreach(old('family_structure') as $fam)
+      @forelse((old('struktur_keluarga') ?? []) as $fam)
       <div>
-        <input type="text" name="family_structure[{{ $loop->iteration }}][relation]" placeholder="Hubungan..." value="{{ $fam['relation'] }}" required>
-        <input type="text" name="family_structure[{{ $loop->iteration }}][name]" placeholder="Nama..." value="{{ $fam['name'] }}" required>
-        <input type="text" name="family_structure[{{ $loop->iteration }}][age]" inputmode="numeric" placeholder="Usia..." value="{{ $fam['age'] }}" required>
-        <input type="text" name="family_structure[{{ $loop->iteration }}][job]" placeholder="Pekerjaan..." value="{{ $fam['job'] }}" required>
-        <input type="text" name="family_structure[{{ $loop->iteration }}][salary]" placeholder="Gaji..." value="{{ $fam['salary'] }}" required>
+        <input type="text" name="struktur_keluarga[{{ $loop->iteration }}][relasi]" placeholder="Hubungan..." value="{{ $fam['relasi'] }}" required>
+        <input type="text" name="struktur_keluarga[{{ $loop->iteration }}][nama]" placeholder="Nama..." value="{{ $fam['nama'] }}" required>
+        <input type="text" name="struktur_keluarga[{{ $loop->iteration }}][umur]" inputmode="numeric" placeholder="Usia..." value="{{ $fam['umur'] }}" required>
+        <input type="text" name="struktur_keluarga[{{ $loop->iteration }}][pekerjaan]" placeholder="Pekerjaan..." value="{{ $fam['pekerjaan'] }}" required>
+        <input type="text" name="struktur_keluarga[{{ $loop->iteration }}][gaji]" placeholder="Gaji..." value="{{ $fam['gaji'] }}" required>
       </div>
-        @endforeach
-      @else
+      @empty
       <div>
-        <input type="text" name="family_structure[0][relation]" placeholder="Hubungan..." required>
-        <input type="text" name="family_structure[0][name]" placeholder="Nama..." required>
-        <input type="text" name="family_structure[0][age]" inputmode="numeric" placeholder="Usia..." required>
-        <input type="text" name="family_structure[0][job]" placeholder="Pekerjaan..." required>
-        <input type="text" name="family_structure[0][salary]" placeholder="Gaji..." required>
+        <input type="text" name="struktur_keluarga[0][relasi]" placeholder="Hubungan..." required>
+        <input type="text" name="struktur_keluarga[0][nama]" placeholder="Nama..." required>
+        <input type="text" name="struktur_keluarga[0][umur]" inputmode="numeric" placeholder="Usia..." required>
+        <input type="text" name="struktur_keluarga[0][pekerjaan]" placeholder="Pekerjaan..." required>
+        <input type="text" name="struktur_keluarga[0][gaji]" placeholder="Gaji..." required>
       </div>
-      @endif
+      @endforelse
       <button type="button" id="fam_add">Tambah Informasi</button>
     </div>
     {{-- Part 3 --}}
     <div>
       <h2>Informasi Pribadi</h2>
-      <input type="text" name="purpose_to_jp" placeholder="Tujuan ke Jepang..." @error('purpose_to_jp') aria-invalid="true" @enderror value="{{ old('purpose_to_jp') }}" required>
-      <input type="text" name="purpose_after_comeback" placeholder="Setelah Pulang dari Jepang..." @error('purpose_after_comeback') aria-invalid="true" @enderror value="{{ old('purpose_after_comeback') }}" required>
-      <input type="text" name="strengths" placeholder="Kelebihan..." @error('stengths') aria-invalid="true" @enderror value="{{ old('strengths') }}" required>
-      <input type="text" name="weaknesses" placeholder="Kekurangan..." @error('weaknesses') aria-invalid="true" @enderror value="{{ old('weaknesses') }}" required>
-      <input type="text" name="hobies" placeholder="Hobi..." @error('hobies') aria-invalid="true" @enderror value="{{ old('hobies') }}" required>
+      <input type="text" name="tujuan_ke_jepang" placeholder="Tujuan ke Jepang..." @error('tujuan_ke_jepang') aria-invalid="true" @enderror value="{{ old('tujuan_ke_jepang') }}" required>
+      <input type="text" name="tujuan_stlh_kembali" placeholder="Setelah Pulang dari Jepang..." @error('tujuan_stlh_kembali') aria-invalid="true" @enderror value="{{ old('tujuan_stlh_kembali') }}" required>
+      <input type="text" name="kelebihan" placeholder="Kelebihan..." @error('stengths') aria-invalid="true" @enderror value="{{ old('kelebihan') }}" required>
+      <input type="text" name="kekurangan" placeholder="Kekurangan..." @error('kekurangan') aria-invalid="true" @enderror value="{{ old('kekurangan') }}" required>
+      <input type="text" name="hobi" placeholder="Hobi..." @error('hobi') aria-invalid="true" @enderror value="{{ old('hobi') }}" required>
     </div>
     <div>
       <h2>Sertifikat yang Dimiliki</h2>
-      <select name="has_jlpt_cert" @error('has_jlpt_cert') aria-invalid="true" @enderror>
-        <option value="1" @selected(old('has_jlpt_cert') == true)>Punya JLPT/Setara</option>
-        <option value="0" @selected(!old('has_jlpt_cert'))>Belum Punya JLPT/Setara</option>
+      <select name="punya_sertif_jlpt" @error('punya_sertif_jlpt') aria-invalid="true" @enderror>
+        <option value="1" @selected(old('punya_sertif_jlpt') == true)>Punya JLPT/Setara</option>
+        <option value="0" @selected(!old('punya_sertif_jlpt'))>Belum Punya JLPT/Setara</option>
       </select>
-      <select name="has_sim_a" @error('has_sim_a') aria-invalid="true" @enderror>
-        <option value="1" @selected(old('has_sim_a') == true)>Punya SIM A</option>
-        <option value="0" @selected(!old('has_sim_a'))>Belum Punya SIM A</option>
+      <select name="punya_sim_a" @error('punya_sim_a') aria-invalid="true" @enderror>
+        <option value="1" @selected(old('punya_sim_a') == true)>Punya SIM A</option>
+        <option value="0" @selected(!old('punya_sim_a'))>Belum Punya SIM A</option>
       </select>
-      <input type="text" name="other_cert" @error('other_cert') aria-invalid="true" @enderror placeholder="Sertifikat Lainnya..." value="{{ old('other_cert') }}">
+      <input type="text" name="sertif_lain" @error('sertif_lain') aria-invalid="true" @enderror placeholder="Sertifikat Lainnya..." value="{{ old('sertif_lain') }}">
     </div>
     <div>
       <h2>Kerabat/Kenalan di Jepang</h2>
-      <input type="text" name="jp_relations[name]" placeholder="Nama..." @error('jp_relation.name') aria-invalid="true" @enderror value="{{ old('jp_relations.name') }}">
-      <input type="text" name="jp_relations[relation]" placeholder="Hubungan..." @error('jp_relation.relation') aria-invalid="true" @enderror value="{{ old('jp_relations.relation') }}">
-      <input type="text" name="jp_relations[job]" placeholder="Pekerjaan..." @error('jp_relation.job') aria-invalid="true" @enderror value="{{ old('jp_relations.job') }}">
-      <input type="text" name="jp_relations[age]" placeholder="Usia..." @error('jp_relation.age') aria-invalid="true" @enderror value="{{ old('jp_relations.age') }}">
-      <input type="text" name="jp_relations[address]" placeholder="Alamat di Jepang..." @error('jp_relation.address') aria-invalid="true" @enderror value="{{ old('jp_relations.address') }}">
+      <input type="text" name="relasi_di_jepang[nama]" placeholder="Nama..." @error('jp_relasi.nama') aria-invalid="true" @enderror value="{{ old('relasi_di_jepang.nama') }}">
+      <input type="text" name="relasi_di_jepang[relasi]" placeholder="Hubungan..." @error('jp_relasi.relasi') aria-invalid="true" @enderror value="{{ old('relasi_di_jepang.relasi') }}">
+      <input type="text" name="relasi_di_jepang[pekerjaan]" placeholder="Pekerjaan..." @error('jp_relasi.pekerjaan') aria-invalid="true" @enderror value="{{ old('relasi_di_jepang.pekerjaan') }}">
+      <input type="text" name="relasi_di_jepang[umur]" placeholder="Usia..." @error('jp_relasi.umur') aria-invalid="true" @enderror value="{{ old('relasi_di_jepang.umur') }}">
+      <input type="text" name="relasi_di_jepang[alamat]" placeholder="Alamat di Jepang..." @error('jp_relasi.alamat') aria-invalid="true" @enderror value="{{ old('relasi_di_jepang.alamat') }}">
     </div>
-    <textarea name="extra_notes" rows="10" @error('extra_notes') aria-invalid="true" @enderror placeholder="Catatan Tambahan...">{{ old('extra_notes') }}</textarea>
+    <textarea name="catatan_xtra" rows="10" @error('catatan_xtra') aria-invalid="true" @enderror placeholder="Catatan Tambahan...">{{ old('catatan_xtra') }}</textarea>
     <button type="submit">Register</button>
   </form>
 </x-base>

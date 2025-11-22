@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\User;
 use App\Models\Exam;
 
 return new class extends Migration
@@ -14,16 +15,27 @@ return new class extends Migration
     {
         Schema::create('exams', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 256)->unique();
+            $table->foreignIdFor(User::class);
+            $table->string('nama', 256)->unique();
             $table->string('desc', 512);
+            $table->datetime('deadline')->nullable();
             $table->timestamps();
         });
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Exam::class);
-            $table->text('text', 256);
-            $table->json('answer');# ['ans1', 'ans2', ...]
-            $table->tinyInteger('correct_ans_idx');
+            $table->text('soal');
+            $table->json('jawaban');# ['ans1', 'ans2', ...]
+            $table->tinyInteger('jawaban_yg_benar');
+            $table->timestamps();
+        });
+        Schema::create('exam_results', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(Exam::class);
+            $table->unsignedSmallInteger('nilai');
+            $table->unsignedSmallInteger('total_salah');
+            $table->unsignedSmallInteger('total_benar');
             $table->timestamps();
         });
     }
@@ -34,5 +46,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('exams');
+        Schema::dropIfExists('questions');
     }
 };
