@@ -17,8 +17,9 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class);
             $table->string('nama', 256)->unique();
-            $table->string('desc', 512);
+            $table->string('deskripsi', 512);
             $table->datetime('deadline')->nullable();
+            $table->boolean('draft')->default(true);
             $table->timestamps();
         });
         Schema::create('questions', function (Blueprint $table) {
