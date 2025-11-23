@@ -1,4 +1,4 @@
-// Ubah ini kalau nanti path di server beda
+// ubah ini kalau nanti path di server beda
 const API_BASE_URL = "http://localhost/mitsu-in/backend";
 
 async function apiRequest(path, method = "GET", body) {
