@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>MITSU.IN – Form Pendaftaran Siswa</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="screen-auth">
+  <main class="auth-page">
+    <h1 class="title-jp">こんにちは!</h1>
+    <p class="subtitle">
+      Siap memulai perjalanan kariermu? Yuk, gabung bareng kami!
+    </p>
+
+    <form id="studentForm" class="card auth-card">
+
+      <!-- DATA PRIBADI 1 -->
+      <h2 class="section-title">Data Pribadi</h2>
+
+      <label>Kode Referral
+        <input type="text" name="referralCode" placeholder="Opsional">
+      </label>
+
+      <label>Nama
+        <input type="text" name="fullName" required>
+      </label>
+
+      <label>No. Handphone
+        <input type="text" name="phone" required>
+      </label>
+
+      <label>Jenis Kelamin
+        <select name="gender" required>
+          <option value="">Pilih</option>
+          <option value="L">Laki-laki</option>
+          <option value="P">Perempuan</option>
+        </select>
+      </label>
+
+      <label>Usia
+        <input type="number" name="age" min="15" required>
+      </label>
+
+      <label>Tinggi Badan (cm)
+        <input type="number" name="height" required>
+      </label>
+
+      <div class="section-divider"></div>
+
+      <!-- DATA PRIBADI 2 -->
+      <h2 class="section-title">Kondisi & Latar Belakang</h2>
+
+      <label>Berat Badan (kg)
+        <input type="number" name="weight" required>
+      </label>
+
+      <label>Status Perkawinan
+        <input type="text" name="maritalStatus">
+      </label>
+
+      <label>Golongan Darah
+        <input type="text" name="bloodType">
+      </label>
+
+      <label>Agama
+        <input type="text" name="religion">
+      </label>
+
+      <label>Pernah ke Jepang?
+        <select name="everInJapan">
+          <option value="">Pilih</option>
+          <option value="0">Belum pernah</option>
+          <option value="1">Sudah pernah</option>
+        </select>
+      </label>
+
+      <label>Pernah punya paspor?
+        <select name="hasPassport">
+          <option value="">Pilih</option>
+          <option value="0">Belum</option>
+          <option value="1">Sudah</option>
+        </select>
+      </label>
+
+      <label>Tangan Ahli
+        <select name="dominantHand">
+          <option value="">Pilih</option>
+          <option value="KANAN">Kanan</option>
+          <option value="KIRI">Kiri</option>
+          <option value="DUA">Keduanya</option>
+        </select>
+      </label>
+
+      <div class="section-divider"></div>
+
+      <!-- ALAMAT + PENDIDIKAN + PENGALAMAN -->
+      <h2 class="section-title">Alamat & Pendidikan</h2>
+
+      <label>Alamat Rumah
+        <textarea name="address" rows="3"></textarea>
+      </label>
+
+      <div class="subsection">
+        <div class="subsection-title">Pendidikan Terakhir</div>
+
+        <label>Tahun Lulus
+          <input type="number" name="eduYear">
+        </label>
+
+        <label>Nama Sekolah
+          <input type="text" name="eduSchool">
+        </label>
+
+        <label>Jurusan
+          <input type="text" name="eduMajor">
+        </label>
+
+        <button type="button" class="btn-primary btn-small">Tambah Informasi</button>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Pengalaman</div>
+
+        <label>Pengalaman Kerja / Magang
+          <input type="text" name="experience">
+        </label>
+
+        <button type="button" class="btn-primary btn-small">Tambah Informasi</button>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <!-- SUSUNAN KELUARGA + TUJUAN -->
+      <h2 class="section-title">Keluarga & Tujuan</h2>
+
+      <div class="subsection">
+        <div class="subsection-title">Susunan Keluarga (utama)</div>
+
+        <label>Hubungan
+          <input type="text" name="familyRelation" placeholder="Ayah / Ibu / Wali">
+        </label>
+
+        <label>Nama
+          <input type="text" name="familyName">
+        </label>
+
+        <label>Usia
+          <input type="number" name="familyAge">
+        </label>
+
+        <label>Pekerjaan
+          <input type="text" name="familyJob">
+        </label>
+
+        <label>Gaji (perkiraan per bulan)
+          <input type="number" name="familyIncome">
+        </label>
+
+        <button type="button" class="btn-primary btn-small">Tambah Informasi</button>
+      </div>
+
+      <label>Tujuan ke Jepang
+        <input type="text" name="goalJapan">
+      </label>
+
+      <div class="section-divider"></div>
+
+      <!-- SETELAH PULANG + SERTIFIKAT -->
+      <h2 class="section-title">Rencana & Sertifikat</h2>
+
+      <label>Setelah pulang dari Jepang, rencana apa?
+        <input type="text" name="afterJapanPlan">
+      </label>
+
+      <label>Kelebihan
+        <input type="text" name="strength">
+      </label>
+
+      <label>Kekurangan
+        <input type="text" name="weakness">
+      </label>
+
+      <label>Hobi
+        <input type="text" name="hobby">
+      </label>
+
+      <div class="subsection">
+        <div class="subsection-title">Sertifikat yang Dimiliki</div>
+
+        <label>JLPT / Setara
+          <input type="text" name="certificateJlpt">
+        </label>
+
+        <label>Surat Izin Mengemudi (SIM A)
+          <input type="text" name="certificateSim">
+        </label>
+
+        <label>Lain-lain
+          <input type="text" name="certificateOther">
+        </label>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <!-- KERABAT DI JEPANG -->
+      <h2 class="section-title">Kerabat / Kenalan di Jepang</h2>
+
+      <label>Nama
+        <input type="text" name="jpContactName">
+      </label>
+
+      <label>Hubungan
+        <input type="text" name="jpContactRelation">
+      </label>
+
+      <label>Pekerjaan
+        <input type="text" name="jpContactJob">
+      </label>
+
+      <label>Usia
+        <input type="number" name="jpContactAge">
+      </label>
+
+      <label>Alamat di Jepang
+        <textarea name="jpContactAddress" rows="3"></textarea>
+      </label>
+
+      <label>Catatan Tambahan
+        <textarea name="notes" rows="3"></textarea>
+      </label>
+
+      <button type="submit" class="btn-primary" style="margin-top:16px;">
+        Submit
+      </button>
+    </form>
+  </main>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/student.js"></script>
+</body>
+</html>

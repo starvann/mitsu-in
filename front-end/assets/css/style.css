@@ -1,0 +1,276 @@
+/* ========== GLOBAL ========== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  margin: 0;
+}
+
+/* container umum */
+.page,
+.onboard-page,
+.auth-page {
+  max-width: 720px;  
+  margin: 48px auto;
+  padding: 24px 32px;
+}
+
+
+/* heading Jepang & subjudul */
+
+.title-jp {
+  color: #8b0000;
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: #555;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+/* kartu putih untuk form / konten */
+
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* form elements */
+
+label {
+  font-size: 13px;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+input,
+select,
+textarea {
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid #7b0000;
+  border-color: #7b0000;
+}
+
+.btn-primary {
+  margin-top: 8px;
+  border: none;
+  border-radius: 8px;
+  background: #7b0000;
+  color: #fff;
+  padding: 10px 14px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  filter: brightness(0.92);
+}
+
+.btn-secondary {
+  margin-top: 8px;
+  border-radius: 8px;
+  border: 1px solid #7b0000;
+  background: transparent;
+  color: #7b0000;
+  padding: 10px 14px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: rgba(123, 0, 0, 0.05);
+}
+
+.helper {
+  margin-top: 8px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.helper a {
+  color: #7b0000;
+  text-decoration: none;
+}
+
+.helper a:hover {
+  text-decoration: underline;
+}
+
+/* ========== SCREEN 1 – SPLASH (MERAH + LOGO) ========== */
+
+.screen-splash {
+  min-height: 100vh;
+  background: #7b0000;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* watermark kanji besar samar */
+.screen-splash::before {
+  content: "光";                 
+  position: absolute;
+  font-size: 260px;
+  color: rgba(0, 0, 0, 0.25);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.splash-inner {
+  position: relative;
+  text-align: center;
+  z-index: 1;
+}
+
+.splash-logo {
+  font-weight: 700;
+  font-size: 32px;
+  letter-spacing: 2px;
+}
+
+/* ========== SCREEN 2 – ONBOARDING KUCING ========== */
+
+.screen-onboard {
+  min-height: 100vh;
+  background: #f6f0de;
+}
+
+.onboard-page {
+  max-width: 800px;
+  margin: 48px auto;
+  padding: 24px;
+}
+
+.onboard-illustration {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.onboard-illustration img {
+  max-width: 450px;
+  height: auto;
+}
+
+.onboard-text-main {
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.onboard-text-sub {
+  font-size: 30px;
+  font-weight: 600;
+}
+
+
+/* bulat tombol panah kanan */
+.onboard-next-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 32px;
+}
+
+.round-button {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  background: #111;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* ========== SCREEN 3 & 4 – LOGIN & REGISTER ========== */
+
+.screen-auth {
+  min-height: 100vh;
+  background: #f6f0de;
+}
+
+
+.auth-card {
+  margin-top: 12px;
+}
+
+/* ======= STUDENT FORM ============ */
+.section-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 8px;
+    margin-bottom: 4px;
+    color: #5a2b2b;
+  }
+  
+  .section-divider {
+    height: 16px;
+    border-bottom: 1px solid #eee;
+    margin: 8px 0 4px;
+  }
+  
+  .subsection {
+    margin-top: 8px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: #faf7ef;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .subsection-title {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  
+  .btn-small {
+    align-self: flex-start;
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+  
+
+/* ========== RESPONSIVE ========== */
+
+@media (max-width: 600px) {
+  .page,
+  .onboard-page,
+  .auth-page {
+    margin: 24px auto;
+    padding: 16px;
+  }
+}
