@@ -4,9 +4,7 @@
     <div>
       <a href="{{ url('dashboard') }}" role="button">Kembali</a>
       <a href="{{ url('create-exam') }}" role="button">Buat</a>
-      <button type="button" id="search-toggle">Cari</button>
     </div>
-    <input type="search" name="search" id="search">
   </div>
   <div>
     @forelse($exams as $exam)
