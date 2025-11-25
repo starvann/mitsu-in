@@ -19,7 +19,7 @@ Route::middleware('auth')->group(function() {
   # dashboard
   Route::get('/dashboard', [DashboardController::class, 'index']);
   Route::get('/create-exam', [DashboardController::class, 'create_exam']);
-  Route::post('/create-exam', [DashboardController::class, 'create_exam']);
+  Route::post('/create-exam', [DashboardController::class, 'store_exam']);
   Route::get('/manage-exam', [DashboardController::class, 'store_exam']);
   Route::get('/edit-exam/{id}', [DashboardController::class, 'create_exam']);
   Route::put('/edit-exam/{id}', [DashboardController::class, 'update_exam']);
