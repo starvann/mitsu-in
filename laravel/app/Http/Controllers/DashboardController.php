@@ -79,7 +79,7 @@ class DashboardController extends Controller
   public function update_exam(Request $req, Exam $exam) {
     Gate::authorize('admin');
     $data = $req->validate([
-      'judul' => 'required|string|unique:exams,judul',
+      'judul' => 'required|string',
       'deskripsi' => 'required|string',
       'soal' => 'required|array|list',
       'soal.*.benar' => 'required|numeric|max_digits:2',
@@ -92,7 +92,27 @@ class DashboardController extends Controller
     $soals = $data['soal'];
     unset($data['soal']);
     $exam->update($data);
-    
+    foreach($exam->questions as $i => $question) {
+      if(!isset($soals[$i])) {
+        $question->delete();
+        continue;
+      }
+      $question->soal = $soals[$i]['soal'];
+      $question->jawaban = $soals[$i]['jawaban'];
+      $question->jwbn_yg_benar = $soals[$i]['benar'];
+      $question->save();
+    }
+    if(count($soals) > $exam->questions->count()) {
+      for($i = $exam->questions->count(); $i < count($soals); $i++) {
+        Question::create([
+          'exam_id' => $exam->id,
+          'soal' => $soals[$i]['soal'],
+          'jawaban' => $soals[$i]['jawaban'],
+          'jwbn_yg_benar' => intval($soals[$i]['benar'])
+        ]);
+      }
+    }
+    return redirect('/dashboard/manage-exam')->with('success', 'Ujian berhasil dihapus');
   }
   public function delete_exam(Request $req, Exam $exam) {
     Gate::authorize('admin');

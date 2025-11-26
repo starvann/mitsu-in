@@ -16,6 +16,7 @@ class Question extends Model
     protected function casts(): array {
         return [
             'jawaban' => 'array',
+            'jwbn_yg_benar' => 'integer'
         ];
     }
 }

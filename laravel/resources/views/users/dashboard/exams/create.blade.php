@@ -23,6 +23,7 @@
           </div>
           @endforeach
           <button type="button" onclick="tambahJawaban(this.previousElementSibling)">Tambah jawaban</button>
+          <button type="button" onclick="hapusJawaban(this.previousElementSibling.previousElementSibling)">Hapus jawaban</button>
         </li>
         @endforeach
       @else
@@ -35,10 +36,12 @@
           </div>
         </div>
         <button type="button" onclick="tambahJawaban(this.previousElementSibling)">Tambah jawaban</button>
+        <button type="button" onclick="hapusJawaban(this.previousElementSibling.previousElementSibling)">Hapus jawaban</button>
       </li>
       @endif
     </ol>
     <button type="button" onclick="tambahSoal()">Tambah Pertanyaan</button>
+    <button type="button" onclick="hapusSoal()">Hapus pertanyaan</button>
     <label for="ready">
       <input type="checkbox" name="ready" id="ready" role="switch">
       Ready
@@ -65,6 +68,11 @@
       div.dataset.jwbIdx = jwbIdx;
       prevElement.appendChild(div);
     }
+    function hapusJawaban(prevElement) {
+      if (prevElement.children.length > 1) {
+        prevElement.removeChild(prevElement.lastElementChild);
+      }
+    }
     function tambahSoal() {
       let soalIdx = parseInt(ol.lastElementChild.dataset.soalIdx) + 1;
       let li = createElement('li', {
@@ -75,10 +83,16 @@
             <input type="text" name="soal[${soalIdx}][jawaban][0]" placeholder="Jawaban..." required>
           </div>
         </div>
-        <button type="button" onclick="tambahJawaban(this.previousElementSibling)">Tambah jawaban</button>`
+        <button type="button" onclick="tambahJawaban(this.previousElementSibling)">Tambah jawaban</button>
+        <button type="button" onclick="hapusJawaban(this.previousElementSibling.previousElementSibling)">Hapus jawaban</button>`
       });
       li.dataset.soalIdx = soalIdx;
       ol.appendChild(li);
+    }
+    function hapusSoal() {
+      if (ol.children.length > 1) {
+        ol.removeChild(ol.lastElementChild);
+      }
     }
   </script>
 </x-base>
