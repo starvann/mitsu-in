@@ -7,7 +7,7 @@ use App\Models\Question;
 
 class Exam extends Model
 {
-    protected $guard = ['id'];
+    protected $guarded = ['id'];
     public function question() {
       return $this->hasMany(Question::class);
     }

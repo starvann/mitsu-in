@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('exams', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
-            $table->string('nama', 256)->unique();
+            $table->string('judul', 256)->unique();
             $table->string('deskripsi', 512);
             $table->datetime('deadline')->nullable();
-            $table->boolean('draft')->default(true);
+            $table->boolean('ready')->default(false);
             $table->timestamps();
         });
         Schema::create('questions', function (Blueprint $table) {
@@ -27,7 +27,7 @@ return new class extends Migration
             $table->foreignIdFor(Exam::class);
             $table->text('soal');
             $table->json('jawaban');# ['ans1', 'ans2', ...]
-            $table->tinyInteger('jawaban_yg_benar');
+            $table->tinyInteger('jwbn_yg_benar');
             $table->timestamps();
         });
         Schema::create('exam_results', function (Blueprint $table) {

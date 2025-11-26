@@ -47,49 +47,59 @@
     <textarea name="alamat" rows="10" placeholder="Alamat..." @error('alamat') aria-invalid="true" @enderror>{{ old('alamat') }}</textarea>
     <div>
       <h2>Pendidikan</h2>
-      @forelse((old('pendidikan') ?? []) as $edu)
-      <div>
-        <input type="text" name="pendidikan[{{ $loop->iteration }}][tahun]" inputmode="numeric" placeholder="Tahun..." value="{{ $edu['tahun'] }}" required>
-        <input type="text" name="pendidikan[{{ $loop->iteration }}][nama_sekolah]" placeholder="Nama Sekolah..." value="{{ $edu['nama_sekolah'] }}" required>
-        <input type="text" name="pendidikan[{{ $loop->iteration }}][jurusan]" placeholder="Jurusan..." value="{{ $edu['jurusan'] }}" required>
+      <div id="edus">
+        @forelse((old('pendidikan') ?? []) as $i => $edu)
+        <div data-edu-idx="{{ $i }}">
+          <input type="text" name="pendidikan[{{ $i }}][tahun]" inputmode="numeric" placeholder="Tahun..." value="{{ $edu['tahun'] }}" required>
+          <input type="text" name="pendidikan[{{ $i }}][nama_sekolah]" placeholder="Nama Sekolah..." value="{{ $edu['nama_sekolah'] }}" required>
+          <input type="text" name="pendidikan[{{ $i }}][jurusan]" placeholder="Jurusan..." value="{{ $edu['jurusan'] }}" required>
+        </div>
+        @empty
+        <div data-edu-idx="0">
+          <input type="text" name="pendidikan[0][tahun]" inputmode="numeric" placeholder="Tahun..." required>
+          <input type="text" name="pendidikan[0][nama_sekolah]" placeholder="Nama Sekolah..." required>
+          <input type="text" name="pendidikan[0][jurusan]" placeholder="Jurusan..." required>
+        </div>
+        @endforelse
       </div>
-      @empty
-      <div>
-        <input type="text" name="pendidikan[0][tahun]" inputmode="numeric" placeholder="Tahun..." required>
-        <input type="text" name="pendidikan[0][nama_sekolah]" placeholder="Nama Sekolah..." required>
-        <input type="text" name="pendidikan[0][jurusan]" placeholder="Jurusan..." required>
-      </div>
-      @endforelse
-      <button type="button" id="edu_add">Tambah Informasi</button>
+      <button type="button" onclick="edu_add()">Tambah Informasi</button>
     </div>
     <div>
       <h2>Pengalaman</h2>
-      @forelse((old('pengalaman') ?? []) as $exp)
-      <input type="text" name="pengalaman[]" placeholder="Pengalaman..." value="{{ $exp }}">
-      @empty
-      <input type="text" name="pengalaman[]" placeholder="Pengalaman...">
-      @endforelse
-      <button type="button" id="exp_add">Tambah Informasi</button>
+      <div id="exps">
+        @forelse((old('pengalaman') ?? []) as $exp)
+        <div>
+          <input type="text" name="pengalaman[]" placeholder="Pengalaman..." value="{{ $exp }}">
+        </div>
+        @empty
+        <div>
+          <input type="text" name="pengalaman[]" placeholder="Pengalaman...">
+        </div>
+        @endforelse
+      </div>
+      <button type="button" onclick="exp_add()">Tambah Informasi</button>
     </div>
     <div>
       <h2>Susunan Keluarga</h2>
-      @forelse((old('struktur_keluarga') ?? []) as $fam)
-      <div>
-        <input type="text" name="struktur_keluarga[{{ $loop->iteration }}][relasi]" placeholder="Hubungan..." value="{{ $fam['relasi'] }}" required>
-        <input type="text" name="struktur_keluarga[{{ $loop->iteration }}][nama]" placeholder="Nama..." value="{{ $fam['nama'] }}" required>
-        <input type="text" name="struktur_keluarga[{{ $loop->iteration }}][umur]" inputmode="numeric" placeholder="Usia..." value="{{ $fam['umur'] }}" required>
-        <input type="text" name="struktur_keluarga[{{ $loop->iteration }}][pekerjaan]" placeholder="Pekerjaan..." value="{{ $fam['pekerjaan'] }}" required>
-        <input type="text" name="struktur_keluarga[{{ $loop->iteration }}][gaji]" placeholder="Gaji..." value="{{ $fam['gaji'] }}" required>
+      <div id="fams">
+        @forelse((old('struktur_keluarga') ?? []) as $i => $fam)
+        <div data-fam-idx="{{ $i }}">
+          <input type="text" name="struktur_keluarga[{{ $i }}][relasi]" placeholder="Hubungan..." value="{{ $fam['relasi'] }}" required>
+          <input type="text" name="struktur_keluarga[{{ $i }}][nama]" placeholder="Nama..." value="{{ $fam['nama'] }}" required>
+          <input type="text" name="struktur_keluarga[{{ $i }}][umur]" inputmode="numeric" placeholder="Usia..." value="{{ $fam['umur'] }}" required>
+          <input type="text" name="struktur_keluarga[{{ $i }}][pekerjaan]" placeholder="Pekerjaan..." value="{{ $fam['pekerjaan'] }}" required>
+          <input type="text" name="struktur_keluarga[{{ $i }}][gaji]" placeholder="Gaji..." value="{{ $fam['gaji'] }}" required>
+        </div>
+        @empty
+        <div data-fam-idx="0">
+          <input type="text" name="struktur_keluarga[0][relasi]" placeholder="Hubungan..." required>
+          <input type="text" name="struktur_keluarga[0][nama]" placeholder="Nama..." required>
+          <input type="text" name="struktur_keluarga[0][umur]" inputmode="numeric" placeholder="Usia..." required>
+          <input type="text" name="struktur_keluarga[0][pekerjaan]" placeholder="Pekerjaan..." required>
+          <input type="text" name="struktur_keluarga[0][gaji]" placeholder="Gaji..." required>
+        </div>
+        @endforelse
       </div>
-      @empty
-      <div>
-        <input type="text" name="struktur_keluarga[0][relasi]" placeholder="Hubungan..." required>
-        <input type="text" name="struktur_keluarga[0][nama]" placeholder="Nama..." required>
-        <input type="text" name="struktur_keluarga[0][umur]" inputmode="numeric" placeholder="Usia..." required>
-        <input type="text" name="struktur_keluarga[0][pekerjaan]" placeholder="Pekerjaan..." required>
-        <input type="text" name="struktur_keluarga[0][gaji]" placeholder="Gaji..." required>
-      </div>
-      @endforelse
       <button type="button" id="fam_add">Tambah Informasi</button>
     </div>
     {{-- Part 3 --}}
@@ -124,4 +134,42 @@
     <textarea name="catatan_xtra" rows="10" @error('catatan_xtra') aria-invalid="true" @enderror placeholder="Catatan Tambahan...">{{ old('catatan_xtra') }}</textarea>
     <button type="submit">Register</button>
   </form>
+  <script>
+    function query(s) {
+      return document.querySelector(s);
+    }
+    function createElement(tag, prop = {}) {
+      return Object.assign(document.createElement(tag), prop);
+    }
+    let edus = query('#edus');
+    let exps = query('#exps');
+    let fams = query('#fams');
+    function edu_add() {
+      let eduIdx = parseInt(edus.lastElementChild.dataset.eduIdx) + 1;
+      let edu = createElement('div', {
+        innerHTML: `<input type="text" name="pendidikan[${eduIdx}][tahun]" inputmode="numeric" placeholder="Tahun..." required>
+          <input type="text" name="pendidikan[${eduIdx}][nama_sekolah]" placeholder="Nama Sekolah..." required>
+          <input type="text" name="pendidikan[${eduIdx}][jurusan]" placeholder="Jurusan..." required>`
+      });
+      edu.dataset.eduIdx = eduIdx;
+      edus.appendChild(edu);
+    }
+    function exp_add() {
+      exps.appendChild(createElement('div', {
+        innerHTML: `<input type="text" name="pengalaman[]" placeholder="Pengalaman...">`
+      }));
+    }
+    function fam_add() {
+      let famIdx = parseInt(fams.lastElementChild.dataset.famIdx) + 1;
+      let fam = createElement('div', {
+        innerHTML: `<input type="text" name="struktur_keluarga[${famIdx}][relasi]" placeholder="Hubungan..." required>
+          <input type="text" name="struktur_keluarga[${famIdx}][nama]" placeholder="Nama..." required>
+          <input type="text" name="struktur_keluarga[${famIdx}][umur]" inputmode="numeric" placeholder="Usia..." required>
+          <input type="text" name="struktur_keluarga[${famIdx}][pekerjaan]" placeholder="Pekerjaan..." required>
+          <input type="text" name="struktur_keluarga[${famIdx}][gaji]" placeholder="Gaji..." required>`
+      });
+      fam.dataset.famIdx = famIdx;
+      fams.appendChild(fam);
+    }
+  </script>
 </x-base>

@@ -1,17 +1,24 @@
 <x-base title="Buat Ujian">
   <form action="{{ url('create-exam') }}" method="post">
-    @csrf
     <h1>Buat Ujian</h1>
+    @csrf
+    @if(!empty($errors->all()))
+    <ul>
+      @foreach($errors->all() as $err_msg)
+      <li>{{ $err_msg }}</li>
+      @endforeach
+    </ul>
+    @endif
     <input type="text" name="judul" placeholder="Judul..." value="{{ old('judul') }}" @error('judul') aria-invalid="true" @enderror required>
     <textarea name="deskripsi" rows="3" placeholder="Deskripsi" @error('deskripsi') aria-invalid="true" @enderror required>{{ old('deskripsi') }}</textarea>
     <ol>
       @if(old('soal'))
         @foreach(old('soal') as $i => $soal)
         <li data-soal-idx="{{ $i }}">
-          <input type="text" name="soal[{{ $i }}]" placeholder="Soal..." value="{{ $soal['soal'] }}" @error("soal[$i][soal]") aria-invalid="true" @enderror required>
+          <input type="text" name="soal[{{ $i }}][soal]" placeholder="Soal..." value="{{ $soal['soal'] }}" @error("soal[$i][soal]") aria-invalid="true" @enderror required>
           @foreach($soal['jawaban'] as $j => $jwb)
           <div data-jwb-idx="{{ $j }}">
-            <input type="radio" name="soal[{{ $i }}][benar]" value="{{ $j }}" @selected(old("soal[$i][benar]") == $j)>
+            <input type="radio" name="soal[{{ $i }}][benar]" value="{{ $j }}" @checked(old("soal[$i][benar]") == $j)>
             <input type="text" name="soal[{{ $i }}][jawaban][{{ $j }}]" placeholder="Jawaban..." value="{{ old("soal[$i][jawaban][$j]") }}" required>
           </div>
           @endforeach
@@ -22,7 +29,7 @@
         <input type="text" name="soal[0][soal]" placeholder="Soal..." required>
         <div>
           <div data-jwb-idx="0">
-            <input type="radio" name="soal[0][benar]" value="0">
+            <input type="radio" name="soal[0][benar]" value="0" checked>
             <input type="text" name="soal[0][jawaban][0]" placeholder="Jawaban..." required>
           </div>
         </div>
@@ -31,6 +38,10 @@
       @endif
     </ol>
     <button type="button" onclick="tambahSoal()">Tambah Pertanyaan</button>
+    <label for="ready">
+      <input type="checkbox" name="ready" id="ready" role="switch">
+      Ready
+    </label>
     <button type="submit">Buat</button>
   </form>
   <script>

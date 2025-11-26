@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Exam;
 use App\Models\Presence;
+use App\Models\Question;
 use App\Http\Controllers\PresenceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,9 +26,9 @@ class DashboardController extends Controller
       return view('users.dashboard.refl', ['refUsers' => $refUsers]);
     }
     else {
-      $token = PresenceController::get_presence_token(Auth::user()->id);
+      $token = PresenceController::get_presence_token(Auth::id());
       $exams = Exam::all();
-      $status = Presence::select('status')->where('user_id', auth()->user()->id)->whereDay('created_at', today())->first();
+      $status = Presence::select('status')->where('user_id', Auth::id())->whereDay('created_at', today())->first();
       
       return view('users.dashboard.stdn', [
         'token' => $token, 'exams' => $exams, 
@@ -46,14 +47,30 @@ class DashboardController extends Controller
   }
   public function store_exam(Request $req) {
     Gate::authorize('admin');
+    //dd($req->all());
     $data = $req->validate([
-      'nama' => 'required|string',
+      'judul' => 'required|string',
       'deskripsi' => 'required|string',
+      'soal' => 'required|array|list',
+      'soal.*.benar' => 'required|numeric|max_digits:2',
+      'soal.*.soal' => 'required|string',
+      'soal.*.jawaban' => 'required|array|list',
+      'soal.*.jawaban.*' => 'required|string',
       'deadline' => 'nullable|datetime',
-      'draft' => 'required|boolean',
+      'ready' => 'nullable|boolean',
     ]);
+    $soals = $data['soal'];
+    unset($data['soal']);
     $data['user_id'] = Auth::user()->id;
-    Exam::create($data);
+    $exam = Exam::create($data);
+    foreach($soals as $soal) {
+      Question::create([
+        'exam_id' => $exam->id,
+        'soal' => $soal['soal'],
+        'jawaban' => $soal['jawaban'],
+        'jwbn_yg_benar' => intval($soal['benar'])
+      ]);
+    }
     return redirect('/dashboard')->with('success', 'Ujian berhasil dibuat');
   }
   public function edit_exam(Request $req, Exam $exam) {

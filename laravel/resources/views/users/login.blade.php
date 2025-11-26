@@ -1,5 +1,6 @@
 <x-base title="Login">
   <form action="{{ url('login') }}" method="post">
+    <h1>Login</h1>
     @csrf
     @if(!empty($errors->all()))
     <ul>
@@ -8,7 +9,9 @@
       @endforeach
     </ul>
     @endif
-    <h1>Login</h1>
+    @session('err')
+    <div>{{ session('err') }}</div>
+    @endsession
     <input type="email" name="email" placeholder="Email..." @error('email') aria-invalid="true" @enderror value="{{ old('email') }}" required>
     <input type="password" name="password" placeholder="Password..." @error('password') aria-invalid="true" @enderror value="{{ old('password') }}" required>
     <input type="text" name="code" placeholder="Kode..." @error('code') aria-invalid="true" @enderror value="{{ old('code') }}" required>
