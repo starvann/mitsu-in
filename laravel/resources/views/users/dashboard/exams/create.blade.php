@@ -1,5 +1,5 @@
 <x-base title="Buat Ujian">
-  <form action="{{ url('create-exam') }}" method="post">
+  <form action="{{ url('dashboard/create-exam') }}" method="post">
     <h1>Buat Ujian</h1>
     @csrf
     @if(!empty($errors->all()))
@@ -15,13 +15,14 @@
       @if(old('soal'))
         @foreach(old('soal') as $i => $soal)
         <li data-soal-idx="{{ $i }}">
-          <input type="text" name="soal[{{ $i }}][soal]" placeholder="Soal..." value="{{ $soal['soal'] }}" @error("soal[$i][soal]") aria-invalid="true" @enderror required>
+          <input type="text" name="soal[{{ $i }}][soal]" placeholder="Soal..." value="{{ $soal['soal'] }}" @error("soal.".$i.".soal") aria-invalid="true" @enderror required>
           @foreach($soal['jawaban'] as $j => $jwb)
           <div data-jwb-idx="{{ $j }}">
-            <input type="radio" name="soal[{{ $i }}][benar]" value="{{ $j }}" @checked(old("soal[$i][benar]") == $j)>
-            <input type="text" name="soal[{{ $i }}][jawaban][{{ $j }}]" placeholder="Jawaban..." value="{{ old("soal[$i][jawaban][$j]") }}" required>
+            <input type="radio" name="soal[{{ $i }}][benar]" value="{{ $j }}" @checked($soal['benar'] ?? null == $j)>
+            <input type="text" name="soal[{{ $i }}][jawaban][{{ $j }}]" placeholder="Jawaban..." value="{{ $jwb }}" @error("soal.".$i.".jawaban.".$j) aria-invalid="true" @enderror required>
           </div>
           @endforeach
+          <button type="button" onclick="tambahJawaban(this.previousElementSibling)">Tambah jawaban</button>
         </li>
         @endforeach
       @else
@@ -70,7 +71,7 @@
         innerHTML: `<input type="text" name="soal[${soalIdx}][soal]" placeholder="Soal..." required>
         <div>
           <div data-jwb-idx="0">
-            <input type="radio" name="soal[${soalIdx}][benar]" value="0">
+            <input type="radio" name="soal[${soalIdx}][benar]" value="0" checked>
             <input type="text" name="soal[${soalIdx}][jawaban][0]" placeholder="Jawaban..." required>
           </div>
         </div>

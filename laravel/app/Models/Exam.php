@@ -8,7 +8,8 @@ use App\Models\Question;
 class Exam extends Model
 {
     protected $guarded = ['id'];
-    public function question() {
+    public function questions() {
       return $this->hasMany(Question::class);
     }
+    
 }

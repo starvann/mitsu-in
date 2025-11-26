@@ -12,4 +12,10 @@ class Question extends Model
     public function exam() {
       return $this->belongsTo(Exam::class);
     }
+
+    protected function casts(): array {
+        return [
+            'jawaban' => 'array',
+        ];
+    }
 }

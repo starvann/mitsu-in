@@ -18,12 +18,12 @@ Route::middleware('guest')->group(function()  {
 Route::middleware('auth')->group(function() {
   # dashboard
   Route::get('/dashboard', [DashboardController::class, 'index']);
-  Route::get('/create-exam', [DashboardController::class, 'create_exam']);
-  Route::post('/create-exam', [DashboardController::class, 'store_exam']);
-  Route::get('/manage-exam', [DashboardController::class, 'store_exam']);
-  Route::get('/edit-exam/{id}', [DashboardController::class, 'create_exam']);
-  Route::put('/edit-exam/{id}', [DashboardController::class, 'update_exam']);
-  Route::delete('/delete-exam/{id}', [DashboardController::class, 'delete_exam']);
+  Route::get('dashboard/create-exam', [DashboardController::class, 'create_exam']);
+  Route::post('/dashboard/create-exam', [DashboardController::class, 'store_exam']);
+  Route::get('/dashboard/manage-exam', [DashboardController::class, 'show_exams']);
+  Route::get('/dashboard/edit-exam/{exam}', [DashboardController::class, 'edit_exam']);
+  Route::put('/dashboard/edit-exam/{exam}', [DashboardController::class, 'update_exam']);
+  Route::delete('/dashboard/delete-exam/{exam}', [DashboardController::class, 'delete_exam']);
   Route::get('/logout', [AuthController::class, 'logout']);
   Route::get('/presence', [PresenceController::class, 'store_presence']);
   Route::post('/presence', [PresenceController::class, 'store_presence']);

@@ -3,18 +3,19 @@
   <div>
     <div>
       <a href="{{ url('dashboard') }}" role="button">Kembali</a>
-      <a href="{{ url('create-exam') }}" role="button">Buat</a>
+      <a href="{{ url('dashboard/create-exam') }}" role="button">Buat</a>
     </div>
   </div>
   <div>
     @forelse($exams as $exam)
     <div>
-      <h2>{{ $exam->nama }}</h2>
+      <h2>{{ $exam->judul }}</h2>
       <p>{{ Str::limit($exam->deskripsi, 48) }}</p>
       <div>
-        <a href="{{ url('edit-exam/'.$exam->id) }}">Edit</a>
-        <form action="{{ url('delete-exam') }}" method="post">
+        <a href="{{ url("dashboard/edit-exam/$exam->id") }}">Edit</a>
+        <form action="{{ url("dashboard/delete-exam/$exam->id") }}" method="post">
           @csrf
+          @method('delete')
           <button type="submit">Hapus</button>
         </form>
       </div>

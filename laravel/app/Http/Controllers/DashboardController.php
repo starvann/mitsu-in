@@ -47,9 +47,8 @@ class DashboardController extends Controller
   }
   public function store_exam(Request $req) {
     Gate::authorize('admin');
-    //dd($req->all());
     $data = $req->validate([
-      'judul' => 'required|string',
+      'judul' => 'required|string|unique:exams,judul',
       'deskripsi' => 'required|string',
       'soal' => 'required|array|list',
       'soal.*.benar' => 'required|numeric|max_digits:2',
@@ -73,12 +72,32 @@ class DashboardController extends Controller
     }
     return redirect('/dashboard')->with('success', 'Ujian berhasil dibuat');
   }
-  public function edit_exam(Request $req, Exam $exam) {
+  public function edit_exam(Exam $exam) {
     Gate::authorize('admin');
     return view('users.dashboard.exams.edit', ['exam' => $exam, 'questions' => $exam->questions]);
   }
   public function update_exam(Request $req, Exam $exam) {
+    Gate::authorize('admin');
+    $data = $req->validate([
+      'judul' => 'required|string|unique:exams,judul',
+      'deskripsi' => 'required|string',
+      'soal' => 'required|array|list',
+      'soal.*.benar' => 'required|numeric|max_digits:2',
+      'soal.*.soal' => 'required|string',
+      'soal.*.jawaban' => 'required|array|list',
+      'soal.*.jawaban.*' => 'required|string',
+      'deadline' => 'nullable|datetime',
+      'ready' => 'nullable|boolean',
+    ]);
+    $soals = $data['soal'];
+    unset($data['soal']);
+    $exam->update($data);
     
   }
-  
+  public function delete_exam(Request $req, Exam $exam) {
+    Gate::authorize('admin');
+    $exam->questions()?->delete();
+    $exam->delete();
+    return redirect('/dashboard/manage-exam')->with('success', 'Ujian berhasil dihapus');
+  }
 }
