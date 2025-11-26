@@ -16,7 +16,7 @@
         <form action="{{ url("dashboard/delete-exam/$exam->id") }}" method="post">
           @csrf
           @method('delete')
-          <button type="submit">Hapus</button>
+          <button type="submit" onclick="return del_confirm()">Hapus</button>
         </form>
       </div>
     </div>
@@ -24,4 +24,9 @@
     <span>-- <i>Kosong</i> --</span>
     @endforelse
   </div>
+  <script>
+    function del_confirm() {
+      return confirm('Yakin ingin menghapus "{{ $exam->judul }}"?');
+    }
+  </script>
 </x-base>

@@ -18,7 +18,7 @@
           <input type="text" name="soal[{{ $i }}][soal]" placeholder="Soal..." value="{{ $soal['soal'] }}" @error("soal.".$i.".soal") aria-invalid="true" @enderror required>
           @foreach($soal['jawaban'] as $j => $jwb)
           <div data-jwb-idx="{{ $j }}">
-            <input type="radio" name="soal[{{ $i }}][benar]" value="{{ $j }}" @checked($soal['benar'] ?? null == $j)>
+            <input type="radio" name="soal[{{ $i }}][jwbn_yg_benar]" value="{{ $j }}" @checked($soal['jwbn_yg_benar'] ?? null == $j)>
             <input type="text" name="soal[{{ $i }}][jawaban][{{ $j }}]" placeholder="Jawaban..." value="{{ $jwb }}" @error("soal.".$i.".jawaban.".$j) aria-invalid="true" @enderror required>
           </div>
           @endforeach
@@ -31,7 +31,7 @@
         <input type="text" name="soal[0][soal]" placeholder="Soal..." required>
         <div>
           <div data-jwb-idx="0">
-            <input type="radio" name="soal[0][benar]" value="0" checked>
+            <input type="radio" name="soal[0][jwbn_yg_benar]" value="0" checked>
             <input type="text" name="soal[0][jawaban][0]" placeholder="Jawaban..." required>
           </div>
         </div>
@@ -62,7 +62,7 @@
       console.log(jwbIdx);
       let soalIdx = parseInt(prevElement.parentElement.dataset.soalIdx);
       let div = createElement('div', {
-        innerHTML: `<input type="radio" name="soal[${soalIdx}][benar]" value="${jwbIdx}">
+        innerHTML: `<input type="radio" name="soal[${soalIdx}][jwbn_yg_benar]" value="${jwbIdx}">
           <input type="text" name="soal[${soalIdx}][jawaban][${jwbIdx}]" placeholder="Jawaban..." required>`
       });
       div.dataset.jwbIdx = jwbIdx;
@@ -79,7 +79,7 @@
         innerHTML: `<input type="text" name="soal[${soalIdx}][soal]" placeholder="Soal..." required>
         <div>
           <div data-jwb-idx="0">
-            <input type="radio" name="soal[${soalIdx}][benar]" value="0" checked>
+            <input type="radio" name="soal[${soalIdx}][jwbn_yg_benar]" value="0" checked>
             <input type="text" name="soal[${soalIdx}][jawaban][0]" placeholder="Jawaban..." required>
           </div>
         </div>

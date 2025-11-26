@@ -19,7 +19,7 @@
         <div>
         @foreach($question['jawaban'] as $j => $jwb)
           <div data-jwb-idx="{{ $j }}">
-            <input type="radio" name="soal[{{ $i }}][benar]" value="{{ $j }}" @checked($question['benar'] ?? $question['jwbn_yg_benar'] == $j)>
+            <input type="radio" name="soal[{{ $i }}][jwbn_yg_benar]" value="{{ $j }}" @checked($question['jwbn_yg_benar'] == $j)>
             <input type="text" name="soal[{{ $i }}][jawaban][{{ $j }}]" placeholder="Jawaban..." value="{{ old("soal.$i.jawaban.$j") ?? $jwb }}" required>
           </div>
         @endforeach
@@ -36,7 +36,7 @@
       <input type="checkbox" name="ready" id="ready" role="switch" @checked(old('ready') ?? $exam->ready)>
       Ready
     </label>
-    <button type="submit">Edit</button>
+    <button type="submit">Simpan</button>
   </form>
   <script>
     function query(s) {
@@ -52,7 +52,7 @@
       console.log(jwbIdx);
       let soalIdx = parseInt(prevElement.parentElement.dataset.soalIdx);
       let div = createElement('div', {
-        innerHTML: `<input type="radio" name="soal[${soalIdx}][benar]" value="${jwbIdx}">
+        innerHTML: `<input type="radio" name="soal[${soalIdx}][jwbn_yg_benar]" value="${jwbIdx}">
           <input type="text" name="soal[${soalIdx}][jawaban][${jwbIdx}]" placeholder="Jawaban..." required>`
       });
       div.dataset.jwbIdx = jwbIdx;
@@ -69,7 +69,7 @@
         innerHTML: `<input type="text" name="soal[${soalIdx}][soal]" placeholder="Soal..." required>
         <div>
           <div data-jwb-idx="0">
-            <input type="radio" name="soal[${soalIdx}][benar]" value="0" checked>
+            <input type="radio" name="soal[${soalIdx}][jwbn_yg_benar]" value="0" checked>
             <input type="text" name="soal[${soalIdx}][jawaban][0]" placeholder="Jawaban..." required>
           </div>
         </div>

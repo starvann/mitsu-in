@@ -37,9 +37,9 @@ class DashboardController extends Controller
       ]);
     }
   }
-  public function show_exams() {
+  public function manage_exams() {
     Gate::authorize('admin');
-    return view('users.dashboard.exams.view', ['exams' => Exam::all()]);
+    return view('users.dashboard.exams.manage', ['exams' => Exam::all()]);
   }
   public function create_exam() {
     Gate::authorize('admin');
@@ -51,7 +51,7 @@ class DashboardController extends Controller
       'judul' => 'required|string|unique:exams,judul',
       'deskripsi' => 'required|string',
       'soal' => 'required|array|list',
-      'soal.*.benar' => 'required|numeric|max_digits:2',
+      'soal.*.jwbn_yg_benar' => 'required|numeric|max_digits:2',
       'soal.*.soal' => 'required|string',
       'soal.*.jawaban' => 'required|array|list',
       'soal.*.jawaban.*' => 'required|string',
@@ -62,15 +62,8 @@ class DashboardController extends Controller
     unset($data['soal']);
     $data['user_id'] = Auth::user()->id;
     $exam = Exam::create($data);
-    foreach($soals as $soal) {
-      Question::create([
-        'exam_id' => $exam->id,
-        'soal' => $soal['soal'],
-        'jawaban' => $soal['jawaban'],
-        'jwbn_yg_benar' => intval($soal['benar'])
-      ]);
-    }
-    return redirect('/dashboard')->with('success', 'Ujian berhasil dibuat');
+    $exam->questions()->createMany($soals);
+    return redirect('/dashboard/manage-exam')->with('success', 'Ujian berhasil dibuat');
   }
   public function edit_exam(Exam $exam) {
     Gate::authorize('admin');
@@ -82,7 +75,7 @@ class DashboardController extends Controller
       'judul' => 'required|string',
       'deskripsi' => 'required|string',
       'soal' => 'required|array|list',
-      'soal.*.benar' => 'required|numeric|max_digits:2',
+      'soal.*.jwbn_yg_benar' => 'required|numeric|max_digits:2',
       'soal.*.soal' => 'required|string',
       'soal.*.jawaban' => 'required|array|list',
       'soal.*.jawaban.*' => 'required|string',
@@ -99,7 +92,7 @@ class DashboardController extends Controller
       }
       $question->soal = $soals[$i]['soal'];
       $question->jawaban = $soals[$i]['jawaban'];
-      $question->jwbn_yg_benar = $soals[$i]['benar'];
+      $question->jwbn_yg_benar = $soals[$i]['jwbn_yg_benar'];
       $question->save();
     }
     if(count($soals) > $exam->questions->count()) {
@@ -108,7 +101,7 @@ class DashboardController extends Controller
           'exam_id' => $exam->id,
           'soal' => $soals[$i]['soal'],
           'jawaban' => $soals[$i]['jawaban'],
-          'jwbn_yg_benar' => intval($soals[$i]['benar'])
+          'jwbn_yg_benar' => $soals[$i]['jwbn_yg_benar']
         ]);
       }
     }
