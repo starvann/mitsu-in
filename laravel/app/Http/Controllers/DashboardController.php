@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Validation\Rule;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class DashboardController extends Controller
@@ -37,6 +38,31 @@ class DashboardController extends Controller
       ]);
     }
   }
+  // users
+  public function lists_user() {
+    Gate::authorize('admin');
+    return view('users.dashboard.users.lists', ['users' => User::all()]);
+  }
+  public function view_user(User $user) {
+    Gate::authorize('admin');
+    $data = ['user' => $user];
+    if($user->kode_ref != null) {
+      $data['referrer_id'] = User::where('kode_ref_saya', $user->kode_ref)->first()->id;
+    } else if($user->role == 'refl') {
+      $data['ref_users_count'] = User::where('kode_ref', $user->kode_ref_saya)->count();
+    }
+    return view('users.dashboard.users.view', $data);
+  }
+  public function update_user(Request $req, User $user) {
+    Gate::authorize('admin');
+    $data = $req->validate([
+      'stat' => ['required', Rule::in(['pending', 'accepted'])]
+    ]);
+    $user->stat = $data['stat'];
+    $user->save();
+    return redirect('/dashboard/view-user/'.$user->id)->with('success', 'Berhasil update!');
+  }
+  // exams
   public function manage_exams() {
     Gate::authorize('admin');
     return view('users.dashboard.exams.manage', ['exams' => Exam::all()]);

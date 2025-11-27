@@ -19,9 +19,8 @@ class PresenceController extends Controller
     // presensi lewat token (qr/link)
     if($req->query('token')) {
       $id = Cache::get($req->query('token'));
-      // pengecekan user id dan rekaman presensi
+      // pengecekan user id
       if(is_null($id)) return abort(404);
-      if($id != Auth::user()->id) return abort(403);
       // catat presensi
       Presence::create([
         'user_id' => $id,

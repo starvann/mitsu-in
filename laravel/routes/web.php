@@ -25,7 +25,10 @@ Route::middleware('auth')->group(function() {
   Route::put('/dashboard/edit-exam/{exam}', [DashboardController::class, 'update_exam']);
   Route::delete('/dashboard/delete-exam/{exam}', [DashboardController::class, 'delete_exam']);
   Route::get('/logout', [AuthController::class, 'logout']);
-  Route::get('/presence', [PresenceController::class, 'store_presence']);
+  Route::get('/dashboard/students', [DashboardController::class, 'lists_user']);
+  Route::get('/dashboard/view-user/{user}', [DashboardController::class, 'view_user']);
+  Route::put('/dashboard/edit-user/{user}', [DashboardController::class, 'update_user']);
   Route::post('/presence', [PresenceController::class, 'store_presence']);
 });
+Route::get('/presence', [PresenceController::class, 'store_presence']);
 Route::get('/presence-qr/{id}', [PresenceController::class, 'generate_presence_qr']);

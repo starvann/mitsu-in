@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'spombob@gmail.com',
             'nama' => 'Mimin no 9',
             'password' => Hash::make('12345678'),
-            'role' => 'admn'
+            'role' => 'admn',
+            'stat' => 'accepted'
         ]);
         // user account
         User::create([
