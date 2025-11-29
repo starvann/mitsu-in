@@ -1,6 +1,6 @@
 # Mitsu-in
 
-> woy jangan lupa edit .env LOCALE ke id, FILESYSTEM_DISK ke public!
+> woy jangan lupa check `.env`, edit `LOCALE = id` dan `FILESYSTEM_DISK = public`!
 
 # How to run
 1. Install PHP (enable extension yang diperlukan), composer
@@ -16,15 +16,17 @@
 - [x] Dashboard
 - [x] Remember Me
 - [x] Role:
-    - [ ] Admin (dapat melihat data-data user dan membuat ujian),
-    - [x] Student (siswa),
+    - [x] Admin (dapat melihat data-data user dan membuat ujian)
+    - [x] Student (siswa yang harus presensi, dan mengerjakan ujian)
     - [x] Referrer (user yang hanya bisa mengajak student lain)
 
 ## Sistem Presensi
 - [x] Scan QR
 - [x] Upload document untuk bukti (sakit/izin)
-- [ ] Presentase kehadiran
+- [x] Presentase kehadiran
 
 ## Sistem Ujian
-- CRUD ujian
-- CRUD soal
+- [x] CRUD Ujian dan Soal (admin only)
+- [ ] Mengerjakan Ujian
+- [ ] Melihat nilai
+- [ ] Mereset ujian (admin only)
