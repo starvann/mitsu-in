@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('judul', 256)->unique();
             $table->string('deskripsi', 512);
             $table->datetime('deadline')->nullable();
-            $table->boolean('ready')->default(false);
+            $table->boolean('siap_rilis')->default(false);
+            $table->boolean('acak_soal')->default(false);
             $table->timestamps();
         });
         Schema::create('questions', function (Blueprint $table) {
@@ -48,5 +49,6 @@ return new class extends Migration
     {
         Schema::dropIfExists('exams');
         Schema::dropIfExists('questions');
+        Schema::dropIfExists('exam_results');
     }
 };

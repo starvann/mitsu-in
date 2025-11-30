@@ -82,7 +82,8 @@ class DashboardController extends Controller
       'soal.*.jawaban' => 'required|array|list',
       'soal.*.jawaban.*' => 'required|string',
       'deadline' => 'nullable|datetime',
-      'ready' => 'nullable|boolean',
+      'siap_rilis' => 'nullable|boolean',
+      'acak_soal' => 'nullable|boolean',
     ]);
     $soals = $data['soal'];
     unset($data['soal']);
@@ -98,7 +99,7 @@ class DashboardController extends Controller
   public function update_exam(Request $req, Exam $exam) {
     Gate::authorize('admin');
     $data = $req->validate([
-      'judul' => 'required|string',
+      'judul' => ['required', 'string', Rule::unique('exams', 'judul')->ignore($exam->id)],
       'deskripsi' => 'required|string',
       'soal' => 'required|array|list',
       'soal.*.jwbn_yg_benar' => 'required|numeric|max_digits:2',
@@ -106,7 +107,8 @@ class DashboardController extends Controller
       'soal.*.jawaban' => 'required|array|list',
       'soal.*.jawaban.*' => 'required|string',
       'deadline' => 'nullable|datetime',
-      'ready' => 'nullable|boolean',
+      'siap_rilis' => 'required|boolean',
+      'acak_soal' => 'required|boolean',
     ]);
     $soals = $data['soal'];
     unset($data['soal']);

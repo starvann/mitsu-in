@@ -11,6 +11,14 @@
     @endif
     <input type="text" name="judul" placeholder="Judul..." value="{{ old('judul') }}" @error('judul') aria-invalid="true" @enderror required>
     <textarea name="deskripsi" rows="3" placeholder="Deskripsi" @error('deskripsi') aria-invalid="true" @enderror required>{{ old('deskripsi') }}</textarea>
+    <label for="siap_rilis">
+      <input type="checkbox" name="siap_rilis" id="siap_rilis" role="switch" checked>
+      Siap Rilis
+    </label>
+    <label for="acak_soal">
+      <input type="checkbox" name="acak_soal" id="acak_soal" role="switch" checked>
+      Acak Soal
+    </label>
     <ol>
       @if(old('soal'))
         @foreach(old('soal') as $i => $soal)
@@ -42,10 +50,6 @@
     </ol>
     <button type="button" onclick="tambahSoal()">Tambah Pertanyaan</button>
     <button type="button" onclick="hapusSoal()">Hapus pertanyaan</button>
-    <label for="ready">
-      <input type="checkbox" name="ready" id="ready" role="switch">
-      Ready
-    </label>
     <button type="submit">Buat</button>
   </form>
   <script>

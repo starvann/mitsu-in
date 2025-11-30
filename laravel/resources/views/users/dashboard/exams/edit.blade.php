@@ -12,6 +12,14 @@
     @endif
     <input type="text" name="judul" placeholder="Judul..." value="{{ old('judul') ?? $exam->judul }}" @error('judul') aria-invalid="true" @enderror required>
     <textarea name="deskripsi" rows="3" placeholder="Deskripsi" @error('deskripsi') aria-invalid="true" @enderror required>{{ old('deskripsi') ?? $exam->deskripsi }}</textarea>
+    <label for="siap_rilis">
+      <input type="checkbox" name="siap_rilis" id="siap_rilis" role="switch" @checked(old('siap_rilis') ?? $exam->siap_rilis)>
+      Siap Rilis
+    </label>
+    <label for="acak_soal">
+      <input type="checkbox" name="acak_soal" id="acak_soal" role="switch" @checked(old('acak_soal') ?? $exam->acak_soal)>
+      Acak Soal
+    </label>
     <ol>
       @foreach(old('soal') ?? $questions as $i => $question)
       <li data-soal-idx="{{ $i }}">
