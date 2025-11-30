@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 class ExamResult extends Model
 {
   public function user() {
-    return $this->belongsTo(User::class)
+    return $this->belongsTo(User::class);
   }
   public function exam() {
-    return $this->belongsTo(Exam::class)
+    return $this->belongsTo(Exam::class);
   }
 }

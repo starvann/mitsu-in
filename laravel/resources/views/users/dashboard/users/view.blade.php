@@ -4,7 +4,9 @@
     <div>
       <img src="{{ url($user->gmb_profil) }}" alt="Gambar Profil">
     </div>
-    <!--<img src="" alt="">-->
+    @if($user->role == 'stdn')
+    <img src="{{ url('presence/percentage/'.$user->id) }}" alt="Presentase Presensi">
+    @endif
     <form action="{{ url('/dashboard/edit-user/'.$user->id) }}" method="post">
       @csrf
       @method('put')

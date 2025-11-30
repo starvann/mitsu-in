@@ -1,4 +1,5 @@
 <x-base title="Buat Ujian">
+  <a href="{{ url('dashboard/manage-exam') }}" role="button">Kembali</a>
   <form action="{{ url('dashboard/create-exam') }}" method="post">
     <h1>Buat Ujian</h1>
     @csrf
@@ -23,7 +24,7 @@
       @if(old('soal'))
         @foreach(old('soal') as $i => $soal)
         <li data-soal-idx="{{ $i }}">
-          <input type="text" name="soal[{{ $i }}][soal]" placeholder="Soal..." value="{{ $soal['soal'] }}" @error("soal.".$i.".soal") aria-invalid="true" @enderror required>
+          <textarea name="soal[{{ $i }}][soal]" rows="3" placeholder="Soal..." @error("soal.".$i.".soal") aria-invalid="true" @enderror required>{{ $soal['soal'] }}</textarea>
           @foreach($soal['jawaban'] as $j => $jwb)
           <div data-jwb-idx="{{ $j }}">
             <input type="radio" name="soal[{{ $i }}][jwbn_yg_benar]" value="{{ $j }}" @checked($soal['jwbn_yg_benar'] ?? null == $j)>
@@ -36,7 +37,7 @@
         @endforeach
       @else
       <li data-soal-idx="0">
-        <input type="text" name="soal[0][soal]" placeholder="Soal..." required>
+        <textarea name="soal[0][soal]" rows="3" placeholder="Soal..." required></textarea>
         <div>
           <div data-jwb-idx="0">
             <input type="radio" name="soal[0][jwbn_yg_benar]" value="0" checked>
@@ -80,7 +81,7 @@
     function tambahSoal() {
       let soalIdx = parseInt(ol.lastElementChild.dataset.soalIdx) + 1;
       let li = createElement('li', {
-        innerHTML: `<input type="text" name="soal[${soalIdx}][soal]" placeholder="Soal..." required>
+        innerHTML: `<textarea name="soal[${soalIdx}][soal]" rows="3" placeholder="Soal..." required></textarea>
         <div>
           <div data-jwb-idx="0">
             <input type="radio" name="soal[${soalIdx}][jwbn_yg_benar]" value="0" checked>

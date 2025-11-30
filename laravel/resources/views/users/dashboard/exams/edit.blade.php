@@ -1,4 +1,5 @@
 <x-base title="Edit Ujian">
+  <a href="{{ url('dashboard/manage-exam') }}" role="button">Kembali</a>
   <form action="{{ url("dashboard/edit-exam/$exam->id") }}" method="post">
     <h1>Edit Ujian</h1>
     @csrf
@@ -23,12 +24,12 @@
     <ol>
       @foreach(old('soal') ?? $questions as $i => $question)
       <li data-soal-idx="{{ $i }}">
-        <input type="text" name="soal[{{ $i }}][soal]" placeholder="Soal..." value="{{ old("soal.$i.soal") ?? $question['soal'] }}" required>
+        <textarea name="soal[{{ $i }}][soal]" rows="3" placeholder="Soal..." @error("soal.".$i.".soal") aria-invalid="true" @enderror required>{{ $question['soal'] }}</textarea>
         <div>
         @foreach($question['jawaban'] as $j => $jwb)
           <div data-jwb-idx="{{ $j }}">
             <input type="radio" name="soal[{{ $i }}][jwbn_yg_benar]" value="{{ $j }}" @checked($question['jwbn_yg_benar'] == $j)>
-            <input type="text" name="soal[{{ $i }}][jawaban][{{ $j }}]" placeholder="Jawaban..." value="{{ old("soal.$i.jawaban.$j") ?? $jwb }}" required>
+            <input type="text" name="soal[{{ $i }}][jawaban][{{ $j }}]" placeholder="Jawaban..." value="{{ $jwb }}" required>
           </div>
         @endforeach
         </div>
@@ -40,10 +41,6 @@
     </ol>
     <button type="button" onclick="tambahSoal()">Tambah Pertanyaan</button>
     <button type="button" onclick="hapusSoal()">Hapus pertanyaan</button>
-    <label for="ready">
-      <input type="checkbox" name="ready" id="ready" role="switch" @checked(old('ready') ?? $exam->ready)>
-      Ready
-    </label>
     <button type="submit">Simpan</button>
   </form>
   <script>
@@ -74,7 +71,7 @@
     function tambahSoal() {
       let soalIdx = parseInt(ol.lastElementChild.dataset.soalIdx) + 1;
       let li = createElement('li', {
-        innerHTML: `<input type="text" name="soal[${soalIdx}][soal]" placeholder="Soal..." required>
+        innerHTML: `<textarea name="soal[${soalIdx}][soal]" rows="3" placeholder="Soal..." required></textarea>
         <div>
           <div data-jwb-idx="0">
             <input type="radio" name="soal[${soalIdx}][jwbn_yg_benar]" value="0" checked>

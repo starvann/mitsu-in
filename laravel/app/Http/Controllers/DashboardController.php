@@ -28,7 +28,7 @@ class DashboardController extends Controller
     }
     else {
       $token = PresenceController::get_presence_token(Auth::id());
-      $exams = Exam::all();
+      $exams = Exam::where('siap_rilis', true)->get();
       $status = Presence::select('status')->where('user_id', Auth::id())->whereDay('created_at', today())->first();
       
       return view('users.dashboard.stdn', [
@@ -73,6 +73,7 @@ class DashboardController extends Controller
   }
   public function store_exam(Request $req) {
     Gate::authorize('admin');
+    //dd($req->input());
     $data = $req->validate([
       'judul' => 'required|string|unique:exams,judul',
       'deskripsi' => 'required|string',
@@ -82,9 +83,13 @@ class DashboardController extends Controller
       'soal.*.jawaban' => 'required|array|list',
       'soal.*.jawaban.*' => 'required|string',
       'deadline' => 'nullable|datetime',
-      'siap_rilis' => 'nullable|boolean',
-      'acak_soal' => 'nullable|boolean',
+      'siap_rilis' => 'nullable',
+      'acak_soal' => 'nullable',
     ]);
+    if(isset($data['siap_rilis'])) $data['siap_rilis'] = true;
+    else $data['siap_rilis'] = false;
+    if(isset($data['acak_soal'])) $data['acak_soal'] = true;
+    else $data['acak_soal'] = false;
     $soals = $data['soal'];
     unset($data['soal']);
     $data['user_id'] = Auth::user()->id;
@@ -107,9 +112,13 @@ class DashboardController extends Controller
       'soal.*.jawaban' => 'required|array|list',
       'soal.*.jawaban.*' => 'required|string',
       'deadline' => 'nullable|datetime',
-      'siap_rilis' => 'required|boolean',
-      'acak_soal' => 'required|boolean',
+      'siap_rilis' => 'nullable',
+      'acak_soal' => 'nullable',
     ]);
+    if(isset($data['siap_rilis'])) $data['siap_rilis'] = true;
+    else $data['siap_rilis'] = false;
+    if(isset($data['acak_soal'])) $data['acak_soal'] = true;
+    else $data['acak_soal'] = false;
     $soals = $data['soal'];
     unset($data['soal']);
     $exam->update($data);

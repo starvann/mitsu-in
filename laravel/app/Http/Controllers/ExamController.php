@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Exam;
 use App\Models\ExamResult;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 
@@ -15,7 +16,7 @@ class ExamController extends Controller
       return view('exams.result', ['result' => $exam->examResults()->where('user_id', Auth::id())->first()]);
     }
     $data = ['exam' => $exam];
-    $questions = $exam->questions->shuffle()->toArray();
+    $questions = $exam->acak_soal ? $exam->questions->shuffle()->toArray() : $exam->questions->toArray();
     $data['questions_count'] = count($questions);
     $data['question'] = $questions[0];
     session([
@@ -33,11 +34,12 @@ class ExamController extends Controller
     return response()->json([
       'soal' => $question['soal'],
       'jawaban' => $question['jawaban'],
+      'chosenAnswer' => session('answers.'.$idx)
     ]);
   }
   public function save_answer(Request $req) {
     $idx = $req->query('idx', 0);
-    $choice = $req->query('choice', 0);
+    $choice = intval($req->query('choice', 0));
     if(!isset(session('questions', [])[$idx])) return abort(404);
     $question = session('questions')[$idx];
     if($choice < 0) return abort(400);
@@ -48,9 +50,9 @@ class ExamController extends Controller
     return response(['message' => 'Answer Saved.', 'answers' => $answers], 200);
   }
   public function calc_result() {
-    if(Session::has('questions'))) return abort(400);
-    if(Session::has('answers'))) return abort(400);
-    if(Session::has('exam_id'))) return abort(400);
+    if(Session::has('questions')) return abort(400);
+    if(Session::has('answers')) return abort(400);
+    if(Session::has('exam_id')) return abort(400);
     if(ExamResult::where('user_id', Auth::id())->where('exam_id', $exam->id)->exists()) return abort(403);
     $questions = session('questions');
     $answers = session('answers');
@@ -58,7 +60,7 @@ class ExamController extends Controller
     $wrong = 0;
     foreach($questions as $i => $soal) {
       if($answers[$i] == $soal['jwbn_yg_benar']) {
-        $correct++
+        $correct++;
         continue;
       }
       $wrong++;
@@ -66,7 +68,7 @@ class ExamController extends Controller
     ExamResult::create([
       'user_id' => Auth::id(),
       'exam_id' => session('exam_id'),
-      'nilai' => round(($correct / session('questions_count')) * 100, 2)
+      'nilai' => round(($correct / session('questions_count')) * 100, 2),
       'total_salah' => $wrong,
       'total_benar' => $correct
     ]);

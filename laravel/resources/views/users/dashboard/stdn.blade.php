@@ -45,7 +45,7 @@
       <div>
         <h3>{{ $exam->judul }}</h3>
         <p>{{ $exam->deskripsi }}</p>
-        <a href="{{ url('exams/'.$exam->id) }}" role="button">Kerjakan</a>
+        <a href="{{ url('exams/'.$exam->id) }}" role="button" onclick="return confirm('Yakin?');">Kerjakan</a>
       </div>
       @empty
       <span>-- <i>Kosong</i> --</span>

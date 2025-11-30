@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Galih Akmal',
             'password' => Hash::make('12345678'),
             'role' => 'refl',
-            'stat' => 'accepted'
+            'stat' => 'accepted',
             'kode_ref_saya' => 'asdfqw',
         ]);
         User::create([

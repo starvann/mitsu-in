@@ -1,5 +1,6 @@
 <x-base title="Kelola User">
   <div>
+    <a href="{{ url('dashboard') }}" role="button">Kembali</a>
     <h1>Data Siswa</h1>
     <hr>
     <div>
