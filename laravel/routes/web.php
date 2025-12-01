@@ -36,9 +36,9 @@ Route::middleware('auth')->group(function() {
   Route::get('/presence/percentage/{user}', [PresenceController::class, 'gen_presence_percentage']);
   # Exam (for students)
   Route::get('/exams/{exam}', [ExamController::class, 'index']);
-  Route::get('/exams/calc-result', [ExamController::class, 'calc_result']);
-  Route::get('/exams/get-question', [ExamController::class, 'get_question']);
-  Route::get('/exams/save-answer', [ExamController::class, 'save_answer']);
+  Route::get('/exams-calc-result', [ExamController::class, 'calc_result']);
+  Route::get('/exams-get-question', [ExamController::class, 'get_question']);
+  Route::get('/exams-save-answer', [ExamController::class, 'save_answer']);
 });
 Route::get('/presence', [PresenceController::class, 'store_presence']);
 Route::get('/presence-qr/{id}', [PresenceController::class, 'generate_presence_qr']);

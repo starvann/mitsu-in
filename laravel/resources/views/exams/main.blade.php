@@ -14,8 +14,8 @@
       @endforeach
     </div>
     <div>
-      <button type="button" id="prev" onclick="prevQuestion()">&laquo;</button>
-      <button type="button" id="next" oncancel="nextQuestion()">&raquo;</button>
+      <button type="button" id="prev">&laquo;</button>
+      <button type="button" id="next">&raquo;</button>
     </div>
   </div>
   <div id="examNav">
@@ -51,8 +51,8 @@
       if(currIdx === (questionsCount - 1)) {
         next.textContent = 'Selesai';
       } else {
-        next.textContent = '&raquo;';
-        if(currIdx === 0)) {
+        next.innerHTML = '&raquo;';
+        if(currIdx === 0) {
           prev.style.display = 'none';
         } else {
           prev.style.display = 'block';
@@ -60,7 +60,8 @@
       }
     }
     function changeQuestion(idx) {
-      let data = fetch(`{{ url('exams/get-question') }}?idx=${idx}`, {
+      const url = "{{ url('exams-get-question') }}";
+      let data = fetch(`${url}?idx=${idx}`, {
         credentials: 'include'
       }).then(res => {
         if(!res.ok) {
@@ -69,13 +70,13 @@
         return res.json();
       }).then(data => {
         updateCurrIdx(idx);
-        soalP.innerContent = data.soal;
+        soalP.innerHTML = data.soal;
         jwbn.replaceChildren();
         let i = 0;
         data.jawaban.forEach(pilihan => {
           let choice = createElement('label', {
             'for': `jwbn-${i}`,
-            'textContent': `<input type="radio" name="jwbn-0" id="jwbn-${i}">${pilihan}`
+            'innerHTML': `<input type="radio" name="jwbn-0" id="jwbn-${i}">${pilihan}`
           });
           if(data.chosenAnswer === i) {
             choice.checked = true;
@@ -99,9 +100,11 @@
       }
     }
     updateCurrIdx();
+    prev.onclick = prevQuestion;
+    next.onclick = nextQuestion;
     examNavButtons.forEach(button => {
       button.onclick = () => {
-        changeQuestion(this.dataset.idx);
+        changeQuestion(button.dataset.idx);
       }
     });
     

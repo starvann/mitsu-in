@@ -16,21 +16,23 @@ class ExamController extends Controller
       return view('exams.result', ['result' => $exam->examResults()->where('user_id', Auth::id())->first()]);
     }
     $data = ['exam' => $exam];
-    $questions = $exam->acak_soal ? $exam->questions->shuffle()->toArray() : $exam->questions->toArray();
-    $data['questions_count'] = count($questions);
-    $data['question'] = $questions[0];
-    session([
-      'questions' => $questions,
-      'questions_count' => $data['questions_count'],
-      'answers' => [],
-      'exam_id' => $exam->id
-    ]);
+    if(!Session::exists(['questions', 'questions_count', 'answers', 'exam_id'])) {
+      session([
+        'questions' => $exam->acak_soal ? $exam->questions->shuffle()->toArray() : $exam->questions->toArray(),
+        'questions_count' => $exam->questions->count(),
+        'answers' => [],
+        'exam_id' => $exam->id
+      ]);
+    }
+    $data['questions_count'] = session('questions_count');
+    $data['question'] = session('questions.0');
     return view('exams.main', $data);
   }
   public function get_question(Request $req) {
     $idx = $req->query('idx', 0);
-    if(!isset(session('questions', [])[$idx])) return abort(404);
-    $question = session('questions')[$idx];
+    if(!Session::exists(['questions', 'questions_count', 'answers', 'exam_id'])) return abort(400);
+    if(!session("questions.$idx")) return abort(404);
+    $question = session("questions.$idx");
     return response()->json([
       'soal' => $question['soal'],
       'jawaban' => $question['jawaban'],
@@ -50,10 +52,8 @@ class ExamController extends Controller
     return response(['message' => 'Answer Saved.', 'answers' => $answers], 200);
   }
   public function calc_result() {
-    if(Session::has('questions')) return abort(400);
-    if(Session::has('answers')) return abort(400);
-    if(Session::has('exam_id')) return abort(400);
-    if(ExamResult::where('user_id', Auth::id())->where('exam_id', $exam->id)->exists()) return abort(403);
+    if(!Session::exists(['questions', 'questions_count', 'answers', 'exam_id'])) return abort(400);
+    if(ExamResult::where('user_id', Auth::id())->where('exam_id', session('exam_id'))->exists()) return abort(403);
     $questions = session('questions');
     $answers = session('answers');
     $correct = 0;
