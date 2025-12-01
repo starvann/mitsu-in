@@ -13,7 +13,19 @@ class ExamController extends Controller
 {
   public function index(Exam $exam) {
     if(ExamResult::where('user_id', Auth::id())->where('exam_id', $exam->id)->exists()) {
-      return view('exams.result', ['result' => $exam->examResults()->where('user_id', Auth::id())->first()]);
+      $result = $exam->examResults()->where('user_id', Auth::id())->first();
+      $nilai = $result->nilai;
+      $circumference = 2 * M_PI * 45;
+      $offset = $circumference - ($nilai / 100) * $circumference;
+      $color = $nilai <= 50 ? '#ff4444' : ($nilai <= 75 ? '#ffaa00' : '#44cc44');
+      return view('exams.result', [
+        'score' => $nilai,
+        'correct' => $result->total_benar,
+        'wrong' => $result->total_salah,
+        'circumference' => $circumference,
+        'offset' => $offset,
+        'color' => $color
+      ]);
     }
     $data = ['exam' => $exam];
     if(!Session::exists(['questions', 'questions_count', 'answers', 'exam_id'])) {
@@ -46,8 +58,8 @@ class ExamController extends Controller
     $question = session('questions')[$idx];
     if($choice < 0) return abort(400);
     if($choice > (count($question['jawaban']) - 1)) return abort(400);
-    session("answers.$idx", $choice);
-    return response(['message' => 'Answer Saved.'], 200);
+    session(["answers.$idx" => $choice]);
+    return response(['message' => 'Answer Saved'], 200);
   }
   public function calc_result() {
     if(!Session::exists(['questions', 'questions_count', 'answers', 'exam_id'])) return abort(400);
@@ -57,6 +69,10 @@ class ExamController extends Controller
     $correct = 0;
     $wrong = 0;
     foreach($questions as $i => $soal) {
+      if(!isset($answers[$i])) {
+        $wrong++;
+        continue;
+      }
       if($answers[$i] == $soal['jwbn_yg_benar']) {
         $correct++;
         continue;
@@ -71,6 +87,6 @@ class ExamController extends Controller
       'total_benar' => $correct
     ]);
     Session::forget(['questions', 'answers', 'questions_count', 'exam_id']);
-    return redirect('/exams/score/'.session('exam_id'))->with(['message' => 'Terima kasih sudah mengerjakan!']);
+    return redirect('/exams/'.session('exam_id'))->with(['message' => 'Terima kasih sudah mengerjakan!']);
   }
 }

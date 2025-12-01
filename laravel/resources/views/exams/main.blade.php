@@ -3,18 +3,18 @@
     <h1>{{ $exam->judul }}</h1>
     <p>{{ $exam->deskripsi }}</p>
   </div>
-  <div id="soal" data-idx="0">
-    <p>{{ $question['soal'] }}</p>
-    <div id="jwbn">
-      @foreach($question['jawaban'] as $i => $jwb)
-      <label for="jwbn-{{ $i }}">
-        <input type="radio" name="jwbn-0" id="jwbn-{{ $i }}">
-        {{ $jwb }}
-      </label>
-      @endforeach
+  <div>
+    <div id="soal" data-idx="0">
+      <span></span>
+      <div>
+        <p>...</p>
+        <div id="jwbn">
+          ...
+        </div>
+      </div>
     </div>
     <div>
-      <button type="button" id="prev">&laquo;</button>
+      <button type="button" id="prev" style="display: none;">&laquo;</button>
       <button type="button" id="next">&raquo;</button>
     </div>
   </div>
@@ -36,7 +36,8 @@
     // vars
     let currIdx = 0;
     let soalDiv = query('#soal');
-    let soalP = query('#soal p');
+    let soalP = query('#soal div p');
+    let soalSpan = query('#soal span');
     let jwbn = query('#jwbn');
     let prev = query('#prev');
     let next = query('#next');
@@ -87,6 +88,7 @@
         return res.json();
       }).then(data => {
         updateCurrIdx(idx);
+        soalSpan.innerHTML = `${parseInt(idx) + 1}. `;
         soalP.innerHTML = data.soal;
         jwbn.replaceChildren();
         let i = 0;
@@ -109,6 +111,8 @@
       updateCurrIdx();
       if(currIdx < (questionsCount - 1)) {
         changeQuestion(currIdx + 1);
+      } else {
+        document.location.href = "/exams-calc-result";
       }
     }
     function prevQuestion() {
