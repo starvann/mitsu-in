@@ -61,6 +61,23 @@
     }
     function changeQuestion(idx) {
       const url = "{{ url('exams-get-question') }}";
+      let chosenAnswer = query(`input[name="jwbn-${currIdx}"]:checked`);
+      if(chosenAnswer) {
+        const saveUrl = "{{ url('exams-save-answer') }}";
+        let answerIdx = Array.from(jwbn.children).indexOf(chosenAnswer.parentElement);
+        fetch(`${saveUrl}?idx=${currIdx}&choice=${answerIdx}`, {
+          credentials: 'include'
+        }).then(res => {
+          if(!res.ok) {
+            throw new Error(`HTTP Error code: ${res.status}`);
+          }
+          return res.json();
+        }).then(data => {
+          console.log('Answer saved:', data);
+        }).catch(err => {
+          console.error('Fetch error:', err);
+        });
+      }
       let data = fetch(`${url}?idx=${idx}`, {
         credentials: 'include'
       }).then(res => {
@@ -75,13 +92,14 @@
         let i = 0;
         data.jawaban.forEach(pilihan => {
           let choice = createElement('label', {
-            'for': `jwbn-${i}`,
-            'innerHTML': `<input type="radio" name="jwbn-0" id="jwbn-${i}">${pilihan}`
+            'innerHTML': `<input type="radio" name="jwbn-${currIdx}" id="jwbn-${i}">${pilihan}`
           });
           if(data.chosenAnswer === i) {
-            choice.checked = true;
+            choice.children[0].checked = true;
           }
+          choice.setAttribute('for', `jwbn-${i}`);
           jwbn.appendChild(choice);
+          i++;
         });
       }).catch(err => {
         console.error('Fetch error:', err);
@@ -99,7 +117,7 @@
         changeQuestion(currIdx - 1);
       }
     }
-    updateCurrIdx();
+    changeQuestion(0);
     prev.onclick = prevQuestion;
     next.onclick = nextQuestion;
     examNavButtons.forEach(button => {

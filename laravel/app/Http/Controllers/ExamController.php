@@ -36,7 +36,7 @@ class ExamController extends Controller
     return response()->json([
       'soal' => $question['soal'],
       'jawaban' => $question['jawaban'],
-      'chosenAnswer' => session('answers.'.$idx)
+      'chosenAnswer' => session("answers.$idx")
     ]);
   }
   public function save_answer(Request $req) {
@@ -46,10 +46,8 @@ class ExamController extends Controller
     $question = session('questions')[$idx];
     if($choice < 0) return abort(400);
     if($choice > (count($question['jawaban']) - 1)) return abort(400);
-    $answers = session('questions', []);
-    $answers[$idx] = $choice;
-    Session::put($answers);
-    return response(['message' => 'Answer Saved.', 'answers' => $answers], 200);
+    session("answers.$idx", $choice);
+    return response(['message' => 'Answer Saved.'], 200);
   }
   public function calc_result() {
     if(!Session::exists(['questions', 'questions_count', 'answers', 'exam_id'])) return abort(400);
