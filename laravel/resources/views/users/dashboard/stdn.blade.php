@@ -48,7 +48,7 @@
         @php
         $has_done = $exam->examResults()->where('user_id', Auth::id())->exists();
         @endphp
-        <a href="{{ url('exams/'.$exam->id) }}" role="button" @if(!$has_done) onclick="return confirm('Yakin?');" @endif>{{ $has_done ? 'Lihat Hasil' : 'Kerjakan' }}</a>
+        <a href="{{ url('exam/'.$exam->id) }}" role="button" @if(!$has_done) onclick="return confirm('Yakin?');" @endif>{{ $has_done ? 'Lihat Hasil' : 'Kerjakan' }}</a>
       </div>
       @empty
       <span>-- <i>Kosong</i> --</span>

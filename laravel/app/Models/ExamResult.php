@@ -16,4 +16,10 @@ class ExamResult extends Model
   public function exam() {
     return $this->belongsTo(Exam::class);
   }
+  public function casts()
+  {
+    return [
+      'jawaban' => 'array'
+    ];
+  }
 }

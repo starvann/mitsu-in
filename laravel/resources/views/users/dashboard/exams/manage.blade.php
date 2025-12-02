@@ -12,7 +12,8 @@
       <h2>{{ $exam->judul }}</h2>
       <p>{{ Str::limit($exam->deskripsi, 48) }}</p>
       <div>
-        <a href="{{ url("dashboard/edit-exam/$exam->id") }}">Edit</a>
+        <a href="{{ url("dashboard/edit-exam/$exam->id") }}" role="button">Edit</a>
+        <a href="{{ url("dashboard/exam-result/$exam->id") }}" role="button">Hasil</a>
         <form action="{{ url("dashboard/delete-exam/$exam->id") }}" method="post">
           @csrf
           @method('delete')

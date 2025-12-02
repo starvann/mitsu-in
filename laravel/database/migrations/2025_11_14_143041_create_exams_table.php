@@ -38,6 +38,7 @@ return new class extends Migration
             $table->unsignedSmallInteger('nilai');
             $table->unsignedSmallInteger('total_salah');
             $table->unsignedSmallInteger('total_benar');
+            $table->json('jawaban');# {'q_id': 'ans', '1': 2, ...}
             $table->timestamps();
         });
     }

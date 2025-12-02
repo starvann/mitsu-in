@@ -51,8 +51,16 @@
       currIdx = parseInt(soalDiv.dataset.idx);
       if(currIdx === (questionsCount - 1)) {
         next.textContent = 'Selesai';
+        next.onclick = () => {
+          if(!confirm('Yakin ingin mengakhiri ujian dan melihat hasil?')) {
+            return;
+          }
+          saveAnswer();
+          document.location.href = "/exam-calc-result";
+        };
       } else {
         next.innerHTML = '&raquo;';
+        next.onclick = nextQuestion;
         if(currIdx === 0) {
           prev.style.display = 'none';
         } else {
@@ -60,11 +68,10 @@
         }
       }
     }
-    function changeQuestion(idx) {
-      const url = "{{ url('exams-get-question') }}";
+    function saveAnswer() {
       let chosenAnswer = query(`input[name="jwbn-${currIdx}"]:checked`);
       if(chosenAnswer) {
-        const saveUrl = "{{ url('exams-save-answer') }}";
+        const saveUrl = "{{ url('exam-save-answer') }}";
         let answerIdx = Array.from(jwbn.children).indexOf(chosenAnswer.parentElement);
         fetch(`${saveUrl}?idx=${currIdx}&choice=${answerIdx}`, {
           credentials: 'include'
@@ -79,6 +86,10 @@
           console.error('Fetch error:', err);
         });
       }
+    }
+    function changeQuestion(idx) {
+      const url = "{{ url('exam-get-question') }}";
+      saveAnswer();
       let data = fetch(`${url}?idx=${idx}`, {
         credentials: 'include'
       }).then(res => {
@@ -111,8 +122,6 @@
       updateCurrIdx();
       if(currIdx < (questionsCount - 1)) {
         changeQuestion(currIdx + 1);
-      } else {
-        document.location.href = "/exams-calc-result";
       }
     }
     function prevQuestion() {

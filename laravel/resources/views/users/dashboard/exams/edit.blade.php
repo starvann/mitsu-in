@@ -1,6 +1,9 @@
 <x-base title="Edit Ujian">
-  <a href="{{ url('dashboard/manage-exam') }}" role="button">Kembali</a>
   <form action="{{ url("dashboard/edit-exam/$exam->id") }}" method="post">
+    <div>
+      <a href="{{ url('dashboard/manage-exam') }}" role="button">Kembali</a>
+      <button type="submit" style="background-color: #d1a000ff;">Simpan</button>
+    </div>
     <h1>Edit Ujian</h1>
     @csrf
     @method('put')
@@ -41,7 +44,6 @@
     </ol>
     <button type="button" onclick="tambahSoal()">Tambah Pertanyaan</button>
     <button type="button" onclick="hapusSoal()">Hapus pertanyaan</button>
-    <button type="submit">Simpan</button>
   </form>
   <script>
     function query(s) {

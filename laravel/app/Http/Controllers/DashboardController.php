@@ -7,6 +7,7 @@ use App\Models\Exam;
 use App\Models\Presence;
 use App\Models\Question;
 use App\Http\Controllers\PresenceController;
+use App\Models\ExamResult;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -66,6 +67,20 @@ class DashboardController extends Controller
   public function manage_exams() {
     Gate::authorize('admin');
     return view('users.dashboard.exams.manage', ['exams' => Exam::all()]);
+  }
+  public function exam_result(Exam $exam) {
+    Gate::authorize('admin');
+    return view('users.dashboard.exams.result', ['exam' => $exam, 'results' => $exam->examResults()->with('user')->get()]);
+  }
+  public function delete_exam_result(ExamResult $exam_res) {
+    Gate::authorize('admin');
+    $exam_res->delete();
+    return redirect('/dashboard/exam-result/'.$exam_res->exam_id)->with('success', 'Hasil ujian berhasil dihapus');
+  }
+  public function delete_all_exam_result(Exam $exam) {
+    Gate::authorize('admin');
+    $exam->examResults()->delete();
+    return redirect('/dashboard/exam-result/'.$exam->id)->with('success', 'Semua hasil ujian berhasil dihapus');
   }
   public function create_exam() {
     Gate::authorize('admin');

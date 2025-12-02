@@ -27,6 +27,9 @@ Route::middleware('auth')->group(function() {
   Route::get('/dashboard/edit-exam/{exam}', [DashboardController::class, 'edit_exam']);
   Route::put('/dashboard/edit-exam/{exam}', [DashboardController::class, 'update_exam']);
   Route::delete('/dashboard/delete-exam/{exam}', [DashboardController::class, 'delete_exam']);
+  Route::get('/dashboard/exam-result/{exam}', [DashboardController::class, 'exam_result']);
+  Route::get('/dashboard/del-exam-result/{exam_res}', [DashboardController::class, 'delete_exam_result']);
+  Route::get('/dashboard/del-all-exam-result/{exam}', [DashboardController::class, 'delete_all_exam_result']);
   # RUD Students
   Route::get('/dashboard/students', [DashboardController::class, 'lists_user']);
   Route::get('/dashboard/view-user/{user}', [DashboardController::class, 'view_user']);
@@ -35,10 +38,10 @@ Route::middleware('auth')->group(function() {
   Route::post('/presence', [PresenceController::class, 'store_presence']);
   Route::get('/presence/percentage/{user}', [PresenceController::class, 'gen_presence_percentage']);
   # Exam (for students)
-  Route::get('/exams/{exam}', [ExamController::class, 'index']);
-  Route::get('/exams-calc-result', [ExamController::class, 'calc_result']);
-  Route::get('/exams-get-question', [ExamController::class, 'get_question']);
-  Route::get('/exams-save-answer', [ExamController::class, 'save_answer']);
+  Route::get('/exam/{exam}', [ExamController::class, 'index']);
+  Route::get('/exam-calc-result', [ExamController::class, 'calc_result']);
+  Route::get('/exam-get-question', [ExamController::class, 'get_question']);
+  Route::get('/exam-save-answer', [ExamController::class, 'save_answer']);
 });
 Route::get('/presence', [PresenceController::class, 'store_presence']);
 Route::get('/presence-qr/{id}', [PresenceController::class, 'generate_presence_qr']);

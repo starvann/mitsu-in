@@ -19,6 +19,7 @@ class ExamController extends Controller
       $offset = $circumference - ($nilai / 100) * $circumference;
       $color = $nilai <= 50 ? '#ff4444' : ($nilai <= 75 ? '#ffaa00' : '#44cc44');
       return view('exams.result', [
+        'judul' => $exam->judul,
         'score' => $nilai,
         'correct' => $result->total_benar,
         'wrong' => $result->total_salah,
@@ -64,6 +65,7 @@ class ExamController extends Controller
   public function calc_result() {
     if(!Session::exists(['questions', 'questions_count', 'answers', 'exam_id'])) return abort(400);
     if(ExamResult::where('user_id', Auth::id())->where('exam_id', session('exam_id'))->exists()) return abort(403);
+    $exam_id = session('exam_id');
     $questions = session('questions');
     $answers = session('answers');
     $correct = 0;
@@ -79,14 +81,19 @@ class ExamController extends Controller
       }
       $wrong++;
     }
+    $answers2 = [];
+    foreach($questions as $i => $soal) {
+      $answers2[$soal['id']] = $answers[$i] ?? null;
+    }
     ExamResult::create([
       'user_id' => Auth::id(),
       'exam_id' => session('exam_id'),
       'nilai' => round(($correct / session('questions_count')) * 100, 2),
       'total_salah' => $wrong,
-      'total_benar' => $correct
+      'total_benar' => $correct,
+      'jawaban' => $answers2
     ]);
     Session::forget(['questions', 'answers', 'questions_count', 'exam_id']);
-    return redirect('/exams/'.session('exam_id'))->with(['message' => 'Terima kasih sudah mengerjakan!']);
+    return redirect("/exam/$exam_id")->with(['message' => 'Terima kasih sudah mengerjakan!']);
   }
 }

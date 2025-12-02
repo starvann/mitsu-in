@@ -1,4 +1,5 @@
-<x-base>
+<x-base title="Hasil Ujian">
+  <h1>{{ $judul }}</h1>
   <div>
     <svg xmlns="http://www.w3.org/2000/svg" id="percentageCircle" width="200" height="200" viewBox="0 0 100 100">
       <circle cx="50" cy="50" r="45" fill="none" stroke="#e0e0e0" stroke-width="10"/>
