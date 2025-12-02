@@ -31,3 +31,7 @@
 - [x] Mengerjakan Ujian
 - [x] Melihat nilai
 - [x] Mereset ujian (admin only)
+
+## Payment Gateway
+- [ ] Integrasi Midtrans
+- [ ] Auto acc student
