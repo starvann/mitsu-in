@@ -4,19 +4,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   {{--  Document Title  --}}
   <title>{{ $title ?? 'Unknown' }}</title>
-  <link rel="stylesheet" href="{!! url('pico.min.css') !!}">
+  <link rel="stylesheet" href="{!! url('assets/css/style.css') !!}">
   {{--  HTML Extra Heading  --}}
   {!! $head ?? '' !!}
 </head>
-<body>
+<body @isset($bodyClass) class="{{ $bodyClass }}" @endisset>
   {{--  Content  --}}
-  <main class="container">
+  @if(isset($noMain))
+    {!! $slot !!}
+  @else
+  <main class="{{ $mainClass ?? 'container' }}">
     {!! $slot !!}
   </main>
-  @isset($script)
-  <script>
-    {!! $script !!}
-  </script>
-  @endisset
+  @endif
 </body>
 </html>

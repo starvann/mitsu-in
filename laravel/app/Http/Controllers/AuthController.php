@@ -15,9 +15,6 @@ use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
-    public function home() {
-      return view('home');
-    }
     public function logout(Request $req) {
       Auth::logout();
       $req->session()->invalidate();

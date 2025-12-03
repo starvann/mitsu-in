@@ -6,7 +6,13 @@ use App\Http\Controllers\ExamController;
 use App\Http\Controllers\PresenceController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [AuthController::class, 'home']);
+# splash & onboarding
+Route::get('/', function() {
+    return view('splash');
+});
+Route::get('/onboarding', function() {
+    return view('onboarding');
+});
 # auth
 Route::middleware('guest')->group(function()  {
     Route::get('/login', [AuthController::class, 'login'])->name('login');
