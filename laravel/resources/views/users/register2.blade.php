@@ -1,4 +1,35 @@
-<x-base title="Register 2">
+<x-base title="Register Siswa" body-class="screen-auth" main-class="auth-page">
+  <x-slot:head>
+    <style>
+      /* Styling tambahan khusus dynamic group */
+      .repeat-group {
+        padding: 16px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        margin-bottom: 16px;
+        background: #fafafa;
+      }
+
+      .remove-btn {
+        background: #c62828;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 6px;
+        margin-top: 6px;
+        cursor: pointer;
+        font-size: 13px;
+      }
+
+      .btn-add {
+        margin-top: 12px;
+      }
+    </style>
+  </x-slot:head>
+  <h1 class="title-jp">こんにちは!</h1>
+  <p class="subtitle">
+    Siap memulai perjalanan kariermu? Yuk, gabung bareng kami!
+  </p>
   <form action="{{ url('register2') }}" method="post" enctype="multipart/form-data">
     <h1>Register</h1>
     @csrf
@@ -14,9 +45,18 @@
     <input type="hidden" name="password" value="{{ session('password') }}">
     <input type="hidden" name="code" value="{{ old('code') }}">
     {{-- Part 1 --}}
-    <input type="text" name="kode_ref" placeholder="Kode Referensi..." @error('kode_ref') aria-invalid="true" @enderror value="{{ old('kode_ref') }}">
-    <input type="text" name="nama" placeholder="Nama..." @error('nama') aria-invalid="true" @enderror value="{{ old('nama') }}" required>
-    <input type="file" name="gmb_profil" @error('gmb_profil') aria-invalid="true" @enderror accept="image/png,image/jpeg,image/webp" required>
+    <label for="kode_ref">
+      Kode Referral
+      <input type="text" name="kode_ref" id="kode_ref" placeholder="Kode Referensi..." @error('kode_ref') aria-invalid="true" @enderror value="{{ old('kode_ref') }}">
+    </label>
+    <label for="nama">
+      Nama Lengkap
+      <input type="text" name="nama" placeholder="Nama..." @error('nama') aria-invalid="true" @enderror value="{{ old('nama') }}" required>
+    </label>
+    <label for="gmb_profil">
+      Foto Profil
+      <input type="file" name="gmb_profil" @error('gmb_profil') aria-invalid="true" @enderror accept="image/png,image/jpeg,image/webp" required>
+    </label>
     <input type="text" name="no_hp" placeholder="No. HP..." @error('no_hp') aria-invalid="true" @enderror value="{{ old('no_hp') }}" required>
     <select name="gender" @error('gender') aria-invalid="true" @enderror>
       <option value="laki-laki" @selected(old('gender') != 'perempuan')>Laki-Laki</option>

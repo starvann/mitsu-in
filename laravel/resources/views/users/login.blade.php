@@ -1,25 +1,30 @@
-<x-base title="Login">
-  <form action="{{ url('login') }}" method="post">
-    <h1>Login</h1>
+<x-base title="Login" body-class="screen-auth" main-class="auth-page">
+  <h1 class="title-jp">こんにちは!</h1>
+  <p class="subtitle">Siap memulai perjalanan kariermu? Yuk, gabung bareng kami!</p>
+  @if(!empty($errors->all()))
+  <ul class="err-messages">
+    @foreach($errors->all() as $err_msg)
+    <li>{{ $err_msg }}</li>
+    @endforeach
+  </ul>
+  @endif
+  <form action="{{ url('login') }}" method="post" id="loginForm" class="card auth-card">
     @csrf
-    @if(!empty($errors->all()))
-    <ul>
-      @foreach($errors->all() as $err_msg)
-      <li>{{ $err_msg }}</li>
-      @endforeach
-    </ul>
-    @endif
-    @session('err')
-    <div>{{ session('err') }}</div>
-    @endsession
-    <input type="email" name="email" placeholder="Email..." @error('email') aria-invalid="true" @enderror value="{{ old('email') }}" required>
-    <input type="password" name="password" placeholder="Password..." @error('password') aria-invalid="true" @enderror value="{{ old('password') }}" required>
-    {{-- <input type="text" name="code" placeholder="Kode..." @error('code') aria-invalid="true" @enderror value="{{ old('code') }}" required> --}}
-    <label for="remember_me">
+    <label>
+      Email
+      <input type="email" name="email" @error('email') aria-invalid="true" @enderror value="{{ old('email') }}" required>
+    </label>
+    <label>
+      Password
+      <input type="password" name="password" @error('password') aria-invalid="true" @enderror required>
+    </label>
+    <label for="remember_me" class="remember-me">
       <input type="checkbox" name="remember_me" id="remember_me" @checked(old('remember_me'))>
       Remember Me
     </label>
-    <button type="submit">Login</button>
-    <span>Belum punya akun? <a href="{{ url('register') }}">Daftar</a></span>
+    <button type="submit" class="btn-primary">Sign In</button>
+    <p class="helper">
+      Belum memiliki akun? <a href="{{ url('register') }}">Daftar di sini</a>
+    </p>
   </form>
 </x-base>

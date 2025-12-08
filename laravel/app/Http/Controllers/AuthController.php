@@ -41,19 +41,34 @@ class AuthController extends Controller
       return view('users.register');
     }
     public function register2() {
-      if(!old('email') or !Session::has('password') or !old('code')) return redirect('/register');
+      if(!old('email') or !old('nama') or !Session::has('password') or !old('code')) return redirect('/register');
       return view('users.register2');
     }
     public function create_user(Request $req) {
       $data = $req->validate([
+        'nama' => 'required|string|min:3',
+        'gmb_profil' => 'nullable|file|image|max:2048',
         'email' => 'email|unique:users,email',
         'password' => ['required', 'string', Password::min(8)->mixedCase()->numbers()->symbols()],
-        'code' => 'required|max:4',
+        'password_confirm' => 'required|same:password',
+        'kode' => 'required|max:4',
       ]);
-      if(!in_array($data['code'], ['admn', 'stdn', 'refl'])) return redirect('/register');
-      if($data['code'] == 'admn') {
-        $data['role'] = $data['code'];
-        unset($data['code']);
+      if(!in_array($data['kode'], ['admn', 'stdn', 'refl'])) return redirect('/register')->withErrors(['kode' => 'Kode tidak valid.']);
+      if($data['kode'] === 'admn' or $data['kode'] === 'refl') {
+        $data['role'] = $data['kode'];
+        unset($data['kode']);
+        unset($data['password_confirm']);
+        // if role is referral set unique ref code
+        if($data['role'] == 'refl') {
+          $data['kode_ref_saya'] = Str::random(8);
+          while(User::where('kode_ref_saya', $data['kode_ref_saya'])->exists()) {
+            $data['kode_ref_saya'] = Str::random(8);
+          }
+        }
+        
+        if($req->hasFile('gmb_profil')) $data['gmb_profil'] = $req->file('gmb_profil')->store('assets/profiles');
+        else unset($data['gmb_profil']);
+        
         User::create($data);
         return redirect('login');
       }
@@ -64,7 +79,7 @@ class AuthController extends Controller
       $data = $req->validate([
         'email' => 'required|email|unique:users,email',
         'password' => ['required', 'string', Password::min(8)->mixedCase()->numbers()->symbols()],
-        'code' => 'required|string|max:4',
+        'kode' => 'required|string|max:4',
         'kode_ref' => 'nullable|max:8|exists:users,kode_ref_saya',
         'nama' => 'required|string|min:3',
         'no_hp' => 'required|string|digits_between:9,16',
@@ -109,10 +124,8 @@ class AuthController extends Controller
       ]);
       if(!in_array($data['code'], ['admn', 'stdn', 'refl'])) return redirect('/register');
       // set role
-      $data['role'] = $data['code'];
-      unset($data['code']);
-      // if role is referral set the ref code
-      if($data['role'] == 'refl') $data['kode_ref_saya'] = Str::random(8);
+      $data['role'] = $data['kode'];
+      unset($data['kode']);
       // hash password and delete the session
       $data['password'] = Hash::make($data['password']);
       Session::forget('password');

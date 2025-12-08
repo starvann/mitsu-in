@@ -32,7 +32,7 @@ return new class extends Migration
             $table->string('agama', 32)->default('none');
             $table->boolean('pernah_ke_jepang')->default(false);
             $table->boolean('punya_paspor')->default(false);
-            $table->enum('tangan_utama', ['kanan', 'kiri'])->default('kanan');
+            $table->enum('tangan_utama', ['kanan', 'kiri', 'keduanya'])->default('kanan');
             $table->string('alamat', 512)->default('Bumi');
             /* education structure: [{
             'tahun': 2000, 
