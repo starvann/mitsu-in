@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Admin – MITSU.IN</title>
+
+    <style>
+      body {
+        margin: 0;
+        background: #f3ecd2;
+        font-family: Arial;
+      }
+
+      .card {
+        width: 90%;
+        max-width: 400px;
+        margin: 60px auto;
+        background: white;
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      h2 {
+        margin: 0 0 25px 0;
+        font-size: 22px;
+        color: #700000;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 12px;
+        background: #700000;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 15px;
+        cursor: pointer;
+      }
+
+      .btn:hover {
+        opacity: 0.9;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>Hi! Admin</h2>
+
+      <button class="btn" onclick="location.href='student-list.html'">
+        Data Siswa
+      </button>
+      <button class="btn" onclick="location.href='exam-builder.html'">
+        Buat Ujian
+      </button>
+    </div>
+  </body>
+</html>
