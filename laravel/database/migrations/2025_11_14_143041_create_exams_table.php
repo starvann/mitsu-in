@@ -16,9 +16,11 @@ return new class extends Migration
         Schema::create('exams', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
-            $table->string('nama', 256)->unique();
-            $table->string('desc', 512);
+            $table->string('judul', 256)->unique();
+            $table->string('deskripsi', 512);
             $table->datetime('deadline')->nullable();
+            $table->boolean('siap_rilis')->default(false);
+            $table->boolean('acak_soal')->default(false);
             $table->timestamps();
         });
         Schema::create('questions', function (Blueprint $table) {
@@ -26,7 +28,7 @@ return new class extends Migration
             $table->foreignIdFor(Exam::class);
             $table->text('soal');
             $table->json('jawaban');# ['ans1', 'ans2', ...]
-            $table->tinyInteger('jawaban_yg_benar');
+            $table->tinyInteger('jwbn_yg_benar');
             $table->timestamps();
         });
         Schema::create('exam_results', function (Blueprint $table) {
@@ -36,6 +38,7 @@ return new class extends Migration
             $table->unsignedSmallInteger('nilai');
             $table->unsignedSmallInteger('total_salah');
             $table->unsignedSmallInteger('total_benar');
+            $table->json('jawaban');# {'q_id': 'ans', '1': 2, ...}
             $table->timestamps();
         });
     }
@@ -47,5 +50,6 @@ return new class extends Migration
     {
         Schema::dropIfExists('exams');
         Schema::dropIfExists('questions');
+        Schema::dropIfExists('exam_results');
     }
 };

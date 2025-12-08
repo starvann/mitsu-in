@@ -5,7 +5,7 @@
       <h1>{{ $user->nama }}</h1>
       <a href="{{ url('logout') }}" role="button">Log out</a>
     </div>
-    
+    @if($user->stat == 'accepted')
     <div>
       @if(!$hasPresence)
       <a href="{{ url('presence/?token='.$token) }}" style="display: flex; flex-direction: column; gap: 0.5rem;">
@@ -13,7 +13,7 @@
         <small>Klik untuk presensi</small>
       </a>
       @endif
-    <!-- <img src="bagan presentase" alt=""> -->
+      <img src="{{ url('presence/percentage/'.$user->id) }}" alt="Presentase Presensi">
     </div>
     <div>
       @if(!$hasPresence)
@@ -43,13 +43,19 @@
       <h2>Ujian yang bisa dikerjakan</h2>
       @forelse($exams as $exam)
       <div>
-        <h3>{{ $exam->nama }}</h3>
-        <p>{{ $exam->desc }}</p>
-        <a href="{{ url('exams/'.$exam->id) }}" role="button">Kerjakan</a>
+        <h3>{{ $exam->judul }}</h3>
+        <p>{{ $exam->deskripsi }}</p>
+        @php
+        $has_done = $exam->examResults()->where('user_id', Auth::id())->exists();
+        @endphp
+        <a href="{{ url('exam/'.$exam->id) }}" role="button" @if(!$has_done) onclick="return confirm('Yakin?');" @endif>{{ $has_done ? 'Lihat Hasil' : 'Kerjakan' }}</a>
       </div>
       @empty
       <span>-- <i>Kosong</i> --</span>
       @endforelse
     </div>
+    @else
+    <h2>Kamu masih proses daftar ulang.</h2>
+    @endif
   </div>
 </x-base>

@@ -13,5 +13,10 @@
   <main class="container">
     {!! $slot !!}
   </main>
+  @isset($script)
+  <script>
+    {!! $script !!}
+  </script>
+  @endisset
 </body>
 </html>

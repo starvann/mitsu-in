@@ -35,18 +35,18 @@ return new class extends Migration
             $table->enum('tangan_utama', ['kanan', 'kiri'])->default('kanan');
             $table->string('alamat', 512)->default('Bumi');
             /* education structure: [{
-            'year': 2000, 
-            'school_name': 'Idk Bruv', 
-            'major': 'Software Engineering'
+            'tahun': 2000, 
+            'nam_sekolah': 'Idk Bruv', 
+            'jurusan': 'Software Engineering'
             }, ...]*/
-            $table->json('pendidikan')->default('[{"tahun":2000,"nama_sekolah":"Otodidak,"jurusan":"kehidupan"}]');
-            $table->json('pengalaman')->nullable(); # ['exp1', 'exp2', 'etc...']
+            $table->json('pendidikan')->default('[{"tahun":2000,"nama_sekolah":"Otodidak","jurusan":"kehidupan"}]');
+            $table->json('pengalaman')->default('[]'); # ['exp1', 'exp2', 'etc...']
             /* family structure: [{
-            'relation': 'Father', 
-            'name': 'Lloyd', 
-            'age': 40,
-            'job': 'Artist',
-            'salary': 'Rp10.000.000 per month'
+            'relasi': 'Father', 
+            'nama': 'Lloyd', 
+            'umur': 40,
+            'pekerjaan': 'Artist',
+            'gaji': 'Rp10.000.000 per month'
             }, ...]*/
             $table->json('struktur_keluarga')->default('[{"relasi":"Teman","nama":"Sisi Lain diriku","umur":20,"pekerjaan":"ga ada","gaji":"ga ada"}]');
             $table->string('tujuan_ke_jepang', 256)->default("Menjadi manusia yang lebih baik");
@@ -58,11 +58,11 @@ return new class extends Migration
             $table->boolean('punya_sim_a')->default(false);
             $table->string('sertif_lain', 256)->nullable();
             /* japan relation structure: {
-            'name': 'Izumi Fujimiya', 
-            'relation': 'Friend', 
-            'job': 'Artist',
-            'age': 40,
-            'address': 'idk bruv'
+            'nama': 'Izumi Fujimiya', 
+            'relasi': 'Friend', 
+            'pekerjaan': 'Artist',
+            'umur': 40,
+            'alamat': 'idk bruv'
             }*/
             $table->json('relasi_di_jepang')->nullable();
             $table->string('catatan_xtra', 512)->nullable();

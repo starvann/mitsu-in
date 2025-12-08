@@ -3,10 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Presence;
+use App\Models\ExamResult;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\Presence;
 
 class User extends Authenticatable
 {
@@ -25,6 +26,10 @@ class User extends Authenticatable
     
     public function presence() {
       return $this->hasMany(Presence::class);
+    }
+    
+    public function examResults() {
+      return $this->hasMany(ExamResult::class);
     }
 
     protected function casts(): array
