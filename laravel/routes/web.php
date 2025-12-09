@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function() {
   Route::get('/dashboard/del-all-exam-result/{exam}', [DashboardController::class, 'delete_all_exam_result']);
   # RUD Students
   Route::get('/dashboard/students', [DashboardController::class, 'lists_user']);
+  Route::get('/dashboard/get-students', [DashboardController::class, 'get_students']);
   Route::get('/dashboard/view-user/{user}', [DashboardController::class, 'view_user']);
   Route::put('/dashboard/edit-user/{user}', [DashboardController::class, 'update_user']);
   # Presence

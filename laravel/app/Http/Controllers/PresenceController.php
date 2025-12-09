@@ -31,7 +31,7 @@ class PresenceController extends Controller
     }
     // validasi dan catat izin/sakit
     $data = $req->validate([
-      'status' => ['required', Rule::in(['sakit', 'izin'])],
+      'status' => ['required', Rule::in(['sakit', 'izin', 'darurat'])],
       'alasan' => 'required|min:24',
       'doc_xtra' => 'required|file|max:4096|mimetypes:image/png,image/jpeg,image/webp,application/pdf'
     ]);

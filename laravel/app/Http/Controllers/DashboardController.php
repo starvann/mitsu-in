@@ -44,6 +44,25 @@ class DashboardController extends Controller
     Gate::authorize('admin');
     return view('users.dashboard.users.lists', ['users' => User::all()]);
   }
+  public function get_students(Request $req) {
+    Gate::authorize('admin');
+    $users = [];
+    if($req->query('q')) {
+      $keyword = $req->query('q');
+      if(!is_string($keyword)) {
+        return response()->json([], 400);
+      }
+      if(strlen($keyword) < 3) {
+        return response()->json([], 400);
+      }
+      $users = User::select(['id', 'nama', 'email', 'stat', 'gmb_profil'])
+        ->where('nama', 'like', '%'.$keyword.'%')->orWhere('email', 'like', '%'.$keyword.'%')
+        ->get();
+    } else {
+      $users = User::select(['id', 'nama', 'email', 'stat', 'gmb_profil'])->get();
+    }
+    return response()->json($users);
+  }
   public function view_user(User $user) {
     Gate::authorize('admin');
     $data = ['user' => $user];

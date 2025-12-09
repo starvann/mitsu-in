@@ -35,13 +35,13 @@ class AuthController extends Controller
         $req->session()->regenerate();
         return redirect()->intended('dashboard');
       }
-      return back()->with('err', 'Login gagal.');
+      return back()->withErrors(['Login gagal.']);
     }
     public function register() {
       return view('users.register');
     }
     public function register2() {
-      if(!old('email') or !old('nama') or !Session::has('password') or !old('code')) return redirect('/register');
+      if(!old('email') or !old('nama') or !Session::has('password') or !old('kode')) return redirect('/register');
       return view('users.register2');
     }
     public function create_user(Request $req) {
@@ -51,7 +51,7 @@ class AuthController extends Controller
         'email' => 'email|unique:users,email',
         'password' => ['required', 'string', Password::min(8)->mixedCase()->numbers()->symbols()],
         'password_confirm' => 'required|same:password',
-        'kode' => 'required|max:4',
+        'kode' => 'required|string',
       ]);
       if(!in_array($data['kode'], ['admn', 'stdn', 'refl'])) return redirect('/register')->withErrors(['kode' => 'Kode tidak valid.']);
       if($data['kode'] === 'admn' or $data['kode'] === 'refl') {
@@ -73,13 +73,14 @@ class AuthController extends Controller
         return redirect('login');
       }
       Session::put('password', $req->input('password'));
+      unset($data['password_confirm']);
       return redirect('/register2')->withInput();
     }
     public function create_user2(Request $req) {
       $data = $req->validate([
         'email' => 'required|email|unique:users,email',
         'password' => ['required', 'string', Password::min(8)->mixedCase()->numbers()->symbols()],
-        'kode' => 'required|string|max:4',
+        'kode' => 'required|string',
         'kode_ref' => 'nullable|max:8|exists:users,kode_ref_saya',
         'nama' => 'required|string|min:3',
         'no_hp' => 'required|string|digits_between:9,16',
@@ -93,7 +94,7 @@ class AuthController extends Controller
         'agama' => 'required|string|max:32',
         'pernah_ke_jepang' => 'required|boolean',
         'punya_paspor' => 'required|boolean',
-        'tangan_utama' => ['required', Rule::in(['kanan', 'kiri'])],
+        'tangan_utama' => ['required', Rule::in(['kanan', 'kiri', 'keduanya'])],
         'alamat' => 'required|string|min:9|max:512',
         'pendidikan' => 'required|array',
         'pendidikan.*.tahun' => 'required|numeric|integer|digits:4',
