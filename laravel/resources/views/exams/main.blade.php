@@ -1,24 +1,24 @@
-<x-base title="Ujian {{ $exam->judul }}">
-  <div>
+<x-base title="Ujian {{ $exam->judul }}" main-class="page">
+  <div class="header">
     <h1>{{ $exam->judul }}</h1>
     <p>{{ $exam->deskripsi }}</p>
   </div>
-  <div>
-    <div id="soal" data-idx="0">
+  <div class="qbox">
+    <div id="soal" data-idx="0" style="display: flex; gap: 8px;">
       <span></span>
       <div>
         <p>...</p>
-        <div id="jwbn">
+        <div id="jwbn" class="choices">
           ...
         </div>
       </div>
     </div>
-    <div>
+    <div class="nav-buttons">
       <button type="button" id="prev" style="display: none;">&laquo;</button>
       <button type="button" id="next">&raquo;</button>
     </div>
   </div>
-  <div id="examNav">
+  <div id="examNav" class="qnav">
     @for($i = 0; $i < $questions_count; $i++)
     <button type="button" data-idx="{{ $i }}">{{ $i + 1 }}</button>
     @endfor
@@ -61,11 +61,11 @@
       } else {
         next.innerHTML = '&raquo;';
         next.onclick = nextQuestion;
-        if(currIdx === 0) {
-          prev.style.display = 'none';
-        } else {
-          prev.style.display = 'block';
-        }
+      }
+      if(currIdx === 0) {
+        prev.style.display = 'none';
+      } else {
+        prev.style.display = 'block';
       }
     }
     function saveAnswer() {
@@ -105,7 +105,8 @@
         let i = 0;
         data.jawaban.forEach(pilihan => {
           let choice = createElement('label', {
-            'innerHTML': `<input type="radio" name="jwbn-${currIdx}" id="jwbn-${i}">${pilihan}`
+            'innerHTML': `<input type="radio" name="jwbn-${currIdx}" id="jwbn-${i}">${pilihan}`,
+            className: 'checkbox'
           });
           if(data.chosenAnswer === i) {
             choice.children[0].checked = true;

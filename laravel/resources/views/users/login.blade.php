@@ -18,7 +18,7 @@
       Password
       <input type="password" name="password" @error('password') aria-invalid="true" @enderror required>
     </label>
-    <label for="remember_me" class="remember-me">
+    <label for="remember_me" class="checkbox">
       <input type="checkbox" name="remember_me" id="remember_me" @checked(old('remember_me'))>
       Remember Me
     </label>

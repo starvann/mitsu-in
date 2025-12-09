@@ -27,7 +27,7 @@
       </div>
     </section>
     @endif
-    <a href="{{ url('logout') }}">Logout</a>
+    <a href="{{ url('logout') }}" role="button" style="justify-self: center;">Logout</a>
 
     <!-- IZIN -->
     @if($user->stat === 'accepted')
@@ -62,9 +62,10 @@
         <button class="btn-primary" type="submit" style="margin-top: 14px">Submit</button>
       </form>
       @endif
-    <div>
+    <div style="margin: 32px auto; padding: 16px; background-color: #e9e9e9; border-radius: 8px;">
+      <h1 style="color: #7b0000; text-align: center; font-size: 20pt; margin-bottom: 16px;">Ujian</h1>
       @forelse($exams as $exam)
-      <div class="izin-footer">
+      <div class="student-exam-card">
         <span>{{ $exam->judul }}</span>
         @php
         $has_done = $exam->examResults()->where('user_id', Auth::id())->exists();

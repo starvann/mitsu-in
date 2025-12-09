@@ -1,4 +1,4 @@
-<x-base title="Hasil Ujian">
+<x-base title="Hasil Ujian" main-class="page">
     <a href="{{ url('dashboard/manage-exam') }}" role="button">Kembali</a>
     <h1>Hasil "{{ $exam->judul }}"</h1>
     @if($results->isNotEmpty())
