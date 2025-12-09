@@ -33,11 +33,11 @@
     @if($user->stat === 'accepted')
       @if(!$hasPresence)
         @if(!empty($errors->all()))
-        <ul class="err-messages">
+        <div class="err-messages">
           @foreach($errors->all() as $err_msg)
-          <li>{{ $err_msg }}</li>
+          <p>{{ $err_msg }}</p>
           @endforeach
-        </ul>
+        </div>
         @endif
       <form class="card" action="{{ url('presence') }}" method="post" enctype="multipart/form-data">
         <h2 class="section-title">Izin</h2>

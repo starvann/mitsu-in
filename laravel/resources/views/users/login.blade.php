@@ -2,11 +2,11 @@
   <h1 class="title-jp">こんにちは!</h1>
   <p class="subtitle">Siap memulai perjalanan kariermu? Yuk, gabung bareng kami!</p>
   @if(!empty($errors->all()))
-  <ul class="err-messages">
+  <div class="err-messages">
     @foreach($errors->all() as $err_msg)
-    <li>{{ $err_msg }}</li>
+    <p>{{ $err_msg }}</p>
     @endforeach
-  </ul>
+  </div>
   @endif
   <form action="{{ url('login') }}" method="post" id="loginForm" class="card auth-card">
     @csrf

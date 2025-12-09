@@ -100,11 +100,11 @@
   </x-slot:head>
   <div class="container">
     @if(!empty($errors->all()))
-    <ul class="err-messages">
+    <div class="err-messages">
       @foreach($errors->all() as $err_msg)
-      <li>{{ $err_msg }}</li>
+      <p>{{ $err_msg }}</p>
       @endforeach
-    </ul>
+    </div>
     @endif
     <form action="{{ url("dashboard/edit-exam/$exam->id") }}" method="post">
       <div class="btn-group space-between">
