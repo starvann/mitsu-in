@@ -24,8 +24,8 @@ class DashboardController extends Controller
       return view('users.dashboard.admn');
     }
     elseif($role == 'refl') {
-      $refUsers = User::where('kode_ref', Auth::user()->kode_ref_saya)->get();
-      return view('users.dashboard.refl', ['refUsers' => $refUsers]);
+      $refUsers = User::select(['nama', 'gmb_profil', 'stat'])->where('kode_ref', Auth::user()->kode_ref_saya)->get();
+      return view('users.dashboard.refl', ['refUsers' => $refUsers, 'user' => Auth::user()]);
     }
     else {
       $token = PresenceController::get_presence_token(Auth::id());

@@ -24,6 +24,23 @@ class DatabaseSeeder extends Seeder
             'role' => 'admn',
             'stat' => 'accepted'
         ]);
+        // referrer
+        User::create([
+            'email' => 'galihakmal90@gmail.com',
+            'nama' => 'Galih Akmal',
+            'password' => Hash::make('12345678'),
+            'role' => 'refl',
+            'stat' => 'accepted',
+            'kode_ref_saya' => 'asdfqw',
+        ]);
+        User::create([
+            'email' => 'budicahyo@gmail.com',
+            'nama' => 'Budi Cahyo',
+            'password' => Hash::make('12345678'),
+            'role' => 'refl',
+            'stat' => 'accepted',
+            'kode_ref_saya' => 'anomali',
+        ]);
         // user account
         User::create([
             'email' => 'adinugroho12@gmail.com',
@@ -35,15 +52,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'noxalfheim@gmail.com',
             'nama' => 'Nox Alfheim',
             'password' => Hash::make('12345678'),
-        ]);
-        // referral
-        User::create([
-            'email' => 'galihakmal90@gmail.com',
-            'nama' => 'Galih Akmal',
-            'password' => Hash::make('12345678'),
-            'role' => 'refl',
-            'stat' => 'accepted',
-            'kode_ref_saya' => 'asdfqw',
         ]);
         User::create([
             'email' => 'johnbergstein@gmail.com',

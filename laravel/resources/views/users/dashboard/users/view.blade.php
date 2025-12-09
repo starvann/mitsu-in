@@ -1,87 +1,225 @@
-<x-base title="Profil Siswa">
-  <div>
-    <a href="{{ url('/dashboard/students') }}">Kembali</a>
-    <div>
-      <img src="{{ url($user->gmb_profil) }}" alt="Gambar Profil">
+<x-base title="Profil Siswa" main-class="page">
+  <a href="{{ url('/dashboard/students') }}" role="button">Kembali</a>
+  <div class="top-section">
+    <div class="cover" style="background-image: url('{{ url('assets/img/cover-japan.jpg') }}')">
+      <div class="avatar-wrapper">
+        <img id="studentAvatar" src="{{ url($user->gmb_profil) }}" />
+      </div>
     </div>
-    @if($user->role == 'stdn')
-    <img src="{{ url('presence/percentage/'.$user->id) }}" alt="Presentase Presensi">
+    <div class="header-block">
+      <div id="studentName" class="student-name">{{ $user->nama }}</div>
+    </div>
+    @if($user->role === 'stdn')
+    <div class="status-row">
+      <div class="progress-box">
+        <img src="{{ url('presence/percentage/'.$user->id) }}" type="image/svg+xml" alt="Presentase Presensi">
+      </div>
+    </div>
     @endif
+  </div>
+  <div>
     <form action="{{ url('/dashboard/edit-user/'.$user->id) }}" method="post">
       @csrf
       @method('put')
-      <p>Status</p>
-      <select name="stat" onchange="this.parentElement.submit()">
-        <option value="pending" @selected($user->stat == 'pending')>Proses Daftar Ulang</option>
-        <option value="accepted" @selected($user->stat != 'pending')>Terdaftar</option>
-      </select>
-      <p>
-        Kode Referal : @if($user->kode_ref) <a href="{{ url("dashboard/view-user/".$referrer_id) }}">{{ $user->kode_ref }}</a> @else {{ $user->kode_ref_saya ?? '-' }} @endif
-      </p>
-      <p>Nama : {{ $user->nama }}</p>
-      <p>No. HP : {{ $user->no_hp }}</p>
-      <p>Umur : {{ $user->umur }}</p>
-      <p>Role : {{ $user->role == 'admn' ? 'admin' : ($user->role == 'refl' ? 'referral' : 'siswa') }}</p>
-      <p>Gender : {{ $user->gender }}</p>
-      <p>Tinggi Badan : {{ $user->tinggi_badan }} cm</p>
-      <p>Berat Badan : {{ $user->berat_badan }} kg</p>
-      <p>Pernah Menikah : {{ $user->pernah_menikah ? 'Ya' : 'Tidak' }}</p>
-      <p>Golongan Darah : {{ $user->gol_darah }}</p>
-      <p>Agama : {{ $user->agama }}</p>
-      <p>Pernah ke Jepang : {{ $user->pernah_ke_jepang ? 'Ya' : 'Tidak' }}</p>
-      <p>Punya Paspor : {{ $user->punya_paspor ? 'Ya' : 'Tidak' }}</p>
-      <p>Tangan Ahli : {{ $user->tangan_utama }}</p>
-      <p>Alamat : {{ $user->alamat }}</p>
-      <span>Pendidikan</span>
-      @foreach($user->pendidikan as $pend)
-      <p>
-        Tahun : {{ $pend['tahun'] }} <br>
-        Nama Sekolah : {{ $pend['nama_sekolah'] }} <br>
-        Jurusan : {{ $pend['jurusan'] }}
-      </p>
-      @endforeach
-      <span>Pengalaman</span>
-      @forelse($user->pengalaman as $exp)
-      <p>{{ $exp }}</p>
-      @empty
-      <p>-- Tidak ada --</p>
-      @endforelse
-      <span>Struktur Keluarga</span>
-      @foreach($user->struktur_keluarga as $fam)
-      <p>
-        Hubungan/Relasi : {{ $fam['relasi'] }} <br>
-        Nama : {{ $fam['nama'] }} <br>
-        Umur : {{ $fam['umur'] }} <br>
-        Pekerjaan : {{ $fam['pekerjaan'] }} <br>
-        Gaji : {{ $fam['gaji'] }}
-      </p>
-      @endforeach
-      <p>Tujuan ke Jepang : {{ $user->tujuan_ke_jepang }}</p>
-      <p>Tujuan setelah Kembali dari Jepang : {{ $user->tujuan_stlh_kembali }}</p>
-      <p>Kelebihan : {{ $user->kelebihan }}</p>
-      <p>Kekurangan : {{ $user->kekurangan }}</p>
-      <p>Hobi : {{ $user->hobi }}</p>
-      <p>Punya Sertifikat JLPT : {{ $user->punya_sertif_jlpt ? 'Ya' : 'Tidak' }}</p>
-      <p>Punya SIM A : {{ $user->punya_sim_a ? 'Ya' : 'Tidak' }}</p>
-      <p>Sertifikat Lain : {{ $user->sertif_lain }}</p>
-      <span>Relasi di Jepang</span>
+      <div class="user-details">
+        <span>Status</span>
+        <select name="stat" onchange="this.parentElement.submit()">
+          <option value="pending" @selected($user->stat == 'pending')>Proses Daftar Ulang</option>
+          <option value="accepted" @selected($user->stat != 'pending')>Terdaftar</option>
+        </select>
+      </div>
+      <div class="user-details">
+        <span>
+          Role
+        </span>
+        <p>
+          {{ $user->role == 'admn' ? 'Admin' : ($user->role == 'refl' ? 'Referrer' : 'Siswa') }}
+        </p>
+      </div>
+      @if($user->role === 'stdn')
+      <div class="user-details">
+        <span>
+          Kode Referral
+        </span>
+        <p>
+          @if($user->kode_ref) <a href="{{ url("dashboard/view-user/".$referrer_id) }}">{{ $user->kode_ref }}</a> @else {{ $user->kode_ref_saya ?? '-' }} @endif
+        </p>
+      </div>
+      <div class="user-details">
+        <span>No. Handphone</span>
+        <p>{{ $user->no_hp }}</p>
+      </div>
+      <div class="user-details">
+        <span>Umur</span>
+        <p>{{ $user->umur }} Tahun</p>
+      </div>
+      <div class="user-details">
+        <span>Jenis Kelamin</span>
+        <p>{{ $user->gender }}</p>
+      </div>
+      <div class="user-details">
+        <span>Tinggi Badan</span>
+        <p>{{ $user->tinggi_badan }} cm</p>
+      </div>
+      <div class="user-details">
+        <span>Berat Badan</span>
+        <p>{{ $user->berat_badan }} kg</p>
+      </div>
+      <div class="user-details">
+        <span>Pernah Menikah</span>
+        <p>{{ $user->pernah_menikah ? 'Ya' : 'Tidak' }}</p>
+      </div>
+      <div class="user-details">
+        <span>Golongan Darah</span>
+        <p>{{ $user->gol_darah }}</p>
+      </div>
+      <div class="user-details">
+        <span>Agama</span>
+        <p>{{ $user->agama }}</p>
+      </div>
+      <div class="user-details">
+        <span>Pernah ke Jepang</span>
+        <p>{{ $user->pernah_ke_jepang ? 'Ya' : 'Tidak' }}</p>
+      </div>
+      <div class="user-details">
+        <span>Punya Paspor</span>
+        <p>{{ $user->punya_paspor ? 'Ya' : 'Tidak' }}</p>
+      </div>
+      <div class="user-details">
+        <span>Tangan Ahli</span>
+        <p>{{ $user->tangan_utama }}</p>
+      </div>
+      <div class="user-details">
+        <span>Alamat Lengkap</span>
+        <p>{{ $user->alamat }}</p>
+      </div>
+      <div class="section-divider"></div>
+      <span class="details-title">Pendidikan</span>
+      <div class="details-group">
+        @foreach($user->pendidikan as $pend)
+        <div>
+          <div class="user-details">
+            <span>Tahun Lulus</span>
+            <p>{{ $pend['tahun'] }}</p>
+          </div>
+          <div class="user-details">
+            <span>Nama Sekolah</span>
+            <p>{{ $pend['nama_sekolah'] }}</p>
+          </div>
+          <div class="user-details">
+            <span>Jurusan</span>
+            <p>{{ $pend['jurusan'] }}</p>
+          </div>
+        </div>
+        @endforeach
+      </div>
+      <span class="details-title">Pengalaman</span>
+      <div class="user-details">
+        @forelse($user->pengalaman as $exp)
+        <p>{{ $exp }}</p>
+        @empty
+        <p class="empty">-- Tidak ada --</p>
+        @endforelse
+      </div>
+      <span class="details-title">Struktur Keluarga</span>
+      <div class="details-group">
+        @foreach($user->struktur_keluarga as $fam)
+        <div>
+          <div class="user-details">
+            <span>Hubungan/Relasi</span>
+            <p>{{ $fam['relasi'] }}</p>
+          </div>
+          <div class="user-details">
+            <span>Nama</span>
+            <p>{{ $fam['nama'] }}</p>
+          </div>
+          <div class="user-details">
+            <span>Umur</span>
+            <p>{{ $fam['umur'] }} Tahun</p>
+          </div>
+          <div class="user-details">
+            <span>Pekerjaan</span>
+            <p>{{ $fam['pekerjaan'] }}</p>
+          </div>
+          <div class="user-details">
+            <span>Gaji (perkiraan per bulan)</span>
+            <p>{{ $fam['gaji'] }}</p>
+          </div>
+        </div>
+        @endforeach
+      </div>
+      <div class="user-details">
+        <span>Tujuan ke Jepang</span>
+        <p>{{ $user->tujuan_ke_jepang }}</p>
+      </div>
+      <div class="user-details">
+        <span>Tujuan setelah kembali dari Jepang</span>
+        <p>{{ $user->tujuan_stlh_kembali }}</p>
+      </div>
+      <div class="user-details">
+        <span>Kelebihan</span>
+        <p>{{ $user->kelebihan }}</p>
+      </div>
+      <div class="user-details">
+        <span>Kekurangan</span>
+        <p>{{ $user->kekurangan }}</p>
+      </div>
+      <div class="user-details">
+        <span>Hobi</span>
+        <p>{{ $user->hobi }}</p>
+      </div>
+      <div class="user-details">
+        <span>Punya Sertifikat JLPT</span>
+        <p>{{ $user->punya_sertif_jlpt ? 'Ya' : 'Tidak' }}</p>
+      </div>
+      <div class="user-details">
+        <span>Punya SIM A</span>
+        <p>{{ $user->punya_sim_a ? 'Ya' : 'Tidak' }}</p>
+      </div>
+      <div class="user-details">
+        <span>Sertifikat Lain</span>
+        <p @if(!$user->sertif_lain) class="empty" @endif>{{ $user->sertif_lain ?? '-- Tidak Ada --' }}</p>
+      </div>
+      <span class="details-title">Relasi di Jepang</span>
       @if($user->relasi_di_jepang != null)
-      <p>
-        Nama : {{ $user->relasi_di_jepang['nama'] }} <br>
-        Hubungan/Relasi : {{ $user->relasi_di_jepang['relasi'] }} <br>
-        Pekerjaan : {{ $user->relasi_di_jepang['pekerjaan'] }} <br>
-        Umur : {{ $user->relasi_di_jepang['umur'] }} <br>
-        Alamat : {{ $user->relasi_di_jepang['alamat'] }} <br>
-      </p>
+      <div class="details-group">
+        <div class="user-details">
+          <span>Nama</span>
+          <p>{{ $user->relasi_di_jepang['nama'] }}</p>
+        </div>
+        <div class="user-details">
+          <span>Hubungan/Relasi</span>
+          <p>{{ $user->relasi_di_jepang['relasi'] }}</p>
+        </div>
+        <div class="user-details">
+          <span>Pekerjaan</span>
+          <p>{{ $user->relasi_di_jepang['pekerjaan'] }}</p>
+        </div>
+        <div class="user-details">
+          <span>Umur</span>
+          <p>{{ $user->relasi_di_jepang['umur'] }} Tahun</p>
+        </div>
+        <div class="user-details">
+          <span>Alamat</span>
+          <p>{{ $user->relasi_di_jepang['alamat'] }}</p>
+        </div>
+      </div>
       @else
-      <p>-- Tidak Ada --</p>
+      <p class="empty">-- Tidak Punya --</p>
       @endif
       @if($user->catatan_xtra != null)
-      <p>Catatan Extra : {{ $user->catatan_xtra }}</p>
+      <div class="user-details">
+        <span>Catatan Extra</span>
+        <p>{{ $user->catatan_xtra }}</p>
+      </div>
+      @endif
       @endif
     </div>
     @isset($ref_users_count)
-      <p>Jumlah Pengguna Kode Referral : {{ $ref_users_count }}</p>
+      <div class="user-details">
+        <span>Jumlah Pengguna Kode Ref.</span>
+        <p>{{ $ref_users_count }}</p>
+      </div>
     @endisset
   </div>
 </x-base>

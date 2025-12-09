@@ -13,7 +13,7 @@
   @if(isset($noMain))
     {!! $slot !!}
   @else
-  <main class="{{ $mainClass ?? 'container' }}">
+  <main class="{{ $mainClass ?? 'container' }}" {{ $attributes->except(['class']) }}>
     {!! $slot !!}
   </main>
   @endif

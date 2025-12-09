@@ -80,7 +80,10 @@
     </div>
 
     <div id="list"></div>
-    <a href="{{ url('dashboard') }}" role="button">Kembali</a>
+    <div class="nav">
+    
+    </div>
+    <a href="{{ url('dashboard') }}" role="button" style="align-self: center;">Kembali</a>
   </div>
 
   <script>
