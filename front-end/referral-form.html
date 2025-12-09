@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Registrasi Referraler</title>
+
+    <style>
+      body {
+        margin: 0;
+        background: #f3ecd2;
+        font-family: Arial;
+      }
+
+      .card {
+        width: 90%;
+        max-width: 400px;
+        background: white;
+        padding: 25px;
+        margin: 40px auto;
+        border-radius: 16px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #700000;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      input[type="text"],
+      input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        margin-top: 6px;
+      }
+
+      .preview {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin: 10px auto;
+        display: block;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 12px;
+        background: #700000;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        margin-top: 15px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="card">
+      <h2>Daftar Referraler</h2>
+
+      <label
+        >Nama
+        <input type="text" id="nama" />
+      </label>
+
+      <label
+        >Foto Profil
+        <input type="file" id="foto" accept="image/*" />
+      </label>
+
+      <img id="preview" class="preview" src="assets/img/avatar-default.png" />
+
+      <button class="btn" onclick="register()">Daftar</button>
+    </div>
+
+    <script>
+      const fotoInput = document.getElementById("foto");
+      const preview = document.getElementById("preview");
+
+      fotoInput.onchange = () => {
+        const file = fotoInput.files[0];
+        const reader = new FileReader();
+        reader.onload = (e) => (preview.src = e.target.result);
+        reader.readAsDataURL(file);
+      };
+
+      function generateReferralCode(name) {
+        const prefix = name.slice(0, 3).toUpperCase();
+        const number = Math.floor(100 + Math.random() * 900);
+        return prefix + number;
+      }
+
+      function register() {
+        const nama = document.getElementById("nama").value;
+        const foto = preview.src;
+
+        const referralCode = generateReferralCode(nama);
+
+        const dataReferraler = {
+          nama: nama,
+          foto: foto,
+          referralCode: referralCode,
+          students: [],
+        };
+
+        localStorage.setItem("referraler", JSON.stringify(dataReferraler));
+
+        location.href = "referraler-dashboard.html";
+      }
+    </script>
+  </body>
+</html>
