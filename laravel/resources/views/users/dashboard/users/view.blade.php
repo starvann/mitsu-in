@@ -10,8 +10,7 @@
     </div>
     @if($user->role === 'stdn' and $user->stat === 'accepted')
     <div class="status-row">
-      <div class="progress-box">
-        <img src="{{ url('presence/percentage/'.$user->id) }}" type="image/svg+xml" alt="Presentase Presensi">
+      <div class="progress-box" id="presenceBox">
       </div>
     </div>
     @endif
@@ -232,5 +231,23 @@
       </div>
     @endisset
   </div>
-  
+  <script>
+    function query(s) {
+      return document.querySelector(s);
+    }
+    let presenceBox = query("#presenceBox");
+    async function renderPrecenceData() {
+      let res = await fetch(`{{ url("/presence/percentage/$user->id") }}`, {credentials: 'include'});
+      let data = await res.json();
+      presenceBox.innerHTML = `
+      ${data.svg}
+      <p>${data.hadir} Hari hadir</p>
+      <p>${data.alpha} Hari alpha</p>
+      <p>${data.darurat} Hari darurat</p>
+      <p>${data.izin} Hari izin</p>
+      <p>${data.sakit} Hari sakit</p>
+      <p>${data.tanggal}</p>`;
+    }
+    renderPrecenceData();
+  </script>
 </x-base>

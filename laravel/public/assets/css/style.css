@@ -362,6 +362,7 @@ textarea:focus {
   padding: 10px;
   flex: 0 0 120px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -374,9 +375,13 @@ textarea:focus {
 
 /* PROGRESS CIRCLE */
 .progress-box svg {
-  width: 90px;
-  height: 90px;
-  transform: rotate(-90deg);
+  width: 100px;
+  height: 100px;
+  margin-bottom: 12px;
+}
+.progress-box p {
+  font-size: 12px;
+  text-align: center;
 }
 
 .progress-text {

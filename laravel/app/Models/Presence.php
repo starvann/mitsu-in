@@ -12,7 +12,7 @@ class Presence extends Model
     public function user() {
       return $this->belongsTo(User::class);
     }
-    public function scopePeriod($query, $year, $month) {
-      return $query->whereYear('created_at', $year)->whereMonth('created_at', $month);
+    public function scopePeriod($query, $date, $date1) {
+      return $query->whereYear('created_at', $date->year)->whereMonth('created_at', $date1->month);
     }
 }

@@ -44,7 +44,7 @@ Route::middleware('auth')->group(function() {
   Route::put('/dashboard/edit-user/{user}', [DashboardController::class, 'update_user']);
   # Presence
   Route::post('/presence', [PresenceController::class, 'store_presence']);
-  Route::get('/presence/percentage/{user}', [PresenceController::class, 'gen_presence_percentage']);
+  Route::get('/presence/percentage/{user}', [PresenceController::class, 'get_presence_data']);
   # Exam (for students)
   Route::get('/exam/{exam}', [ExamController::class, 'index']);
   Route::get('/exam-calc-result', [ExamController::class, 'calc_result']);
