@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Query\Expression;
 
 return new class extends Migration
 {
@@ -27,7 +28,7 @@ return new class extends Migration
             $table->enum('stat', ['pending', 'accepted'])->default('pending');
             $table->unsignedSmallInteger('tinggi_badan')->default(180);
             $table->unsignedSmallInteger('berat_badan')->default(60);
-            $table->boolean('status_pernikahan')->default('Belum menikah');
+            $table->string('status_pernikahan', 32)->default('Belum menikah');
             $table->string('gol_darah', 2)->default('A');
             $table->string('agama', 32)->default('none');
             $table->boolean('pernah_ke_jepang')->default(false);
@@ -39,8 +40,8 @@ return new class extends Migration
             'nam_sekolah': 'Idk Bruv', 
             'jurusan': 'Software Engineering'
             }, ...]*/
-            $table->json('pendidikan')->default('[{"tahun":2000,"nama_sekolah":"Otodidak","jurusan":"kehidupan"}]');
-            $table->json('pengalaman')->default('[]'); # ['exp1', 'exp2', 'etc...']
+            $table->json('pendidikan')->default(new Expression('(JSON_ARRAY(JSON_OBJECT("tahun",2000, "nama_sekolah","Otodidak", "jurusan","kehidupan")))'));
+            $table->json('pengalaman')->default(new Expression('(JSON_ARRAY())')); # ['exp1', 'exp2', 'etc...']
             /* family structure: [{
             'relasi': 'Father', 
             'nama': 'Lloyd', 
@@ -48,13 +49,13 @@ return new class extends Migration
             'pekerjaan': 'Artist',
             'gaji': 'Rp10.000.000 per month'
             }, ...]*/
-            $table->json('struktur_keluarga')->default('[{"relasi":"Teman","nama":"Sisi Lain diriku","umur":20,"pekerjaan":"ga ada","gaji":"ga ada"}]');
+            $table->json('struktur_keluarga')->default(new Expression('(JSON_ARRAY(JSON_OBJECT("relasi","Teman", "nama","Sisi Lain diriku", "umur",20, "pekerjaan","ga ada", "gaji","ga ada")))'));
             $table->string('tujuan_ke_jepang', 256)->default("Menjadi manusia yang lebih baik");
             $table->string('tujuan_stlh_kembali', 256)->default("Menjadi manusia yang lebih baik");
             $table->string('kelebihan', 256)->default("Dapat menahan intrusive thought");
             $table->string('kekurangan', 256)->default("Memiliki intrusive thought yang berbahaya");
             $table->string('hobi', 256)->default("Menikmati Keindahan Alam");
-            $table->boolean('sertif_jlpt')->nullable();
+            $table->string('sertif_jlpt', 32)->nullable();
             $table->boolean('punya_sim_a')->default(false);
             $table->string('sertif_lain', 256)->nullable();
             /* japan relation structure: {
