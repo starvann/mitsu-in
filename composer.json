@@ -33,9 +33,18 @@
         }
     },
     "scripts": {
-        "setup": [
+        "setup-dev": [
             "composer install",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "@php -r \"touch('database/database.sqlite');\"",
+            "@php artisan key:generate",
+            "@php artisan migrate:fresh --seed"
+        ],
+        
+        "setup": [
+            "composer install --no-dev -o",
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "@php -r \"touch('database/database.sqlite');\"",
             "@php artisan key:generate",
             "@php artisan migrate:fresh --seed"
         ],
