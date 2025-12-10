@@ -3,9 +3,9 @@
 > woy jangan lupa check `.env`, edit `LOCALE = id` dan `FILESYSTEM_DISK = public`!
 
 # How to run
-1. Install PHP (enable extension yang diperlukan), composer
+1. Install PHP (enable extension yang diperlukan), dan install composer
 2. `cd laravel`
-3. `composer setup`
+3. `composer setup-dev` atau `composer setup`
 4. `php artisan serve`
 
 
