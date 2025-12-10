@@ -1,7 +1,7 @@
 <x-base title="Kelola User" no-main>
   <x-slot:head>
     <style>
-    body {
+      body {
         margin: 0;
         background: #f3ecd2;
         font-family: Arial;
@@ -72,6 +72,11 @@
       }
     </style>
   </x-slot:head>
+  @if(session('success'))
+  <div class="success-msg">
+    {{ session('success') }}
+  </div>
+  @endif
   <div class="card">
     <h1>Data Siswa</h1>
 
@@ -80,9 +85,6 @@
     </div>
 
     <div id="list"></div>
-    <div class="nav">
-    
-    </div>
     <a href="{{ url('dashboard') }}" role="button" style="align-self: center;">Kembali</a>
   </div>
 
@@ -90,6 +92,8 @@
     const BASEURL = "{{ url('/') }}";
     let dataSiswa = [];
     let searchInput = document.getElementById("search");
+    let timeoutId;
+
     async function get_student(keyword = "") {
       let url = `{{ url('dashboard/get-students') }}`;
       if(keyword !== '') {
@@ -106,13 +110,12 @@
     }
 
     async function renderList(keyword = "") {
-      if(keyword.length < 3 && keyword.length > 0) {
-        return;
-      }
+      if(keyword.length < 3 && keyword.length > 0) {return;}
       const dataSiswa = await get_student(keyword);
       const list = document.getElementById("list");
-      if(!dataSiswa) return;
+      if(!dataSiswa) {return;}
       list.innerHTML = "";
+      if(dataSiswa.length < 1) {list.innerHTML = `<p class="empty" style="text-align: center;">-- Kosong --</p>`;}
 
       dataSiswa.forEach((s) => {
         const el = document.createElement("div");
@@ -136,7 +139,10 @@
 
     // event pencarian
     searchInput.addEventListener("input", function () {
-      renderList(searchInput.value);
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        renderList(searchInput.value);
+      }, 1000);
     });
 
     renderList();

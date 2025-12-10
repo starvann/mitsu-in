@@ -179,7 +179,8 @@ textarea:focus {
 }
 
 .onboard-illustration img {
-  max-width: 450px;
+  width: 100%;
+  /* max-width: 450px; */
   height: auto;
 }
 
@@ -559,6 +560,10 @@ a[role="button"] {
   font-weight: 600;
   font-size: 13px;
   width: fit-content;
+  transition: 0.3s;
+}
+a[role="button"]:hover {
+  opacity: 0.95;
 }
 
 .user-details {
@@ -713,4 +718,35 @@ details>div {
   flex-direction: column;
   gap: 12px;
   padding: 16px 8px;
+}
+.btn-group {
+  display: flex;
+  gap: 10px;
+}
+.btn-group button, .btn-group a[role="button"] {
+  flex: 1;
+}
+.success-msg {
+  background-color: #d7ffd6;
+  border: 1px solid #00a30e;
+  color: #00a30e;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  align-self: center;
+  width: min(100%, 90vw);
+  margin: 16px auto;
+  animation: fadeout 0.5s;
+  animation-delay: 1.0s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+@keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    display: none;
+  }
 }

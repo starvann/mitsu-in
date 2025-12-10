@@ -18,28 +18,18 @@
         text-align: center;
       }
 
+      .card a {
+        width: 100%;
+      }
+
       h1 {
         margin: 0 0 25px 0;
         font-size: 22px;
         color: #700000;
       }
 
-      a[role="button"] {
-        width: 100%;
-        padding: 12px;
-        margin-bottom: 12px;
-        background: #700000;
-        color: white;
-        border: none;
-        border-radius: 10px;
-        font-size: 15px;
-        text-decoration: none;
-        transition: 0.3s;
-      }
 
-      a[role="button"]:hover {
-        opacity: 0.9;
-      }
+      
     </style>
     </x-slot:head>
     <div class="card">

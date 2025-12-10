@@ -43,6 +43,11 @@
     </style>
   </x-slot:head>
   <a href="{{ url('dashboard') }}" role="button">Kembali</a>
+  @if(session('success'))
+  <div class="success-msg">
+    {{ session('success') }}
+  </div>
+  @endif
   <h1>Kelola Ujian</h1>
   <a href="{{ url('dashboard/create-exam') }}" role="button">Buat</a>
   <div>

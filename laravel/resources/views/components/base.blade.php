@@ -17,5 +17,11 @@
     {!! $slot !!}
   </main>
   @endif
+  <script>
+    setTimeout(() => {
+      let successMsg = document.querySelector('.success-msg');
+      if(successMsg) {successMsg.remove();}
+    }, 1550);
+  </script>
 </body>
 </html>

@@ -11,16 +11,19 @@ use App\Models\ExamResult;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class DashboardController extends Controller
 {
-  public function index() {
+  public function index(Request $req) {
     $role = Auth::user()->role;
     if($role == 'admn') {
+      if(Auth::user()->stat == 'pending') {
+        Auth::logout();
+        $req->session()->invalidate();
+        $req->session()->regenerateToken();
+        return redirect('/login')->withErrors(['Admin tidak terverifikasi!']);
+      }
       return view('users.dashboard.admn');
     }
     elseif($role == 'refl') {
@@ -42,7 +45,7 @@ class DashboardController extends Controller
   // users
   public function lists_user() {
     Gate::authorize('admin');
-    return view('users.dashboard.users.lists', ['users' => User::all()]);
+    return view('users.dashboard.users.lists');
   }
   public function get_students(Request $req) {
     Gate::authorize('admin');
@@ -57,9 +60,9 @@ class DashboardController extends Controller
       }
       $users = User::select(['id', 'nama', 'email', 'stat', 'gmb_profil'])
         ->where('nama', 'like', '%'.$keyword.'%')->orWhere('email', 'like', '%'.$keyword.'%')
-        ->get();
+        ->limit(10)->get();
     } else {
-      $users = User::select(['id', 'nama', 'email', 'stat', 'gmb_profil'])->get();
+      $users = User::select(['id', 'nama', 'email', 'stat', 'gmb_profil'])->limit(10)->get()->except(Auth::id());
     }
     return response()->json($users);
   }
@@ -72,6 +75,11 @@ class DashboardController extends Controller
       $data['ref_users_count'] = User::where('kode_ref', $user->kode_ref_saya)->count();
     }
     return view('users.dashboard.users.view', $data);
+  }
+  public function delete_user(User $user) {
+    Gate::authorize('admin');
+    $user->delete();
+    return redirect('/dashboard/students')->with('success', 'User telah dihapus!');
   }
   public function update_user(Request $req, User $user) {
     Gate::authorize('admin');

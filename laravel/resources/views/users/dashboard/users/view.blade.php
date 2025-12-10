@@ -1,5 +1,4 @@
-<x-base title="Profil Siswa" main-class="page">
-  <a href="{{ url('/dashboard/students') }}" role="button">Kembali</a>
+<x-base title="Profil Siswa" main-class="page" style="display: flex; flex-direction: column; gap: 8px;">
   <div class="top-section">
     <div class="cover" style="background-image: url('{{ url('assets/img/cover-japan.jpg') }}')">
       <div class="avatar-wrapper">
@@ -9,7 +8,7 @@
     <div class="header-block">
       <div id="studentName" class="student-name">{{ $user->nama }}</div>
     </div>
-    @if($user->role === 'stdn')
+    @if($user->role === 'stdn' and $user->stat === 'accepted')
     <div class="status-row">
       <div class="progress-box">
         <img src="{{ url('presence/percentage/'.$user->id) }}" type="image/svg+xml" alt="Presentase Presensi">
@@ -17,13 +16,22 @@
     </div>
     @endif
   </div>
+  @if(session('success'))
+  <div class="success-msg">
+    {{ session('success') }}
+  </div>
+  @endif
+    <div class="btn-group" style="width: 300px; align-self: center;">
+      <a href="{{ url('/dashboard/students') }}" role="button">Kembali</a>
+      <a href="{{ url("/dashboard/del-user/$user->id") }}" role="button" onclick="return confirm('Yakin?')">Hapus</a>
+    </div>
   <div>
     <form action="{{ url('/dashboard/edit-user/'.$user->id) }}" method="post">
       @csrf
       @method('put')
       <div class="user-details">
         <span>Status</span>
-        <select name="stat" onchange="this.parentElement.submit()">
+        <select name="stat" onchange="this.parentElement.parentElement.submit()">
           <option value="pending" @selected($user->stat == 'pending')>Proses Daftar Ulang</option>
           <option value="accepted" @selected($user->stat != 'pending')>Terdaftar</option>
         </select>
@@ -36,15 +44,17 @@
           {{ $user->role == 'admn' ? 'Admin' : ($user->role == 'refl' ? 'Referrer' : 'Siswa') }}
         </p>
       </div>
-      @if($user->role === 'stdn')
+      @if($user->role !== 'admn')
       <div class="user-details">
         <span>
           Kode Referral
         </span>
-        <p>
+        <p style="font-family: monospace; font-size: 16pt">
           @if($user->kode_ref) <a href="{{ url("dashboard/view-user/".$referrer_id) }}">{{ $user->kode_ref }}</a> @else {{ $user->kode_ref_saya ?? '-' }} @endif
         </p>
       </div>
+      @endif
+      @if($user->role === 'stdn')
       <div class="user-details">
         <span>No. Handphone</span>
         <p>{{ $user->no_hp }}</p>
@@ -66,8 +76,8 @@
         <p>{{ $user->berat_badan }} kg</p>
       </div>
       <div class="user-details">
-        <span>Pernah Menikah</span>
-        <p>{{ $user->pernah_menikah ? 'Ya' : 'Tidak' }}</p>
+        <span>Status Pernikahan</span>
+        <p>{{ $user->status_pernikahan }}</p>
       </div>
       <div class="user-details">
         <span>Golongan Darah</span>
@@ -170,7 +180,7 @@
       </div>
       <div class="user-details">
         <span>Punya Sertifikat JLPT</span>
-        <p>{{ $user->punya_sertif_jlpt ? 'Ya' : 'Tidak' }}</p>
+        <p>{{ $user->sertif_jlpt ?? "Tidak ada" }}</p>
       </div>
       <div class="user-details">
         <span>Punya SIM A</span>
@@ -222,4 +232,5 @@
       </div>
     @endisset
   </div>
+  
 </x-base>

@@ -29,21 +29,35 @@
     <label for="gmb_profil" id="f-profil">
       Foto Profil
       <input type="file" name="gmb_profil" id="gmb_profil" @error('gmb_profil') aria-invalid="true" @enderror accept="image/png,image/jpeg,image/webp">
+      <img src="" id="prevImg" style="border-radius: 50%; width: 80px; height: 80px; display: none; object-fit: cover;">
     </label>
     <label for="kode">
       Kode
       <input type="text" name="kode" id="kode" placeholder="Masukkan kode yang diberikan petugas..." @error('kode') aria-invalid="true" @enderror value="{{ old('kode') ?? 'stdn' }}" required>
     </label>
     
+    <button type="submit" class="btn-primary">Register</button>
     <p class="helper">
       Sudah punya akun? <a href="{{ url('login') }}">Login</a>
     </p>
-    <button type="submit" class="btn-primary">Register</button>
   </form>
   <script>
-    let fProfil = document.getElementById("f-profil");
-    let kode = document.getElementById("kode");
+    function query(s) {
+      return document.querySelector(s);
+    }
+    let fProfil = query("#f-profil");
+    let kode = query("#kode");
+    let prevImg = query("#prevImg");
+    let inputImg = query("#gmb_profil");
     kode.oninput = checkFProfil;
+    inputImg.onchange = () => {
+      const reader = new FileReader();
+      reader.readAsDataURL(inputImg.files[0]);
+      reader.onload = () => {
+        prevImg.src = reader.result;
+        prevImg.style.display = "block";
+      };
+    };
     function checkFProfil() {
       if(kode.value === 'stdn') {
         fProfil.style.display = 'none';
@@ -52,5 +66,6 @@
       }
     }
     checkFProfil();
+
   </script>
 </x-base>

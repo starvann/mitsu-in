@@ -51,13 +51,6 @@
         flex: 1;
       }
 
-      .btn-group {
-        display: flex;
-        gap: 10px;
-      }
-      .btn-group button {
-        flex: 1;
-      }
 
       button {
         width: 100%;

@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
-    public function logout(Request $req) {
+    public static function logout(Request $req) {
       Auth::logout();
       $req->session()->invalidate();
       $req->session()->regenerateToken();
@@ -70,7 +70,7 @@ class AuthController extends Controller
         else unset($data['gmb_profil']);
         
         User::create($data);
-        return redirect('login');
+        return redirect('login')->with('success', 'Pendaftaran berhasil!');
       }
       Session::put('password', $req->input('password'));
       unset($data['password_confirm']);
@@ -89,7 +89,7 @@ class AuthController extends Controller
         'umur' => 'required|numeric|integer|min:1',
         'tinggi_badan' => 'required|numeric|integer|min:1',
         'berat_badan' => 'required|numeric|integer|min:1',
-        'pernah_menikah' => 'required|boolean',
+        'status_pernikahan' => 'required|string',
         'gol_darah' => 'required|max:2|alpha:ascii|uppercase',
         'agama' => 'required|string|max:32',
         'pernah_ke_jepang' => 'required|boolean',
@@ -112,7 +112,7 @@ class AuthController extends Controller
         'kelebihan' => 'required|max:256',
         'kekurangan' => 'required|max:256',
         'hobi' => 'required|max:256',
-        'punya_sertif_jlpt' => 'required|boolean',
+        'sertif_jlpt' => 'nullable|string',
         'punya_sim_a' => 'required|boolean',
         'sertif_lain' => 'nullable|max:256',
         'relasi_di_jepang' => 'required|array',
@@ -123,7 +123,7 @@ class AuthController extends Controller
         'relasi_di_jepang.alamat' => 'nullable|string|min:3',
         'catatan_xtra' => 'nullable|max:512',
       ]);
-      if(!in_array($data['code'], ['admn', 'stdn', 'refl'])) return redirect('/register');
+      if(!in_array($data['kode'], ['admn', 'stdn', 'refl'])) return redirect('/register');
       // set role
       $data['role'] = $data['kode'];
       unset($data['kode']);
@@ -133,6 +133,7 @@ class AuthController extends Controller
       // upload profile picture if exists
       if($req->hasFile('gmb_profil')) $data['gmb_profil'] = $req->file('gmb_profil')->store('assets/profiles');
       else unset($data['gmb_profil']);
+      $data['status_pernikahan'] = str($data['status_pernikahan'])->ucfirst();
       // create and redirect
       User::create($data);
       return redirect('/login')->with('success', "Pendaftaran Berhasil!");

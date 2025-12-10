@@ -4,6 +4,11 @@
     @if($results->isNotEmpty())
         <a href="{{ url("dashboard/del-all-exam-result/$exam->id") }}" role="button" onclick="return confirm('Yakin?');">Hapus Semua Hasil</a>
     @endif
+    @if(session('success'))
+    <div class="success-msg">
+        {{ session('success') }}
+    </div>
+    @endif
     <div>
         @forelse($results as $result)
         <details>

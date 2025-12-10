@@ -8,6 +8,11 @@
     @endforeach
   </div>
   @endif
+  @if(session('success'))
+  <div class="success-msg">
+    {{ session('success') }}
+  </div>
+  @endif
   <form action="{{ url('login') }}" method="post" id="loginForm" class="card auth-card">
     @csrf
     <label>

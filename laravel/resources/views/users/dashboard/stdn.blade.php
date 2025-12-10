@@ -8,6 +8,7 @@
       <div class="header-block">
         <div id="studentName" class="student-name">{{ $user->nama }}</div>
       </div>
+      @if($user->stat === 'accepted')
       <div class="status-row">
         @if(!$hasPresence)
         <a class="qr-box" href="{{ url('presence/?token='.$token) }}">
@@ -15,9 +16,10 @@
         </a>
         @endif
         <div class="progress-box">
-          <img src="{{ url('presence/percentage/'.$user->id) }}" type="image/svg+xml" alt="Presentase Presensi">
+          <img src="{{ url('presence/percentage/'.$user->id) }}" type="image/svg+xml" alt="Presentase Presensi" width="128">
         </div>
       </div>
+      @endif
     </div>
     @if($user->stat === 'pending')
     <section class="card" style="margin-top: 16px">
@@ -26,6 +28,11 @@
         <span id="paymentStatusText">Menunggu konfirmasi</span>
       </div>
     </section>
+    @endif
+    @if(session('success'))
+    <div class="success-msg">
+      {{ session('success') }}
+    </div>
     @endif
     <a href="{{ url('logout') }}" role="button" style="justify-self: center;">Logout</a>
 
@@ -54,10 +61,10 @@
           Alasan Mendukung
           <input type="text" name="alasan" @error('alasan') aria-invalid="true" @enderror value="{{ old('alasan') }}" />
         </label>
-        <div class="file-label">
-          <span>📎 Upload Dokumen</span>
+        <label>
+          📎 Upload Dokumen
           <input type="file" name="doc_xtra" accept="image/*" @error('doc_xtra') aria-invalid="true" @enderror />
-        </div>
+        </label>
 
         <button class="btn-primary" type="submit" style="margin-top: 14px">Submit</button>
       </form>

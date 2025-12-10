@@ -27,7 +27,7 @@ return new class extends Migration
             $table->enum('stat', ['pending', 'accepted'])->default('pending');
             $table->unsignedSmallInteger('tinggi_badan')->default(180);
             $table->unsignedSmallInteger('berat_badan')->default(60);
-            $table->boolean('pernah_menikah')->default(false);
+            $table->boolean('status_pernikahan')->default('Belum menikah');
             $table->string('gol_darah', 2)->default('A');
             $table->string('agama', 32)->default('none');
             $table->boolean('pernah_ke_jepang')->default(false);
@@ -54,7 +54,7 @@ return new class extends Migration
             $table->string('kelebihan', 256)->default("Dapat menahan intrusive thought");
             $table->string('kekurangan', 256)->default("Memiliki intrusive thought yang berbahaya");
             $table->string('hobi', 256)->default("Menikmati Keindahan Alam");
-            $table->boolean('punya_sertif_jlpt')->default(false);
+            $table->boolean('sertif_jlpt')->nullable();
             $table->boolean('punya_sim_a')->default(false);
             $table->string('sertif_lain', 256)->nullable();
             /* japan relation structure: {
