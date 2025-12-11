@@ -81,7 +81,7 @@ class DashboardController extends Controller
     Gate::authorize('admin');
     $user->delete();
     Storage::delete($user->gmb_profil);
-    return redirect('/dashboard/students')->with('success', 'User telah dihapus!');
+    return redirect('/dashboard/students')->with('success', 'User telah dihapus.');
   }
   public function update_user(Request $req, User $user) {
     Gate::authorize('admin');
@@ -104,12 +104,12 @@ class DashboardController extends Controller
   public function delete_exam_result(ExamResult $exam_res) {
     Gate::authorize('admin');
     $exam_res->delete();
-    return redirect('/dashboard/exam-result/'.$exam_res->exam_id)->with('success', 'Hasil ujian berhasil dihapus');
+    return redirect('/dashboard/exam-result/'.$exam_res->exam_id)->with('success', 'Hasil ujian telah dihapus.');
   }
   public function delete_all_exam_result(Exam $exam) {
     Gate::authorize('admin');
     $exam->examResults()->delete();
-    return redirect('/dashboard/exam-result/'.$exam->id)->with('success', 'Semua hasil ujian berhasil dihapus');
+    return redirect('/dashboard/exam-result/'.$exam->id)->with('success', 'Semua hasil ujian telah dihapus.');
   }
   public function create_exam() {
     Gate::authorize('admin');
@@ -139,7 +139,7 @@ class DashboardController extends Controller
     $data['user_id'] = Auth::user()->id;
     $exam = Exam::create($data);
     $exam->questions()->createMany($soals);
-    return redirect('/dashboard/manage-exam')->with('success', 'Ujian berhasil dibuat');
+    return redirect('/dashboard/manage-exam')->with('success', 'Ujian berhasil dibuat!');
   }
   public function edit_exam(Exam $exam) {
     Gate::authorize('admin');
@@ -186,12 +186,12 @@ class DashboardController extends Controller
         ]);
       }
     }
-    return redirect('/dashboard/manage-exam')->with('success', 'Ujian berhasil dihapus');
+    return redirect('/dashboard/manage-exam')->with('success', 'Ujian berhasil diupdate!');
   }
-  public function delete_exam(Request $req, Exam $exam) {
+  public function delete_exam(Exam $exam) {
     Gate::authorize('admin');
     $exam->questions()?->delete();
     $exam->delete();
-    return redirect('/dashboard/manage-exam')->with('success', 'Ujian berhasil dihapus');
+    return redirect('/dashboard/manage-exam')->with('success', 'Ujian telah dihapus.');
   }
 }
