@@ -45,6 +45,7 @@
         </div>
         @endif
       <form class="card" action="{{ url('presence') }}" method="post" enctype="multipart/form-data">
+        @csrf
         <h2 class="section-title">Izin</h2>
         <p class="subtitle">Sertakan dokumen yang mendukung.</p>
         <label>
