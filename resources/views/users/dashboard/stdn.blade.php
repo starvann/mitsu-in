@@ -101,6 +101,6 @@
       <p style="margin-top: 16px;">${data.tanggal}</p>
       </div>`;
     }
-    await renderPrecenceData();
+    renderPrecenceData();
   </script>
 </x-base>
