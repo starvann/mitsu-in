@@ -77,7 +77,21 @@ class AuthController extends Controller
       return redirect('/register2')->withInput();
     }
     public function create_user2(Request $req) {
-      $data = $req->validate([
+      $rules = [];
+      $is_any_field_filled = !empty($req->input('relasi_di_jepang.nama')) or !empty($req->input('relasi_di_jepang.relasi'))
+        or !empty($req->input('relasi_di_jepang.umur') or !empty($req->input('relasi_di_jepang.pekerjaan'))
+        or !empty($req->input('relasi_di_jepang.alamat'))
+      if($is_any_field_filled) {
+        $rules = [
+          'relasi_di_jepang' => 'required|array',
+          'relasi_di_jepang.nama' => 'required|string|min:3',
+          'relasi_di_jepang.relasi' => 'required|string|min:3',
+          'relasi_di_jepang.pekerjaan' => 'required|string|min:3',
+          'relasi_di_jepang.umur' => 'required|numeric|integer|max_digits:3',
+          'relasi_di_jepang.alamat' => 'required|string|min:3',
+        ];
+      }
+      $rules = $rules + [
         'email' => 'required|email|unique:users,email',
         'password' => ['required', 'string', Password::min(8)->mixedCase()->numbers()->symbols()],
         'kode' => 'required|string',
@@ -115,14 +129,13 @@ class AuthController extends Controller
         'sertif_jlpt' => 'nullable|string',
         'punya_sim_a' => 'required|boolean',
         'sertif_lain' => 'nullable|max:256',
-        'relasi_di_jepang' => 'required|array',
-        'relasi_di_jepang.nama' => 'nullable|string|min:3',
-        'relasi_di_jepang.relasi' => 'nullable|string|min:3',
-        'relasi_di_jepang.pekerjaan' => 'nullable|string|min:3',
-        'relasi_di_jepang.umur' => 'nullable|numeric|integer|max_digits:3',
-        'relasi_di_jepang.alamat' => 'nullable|string|min:3',
+        'relasi_di_jepang' => 'nullable',
         'catatan_xtra' => 'nullable|max:512',
-      ]);
+      ];
+      $data = $req->validate($rules);
+      if(!$is_any_field_filled) {
+        $data['relasi_di_jepang'] = [];
+      }
       if(!in_array($data['kode'], ['admn', 'stdn', 'refl'])) return redirect('/register');
       // set role
       $data['role'] = $data['kode'];
