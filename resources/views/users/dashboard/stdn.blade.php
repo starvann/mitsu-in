@@ -15,9 +15,7 @@
           <img src="{{ url('presence-qr/'.$user->id) }}" type="image/svg+xml" alt="Kode QR"/>
         </a>
         @endif
-        <div class="progress-box" id="presenceBox">
-          
-        </div>
+        <div class="progress-box" id="presenceBox"></div>
       </div>
       @endif
     </div>
@@ -102,7 +100,8 @@
       <p>${data.sakit} Hari sakit</p>
       <p style="margin-top: 16px;">${data.tanggal}</p>
       </div>`;
+      query('script').remove();
     }
-    renderPrecenceData();
+    await renderPrecenceData();
   </script>
 </x-base>

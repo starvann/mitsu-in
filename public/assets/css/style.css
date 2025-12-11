@@ -229,7 +229,7 @@ textarea:focus {
 
 /* ======= STUDENT FORM ============ */
 .section-title {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   margin-top: 8px;
   margin-bottom: 4px;
@@ -351,37 +351,33 @@ textarea:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 18px;
-  padding-bottom: 14px;
+  gap: 16px;
 }
 
 .qr-box,
 .progress-box {
   background: #f8f5ed;
   border-radius: 14px;
-  padding: 10px;
-  flex: 0 0 120px;
+  padding: 16px;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
 .qr-box img {
-  width: 80px;
-  height: 80px;
+  width: 128px;
+  height: 128px;
   object-fit: contain;
 }
 
 /* PROGRESS CIRCLE */
 .progress-box svg {
-  width: 100px;
-  height: 100px;
-  margin-bottom: 12px;
+  width: 128px;
+  height: 128px;
 }
 .progress-box p {
-  font-size: 12px;
-  text-align: center;
+  font-size: 14px;
+  text-align: left;
 }
 
 .progress-text {
