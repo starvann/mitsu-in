@@ -4,7 +4,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
     <style>
-      
+
     </style>
   </x-slot:head>
   <div class="top-section">
@@ -200,25 +200,27 @@
       <span class="details-title">Relasi di Jepang</span>
       @if(!empty($user->relasi_di_jepang))
       <div class="details-group">
-        <div class="user-details">
-          <span>Nama</span>
-          <p>{{ $user->relasi_di_jepang['nama'] }}</p>
-        </div>
-        <div class="user-details">
-          <span>Hubungan/Relasi</span>
-          <p>{{ $user->relasi_di_jepang['relasi'] }}</p>
-        </div>
-        <div class="user-details">
-          <span>Pekerjaan</span>
-          <p>{{ $user->relasi_di_jepang['pekerjaan'] }}</p>
-        </div>
-        <div class="user-details">
-          <span>Umur</span>
-          <p>{{ $user->relasi_di_jepang['umur'] }} Tahun</p>
-        </div>
-        <div class="user-details">
-          <span>Alamat</span>
-          <p>{{ $user->relasi_di_jepang['alamat'] }}</p>
+        <div>
+          <div class="user-details">
+            <span>Nama</span>
+            <p>{{ $user->relasi_di_jepang['nama'] }}</p>
+          </div>
+          <div class="user-details">
+            <span>Hubungan/Relasi</span>
+            <p>{{ $user->relasi_di_jepang['relasi'] }}</p>
+          </div>
+          <div class="user-details">
+            <span>Pekerjaan</span>
+            <p>{{ $user->relasi_di_jepang['pekerjaan'] }}</p>
+          </div>
+          <div class="user-details">
+            <span>Umur</span>
+            <p>{{ $user->relasi_di_jepang['umur'] }} Tahun</p>
+          </div>
+          <div class="user-details">
+            <span>Alamat</span>
+            <p>{{ $user->relasi_di_jepang['alamat'] }}</p>
+          </div>
         </div>
       </div>
       @else
