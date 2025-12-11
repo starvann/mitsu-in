@@ -348,15 +348,15 @@
       let edu = createElement('div', {
         innerHTML: `<label>
             Tahun Lulus
-            <input type="number" name="pendidikan[${eduIdx}][tahun]" inputmode="numeric" placeholder="Tahun..." required>
+            <input type="number" name="pendidikan[${eduIdx}][tahun]" inputmode="numeric" required>
           </label>
           <label>
             Nama Sekolah
-            <input type="text" name="pendidikan[${eduIdx}][nama_sekolah]" placeholder="Nama Sekolah..." required>
+            <input type="text" name="pendidikan[${eduIdx}][nama_sekolah]" required>
           </label>
           <label>
             Jurusan
-            <input type="text" name="pendidikan[${eduIdx}][jurusan]" placeholder="Jurusan..." required>
+            <input type="text" name="pendidikan[${eduIdx}][jurusan]" required>
           </label>
           <button type="button" class="remove-btn" onclick="delEdu(this.parentElement)">Hapus</button>`,
         className: 'repeat-group edu-group'
@@ -382,7 +382,7 @@
       exps.appendChild(createElement('div', {
         innerHTML: `<label>
             Pengalaman Kerja / Magang
-            <input type="text" name="pengalaman[]" placeholder="Pengalaman...">
+            <input type="text" name="pengalaman[]">
           </label>
           <button type="button" class="remove-btn" onclick="delExp(this.parentElement)">Hapus</button>`,
         className: 'repeat-group exp-group'
@@ -397,23 +397,23 @@
       let fam = createElement('div', {
         innerHTML: `<label>
             Hubungan Keluarga
-            <input type="text" name="struktur_keluarga[${famIdx}][relasi]" placeholder="Hubungan..." required>
+            <input type="text" name="struktur_keluarga[${famIdx}][relasi]" required>
           </label>
           <label>
             Nama Lengkap
-            <input type="text" name="struktur_keluarga[${famIdx}][nama]" placeholder="Nama..." required>
+            <input type="text" name="struktur_keluarga[${famIdx}][nama]" required>
           </label>
           <label>
             Usia
-            <input type="number" name="struktur_keluarga[${famIdx}][umur]" inputmode="numeric" placeholder="Usia..." required>
+            <input type="number" name="struktur_keluarga[${famIdx}][umur]" inputmode="numeric" required>
           </label>
           <label>
             Pekerjaan
-            <input type="text" name="struktur_keluarga[${famIdx}][pekerjaan]" placeholder="Pekerjaan..." required>
+            <input type="text" name="struktur_keluarga[${famIdx}][pekerjaan]" required>
           </label>
           <label>
             Gaji (perkiraan per bulan)
-            <input type="text" name="struktur_keluarga[${famIdx}][gaji]" placeholder="Gaji..." required>
+            <input type="text" name="struktur_keluarga[${famIdx}][gaji]" placeholder="Rp10.000.000..." required>
           </label>
           <button type="button" class="remove-btn" onclick="delFam(this.parentElement)">Hapus</button>`,
         className: 'repeat-group family-group'
