@@ -36,7 +36,7 @@ class AutoAlpha extends Command
         // Hanya cek hari kerja bulan ini.
         for($day = 1; $day <= $prevDays; $day++) {
           $date = Carbon::create($year, $month, $day);
-          if($date->weekOfDay < 1 or $date->weekOfDay > 5) continue;
+          if($date->dayOfWeek < 1 or $date->dayOfWeek > 5) continue;
           // jika sudah presensi maka skip
           if(Presence::where('user_id', $user->id)->whereDate('created_at', $date)->exists()) continue;
           // alpha jika masih belum presensi
