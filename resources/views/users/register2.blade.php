@@ -246,7 +246,7 @@
         </div>
         @endforelse
       </div>
-      <button type="button" id="fam_add" class="btn-primary btn-small btn-add" onclick="fam_add()">Tambah Informasi</button>
+      <button type="button" onclick="fam_add" class="btn-primary btn-small btn-add">Tambah Informasi</button>
     </div>
 
     <div class="section-divider"></div>
