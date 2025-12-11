@@ -38,7 +38,7 @@ class AutoAlpha extends Command
           $date = Carbon::create($year, $month, $day);
           if($date->weekOfDay < 1 or $date->weekOfDay > 5) continue;
           // jika sudah presensi maka skip
-          if(Presence::where('user_id', $user->id)->whereDay('created_at', $date)->exists()) continue;
+          if(Presence::where('user_id', $user->id)->whereDate('created_at', $date)->exists()) continue;
           // alpha jika masih belum presensi
           Presence::create([
             'user_id' => $user->id,

@@ -73,12 +73,14 @@ class PresenceController extends Controller
     $month = $month ?? now();
     $year = $year ?? now();
     $work_days = $this->calc_days_work($year, $month);
-    $presences = Presence::select('id')->where('user_id', $user->id)->period($month, $year)->get();
-    $hadir = $presences->where('status', 'hadir')->count();
-    $izin = $presences->where('status', 'izin')->count();
-    $sakit = $presences->where('status', 'sakit')->count();
-    $darurat = $presences->where('status', 'darurat')->count();
-    $alpha = $presences->where('status', 'alpha')->count();
+    $stats = Presence::where('user_id', $user->id)->period($month, $year)
+      ->selectRaw("COUNT(CASE WHEN status = 'hadir' THEN 1 END) as hadir_count, COUNT(CASE WHEN status = 'izin' THEN 1 END) as izin_count, COUNT(CASE WHEN status = 'sakit' THEN 1 END) as sakit_count, COUNT(CASE WHEN status = 'darurat' THEN 1 END) as darurat_count, COUNT(CASE WHEN status = 'alpha' THEN 1 END) as alpha_count")
+      ->first();
+    $hadir = $stats->hadir_count ?? 0;
+    $sakit = $stats->sakit_count ?? 0;
+    $izin = $stats->izin_count ?? 0;
+    $darurat = $stats->darurat_count ?? 0;
+    $alpha = $stats->alpha_count ?? 0;
     $percentage = $work_days > 0 ? ($hadir / $work_days) * 100 : 0;
     return [
       'hadir' => $hadir,
