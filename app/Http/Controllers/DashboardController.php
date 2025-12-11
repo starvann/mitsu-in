@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
 {
@@ -79,6 +80,7 @@ class DashboardController extends Controller
   public function delete_user(User $user) {
     Gate::authorize('admin');
     $user->delete();
+    Storage::delete($user->gmb_profil);
     return redirect('/dashboard/students')->with('success', 'User telah dihapus!');
   }
   public function update_user(Request $req, User $user) {

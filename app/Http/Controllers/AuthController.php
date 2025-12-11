@@ -63,7 +63,8 @@ class AuthController extends Controller
           $data['kode_ref_saya'] = Str::random(8);
           while(User::where('kode_ref_saya', $data['kode_ref_saya'])->exists()) {
             $data['kode_ref_saya'] = Str::random(8);
-          }
+	  }
+	  $data['stat'] = 'accepted';
         }
         
         if($req->hasFile('gmb_profil')) $data['gmb_profil'] = $req->file('gmb_profil')->store('assets/profiles');
@@ -79,8 +80,8 @@ class AuthController extends Controller
     public function create_user2(Request $req) {
       $rules = [];
       $is_any_field_filled = !empty($req->input('relasi_di_jepang.nama')) or !empty($req->input('relasi_di_jepang.relasi'))
-        or !empty($req->input('relasi_di_jepang.umur') or !empty($req->input('relasi_di_jepang.pekerjaan'))
-        or !empty($req->input('relasi_di_jepang.alamat'))
+        or !empty($req->input('relasi_di_jepang.umur')) or !empty($req->input('relasi_di_jepang.pekerjaan'))
+        or !empty($req->input('relasi_di_jepang.alamat'));
       if($is_any_field_filled) {
         $rules = [
           'relasi_di_jepang' => 'required|array',
