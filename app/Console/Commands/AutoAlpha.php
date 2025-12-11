@@ -42,7 +42,9 @@ class AutoAlpha extends Command
           // alpha jika masih belum presensi
           Presence::create([
             'user_id' => $user->id,
-            'status' => 'alpha'
+            'status' => 'alpha',
+            'created_at' => $date,
+            'updated_at' => $date
           ]);
         }
       }

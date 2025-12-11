@@ -133,7 +133,7 @@
         <div data-edu-idx="{{ $i }}" class="repeat-group edu-group">
           <label>
             Tahun Lulus
-            <input type="text" name="pendidikan[{{ $i }}][tahun]" inputmode="numeric" value="{{ $edu['tahun'] }}" required>
+            <input type="number" name="pendidikan[{{ $i }}][tahun]" inputmode="numeric" value="{{ $edu['tahun'] }}" required>
           </label>
           <label>
             Nama Sekolah
@@ -149,7 +149,7 @@
         <div data-edu-idx="0" class="repeat-group edu-group">
           <label>
             Tahun Lulus
-            <input type="text" name="pendidikan[0][tahun]" inputmode="numeric" required>
+            <input type="number" name="pendidikan[0][tahun]" inputmode="numeric" required>
           </label>
           <label>
             Nama Sekolah
@@ -246,7 +246,7 @@
         </div>
         @endforelse
       </div>
-      <button type="button" id="fam_add" class="btn-primary btn-small btn-add">Tambah Informasi</button>
+      <button type="button" id="fam_add" class="btn-primary btn-small btn-add" onclick="fam_add()">Tambah Informasi</button>
     </div>
 
     <div class="section-divider"></div>
@@ -308,7 +308,7 @@
     </label>
     <label>
       Usia Kerabat/Kenalan di Jepang
-      <input type="text" name="relasi_di_jepang[umur]" @error('jp_relasi.umur') aria-invalid="true" @enderror value="{{ old('relasi_di_jepang.umur') }}">
+      <input type="number" name="relasi_di_jepang[umur]" @error('jp_relasi.umur') aria-invalid="true" @enderror value="{{ old('relasi_di_jepang.umur') }}">
     </label>
     <label>
       Alamat Kerabat/Kenalan di Jepang
@@ -348,7 +348,7 @@
       let edu = createElement('div', {
         innerHTML: `<label>
             Tahun Lulus
-            <input type="text" name="pendidikan[${eduIdx}][tahun]" inputmode="numeric" placeholder="Tahun..." required>
+            <input type="number" name="pendidikan[${eduIdx}][tahun]" inputmode="numeric" placeholder="Tahun..." required>
           </label>
           <label>
             Nama Sekolah
