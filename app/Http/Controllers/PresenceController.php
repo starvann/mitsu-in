@@ -73,7 +73,7 @@ class PresenceController extends Controller
     $month = $month ?? now();
     $year = $year ?? now();
     $work_days = $this->calc_days_work($year, $month);
-    $presences = Presence::where('user_id', $user->id)->period($month, $year);
+    $presences = Presence::select('id')->where('user_id', $user->id)->period($month, $year)->get();
     $hadir = $presences->where('status', 'hadir')->count();
     $izin = $presences->where('status', 'izin')->count();
     $sakit = $presences->where('status', 'sakit')->count();
