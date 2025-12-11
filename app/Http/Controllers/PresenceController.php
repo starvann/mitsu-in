@@ -106,7 +106,7 @@ class PresenceController extends Controller
     $work_days = 0;
     for($day = 1; $day <= $total_days; $day++) {
       $date = Carbon::create($year, $month, $day);
-      if($date->dayOfWeek >= 1 && $date->dayOfWeek <= 5) $work_days++;
+      if(!$date->isWeekend()) $work_days++;
     }
     return $work_days;
   }
