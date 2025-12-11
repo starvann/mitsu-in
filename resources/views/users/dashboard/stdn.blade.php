@@ -34,7 +34,7 @@
       {{ session('success') }}
     </div>
     @endif
-    <a href="{{ url('logout') }}" role="button" style="justify-self: center;">Logout</a>
+    <a href="{{ url('logout') }}" role="button" style="justify-self: center; margin-top: 16px;">Logout</a>
 
     <!-- IZIN -->
     @if($user->stat === 'accepted')

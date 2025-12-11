@@ -190,7 +190,8 @@
         <p @if(!$user->sertif_lain) class="empty" @endif>{{ $user->sertif_lain ?? '-- Tidak Ada --' }}</p>
       </div>
       <span class="details-title">Relasi di Jepang</span>
-      @if($user->relasi_di_jepang != null)
+	@php dump($user->relasi_di_jepang) @endphp
+      @if(!empty($user->relasi_di_jepang))
       <div class="details-group">
         <div class="user-details">
           <span>Nama</span>
