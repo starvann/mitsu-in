@@ -114,7 +114,7 @@ class AuthController extends Controller
         'pendidikan' => 'required|array',
         'pendidikan.*.tahun' => 'required|numeric|integer|digits:4',
         'pendidikan.*.nama_sekolah' => 'required|string|min:4',
-        'pendidikan.*.jurusan' => 'required|string|min:3',
+        'pendidikan.*.jurusan' => 'required|string',
         'pengalaman' => 'nullable|array|list',
         'struktur_keluarga' => 'required|array',
         'struktur_keluarga.*.relasi' => 'required|string|min:3',
