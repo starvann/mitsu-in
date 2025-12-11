@@ -100,7 +100,6 @@
       <p>${data.sakit} Hari sakit</p>
       <p style="margin-top: 16px;">${data.tanggal}</p>
       </div>`;
-      query('script').remove();
     }
     await renderPrecenceData();
   </script>
