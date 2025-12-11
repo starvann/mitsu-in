@@ -18,8 +18,7 @@
     </div>
     @if($user->role === 'stdn' and $user->stat === 'accepted')
     <div class="status-row">
-      <div class="progress-box" id="presenceBox">
-      </div>
+      <div class="progress-box" id="presenceBox"></div>
     </div>
     @endif
   </div>
@@ -251,12 +250,14 @@
       let data = await res.json();
       presenceBox.innerHTML = `
       ${data.svg}
+      <div>
       <p>${data.hadir} Hari hadir</p>
       <p>${data.alpha} Hari alpha</p>
       <p>${data.darurat} Hari darurat</p>
       <p>${data.izin} Hari izin</p>
       <p>${data.sakit} Hari sakit</p>
-      <p>${data.tanggal}</p>`;
+      <p style="margin-top: 16px;">${data.tanggal}</p>
+      </div>`;
     }
     renderPrecenceData();
   </script>
