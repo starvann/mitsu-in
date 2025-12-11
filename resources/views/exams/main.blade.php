@@ -50,7 +50,7 @@
       }
       currIdx = parseInt(soalDiv.dataset.idx);
       if(currIdx === (questionsCount - 1)) {
-        next.textContent = 'Selesai';
+        next.textContent = 'Kirim';
         next.onclick = () => {
           if(!confirm('Yakin ingin mengakhiri ujian dan melihat hasil?')) {
             return;

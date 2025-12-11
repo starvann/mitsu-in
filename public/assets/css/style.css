@@ -659,11 +659,9 @@ p.empty {
   cursor: pointer;
 }
 .qnav {
-  display: flex;
-  flex-wrap: wrap;
-  max-width: calc((36px * 10) + (8px * 9));
-  gap: 8px;
-  place-content: center;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px 4px;
   margin-top: 24px;
   background-color: white;
   padding: 16px 36px;
