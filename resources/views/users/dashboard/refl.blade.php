@@ -1,5 +1,8 @@
 <x-base title="Dashboard" main-class="page" style="gap: 16px; display: flex; flex-direction: column;">
   <x-slot:head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
     <style>
       .student {
         display: flex;
@@ -42,7 +45,7 @@
   </div>
   <a href="{{ url('logout') }}" role="button" style="align-self: center;">Log out</a>
   <div class="ref-card">
-    <span>Kode Referral : {{ $user->kode_ref_saya }}</span>
+    <span style="font-family: 'Roboto Mono', monospace; font-size: 16px;">Kode Referral : {{ $user->kode_ref_saya }}</span>
     <div class="section-divider"></div>
     @forelse($refUsers as $ref)
     <div class="student">

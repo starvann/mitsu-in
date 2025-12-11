@@ -1,4 +1,12 @@
 <x-base title="Profil Siswa" main-class="page" style="display: flex; flex-direction: column; gap: 8px;">
+  <x-slot:head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <style>
+      
+    </style>
+  </x-slot:head>
   <div class="top-section">
     <div class="cover" style="background-image: url('{{ url('assets/img/cover-japan.jpg') }}')">
       <div class="avatar-wrapper">
@@ -48,7 +56,7 @@
         <span>
           Kode Referral
         </span>
-        <p style="font-family: monospace; font-size: 16pt">
+        <p style="font-family: 'Roboto Mono', monospace; font-size: 16px;">
           @if($user->kode_ref) <a href="{{ url("dashboard/view-user/".$referrer_id) }}">{{ $user->kode_ref }}</a> @else {{ $user->kode_ref_saya ?? '-' }} @endif
         </p>
       </div>

@@ -96,7 +96,7 @@ class AuthController extends Controller
         'email' => 'required|email|unique:users,email',
         'password' => ['required', 'string', Password::min(8)->mixedCase()->numbers()->symbols()],
         'kode' => 'required|string',
-        'kode_ref' => 'nullable|max:8|exists:users,kode_ref_saya',
+        'kode_ref' => 'nullable|string|max:8|exists:users,kode_ref_saya',
         'nama' => 'required|string|min:3',
         'no_hp' => 'required|string|digits_between:9,16',
         'gmb_profil' => 'nullable|file|image|max:2048',

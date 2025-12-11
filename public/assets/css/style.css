@@ -594,9 +594,17 @@ p.empty {
 .details-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 24px;
-  padding-top: 0;
+  gap: 16px;
+  padding: 16px;
+  padding-bottom: 24px;
+}
+.details-group > div {
+  background-color: lightgray;
+  padding: 12px;
+  border-radius: 8px;
+}
+.details-group > .user-details {
+  margin-top: 0;
 }
 .details-title {
   display: block;
@@ -749,4 +757,7 @@ details>div {
     opacity: 0;
     display: none;
   }
+}
+a {
+  text-decoration: none;
 }
