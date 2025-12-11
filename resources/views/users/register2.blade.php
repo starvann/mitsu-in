@@ -296,23 +296,23 @@
 
     <label>
       Nama Kerabat/Kenalan di Jepang
-      <input type="text" name="relasi_di_jepang[nama]" @error('jp_relasi.nama') aria-invalid="true" @enderror value="{{ old('relasi_di_jepang.nama') }}">
+      <input type="text" name="relasi_di_jepang[nama]" @error('relasi_di_jepang.nama') aria-invalid="true" @enderror value="{{ old('relasi_di_jepang.nama') }}">
     </label>
     <label>
       Hubungan Kerabat/Kenalan di Jepang
-      <input type="text" name="relasi_di_jepang[relasi]" @error('jp_relasi.relasi') aria-invalid="true" @enderror value="{{ old('relasi_di_jepang.relasi') }}">
+      <input type="text" name="relasi_di_jepang[relasi]" @error('relasi_di_jepang.relasi') aria-invalid="true" @enderror value="{{ old('relasi_di_jepang.relasi') }}">
     </label>
     <label>
       Pekerjaan Kerabat/Kenalan di Jepang
-      <input type="text" name="relasi_di_jepang[pekerjaan]" @error('jp_relasi.pekerjaan') aria-invalid="true" @enderror value="{{ old('relasi_di_jepang.pekerjaan') }}">
+      <input type="text" name="relasi_di_jepang[pekerjaan]" @error('relasi_di_jepang.pekerjaan') aria-invalid="true" @enderror value="{{ old('relasi_di_jepang.pekerjaan') }}">
     </label>
     <label>
       Usia Kerabat/Kenalan di Jepang
-      <input type="number" name="relasi_di_jepang[umur]" @error('jp_relasi.umur') aria-invalid="true" @enderror value="{{ old('relasi_di_jepang.umur') }}">
+      <input type="number" name="relasi_di_jepang[umur]" @error('relasi_di_jepang.umur') aria-invalid="true" @enderror value="{{ old('relasi_di_jepang.umur') }}">
     </label>
     <label>
       Alamat Kerabat/Kenalan di Jepang
-      <input type="text" name="relasi_di_jepang[alamat]" @error('jp_relasi.alamat') aria-invalid="true" @enderror value="{{ old('relasi_di_jepang.alamat') }}">
+      <input type="text" name="relasi_di_jepang[alamat]" @error('relasi_di_jepang.alamat') aria-invalid="true" @enderror value="{{ old('relasi_di_jepang.alamat') }}">
     </label>
     <label>
       Catatan Tambahan
