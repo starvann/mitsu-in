@@ -79,6 +79,10 @@ class DashboardController extends Controller
   }
   public function delete_user(User $user) {
     Gate::authorize('admin');
+    $files = $user->presences()->pluck('doc_xtra');
+    foreach($files as $file) {
+      if($file) Storage::delete($file);
+    }
     $user->delete();
     Storage::delete($user->gmb_profil);
     return redirect('/dashboard/students')->with('success', 'User telah dihapus.');
