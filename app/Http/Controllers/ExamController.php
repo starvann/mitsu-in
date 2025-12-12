@@ -53,14 +53,10 @@ class ExamController extends Controller
     ]);
   }
   public function save_answer(Request $req) {
-    if(!$req->has('idx')) return abort(400);
-    $idx = $req->input('idx');
-    if(!is_numeric($idx)) return abort(400);
-    $idx = intval($idx);
-    if(!$req->has('choice')) return abort(400);
-    $choice = $req->input('choice');
-    if(!is_numeric($choice)) return abort(400);
-    $choice = intval($choice);
+    if(!$req->has('idx') or !is_numeric($req->input('idx'))) return abort(400);
+    if(!$req->has('choice') or !is_numeric($req->input('choice'))) return abort(400);
+    $idx = intval($req->input('idx'));
+    $choice = intval($req->input('choice'));
     if(!isset(session('questions', [])[$idx])) return abort(404);
     $question = session('questions')[$idx];
     if($choice < 0) return abort(400);

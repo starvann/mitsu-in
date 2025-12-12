@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('exams', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->string('judul', 256)->unique();
             $table->string('deskripsi', 512);
             $table->datetime('deadline')->nullable();
@@ -25,7 +25,7 @@ return new class extends Migration
         });
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Exam::class);
+            $table->foreignIdFor(Exam::class)->constrained()->cascadeOnDelete();
             $table->text('soal');
             $table->json('jawaban');# ['ans1', 'ans2', ...]
             $table->tinyInteger('jwbn_yg_benar');
@@ -33,8 +33,8 @@ return new class extends Migration
         });
         Schema::create('exam_results', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
-            $table->foreignIdFor(Exam::class);
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Exam::class)->constrained()->cascadeOnDelete();
             $table->unsignedSmallInteger('nilai');
             $table->unsignedSmallInteger('total_salah');
             $table->unsignedSmallInteger('total_benar');
