@@ -549,7 +549,7 @@ textarea:focus {
   cursor: pointer;
 }
 
-a[role="button"], form button[type="button"] {
+a[role="button"], form button[type="submit"] {
   display: flex;
   align-items: center;
   justify-content: center;
