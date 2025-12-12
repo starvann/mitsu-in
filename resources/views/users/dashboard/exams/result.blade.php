@@ -18,8 +18,10 @@
     <div class="search-box">
       <input type="text" id="search" placeholder="Cari nama/email siswa..." />
     </div>
+    @else
+    <span style="font-style: italic; color: gray; text-align: center; display: block;">-- Kosong --</span>
     @endif
-    <div id="results"></div>
+    <div id="results" style="display: flex; gap: 16px; flex-direction: column; padding: 12px;"></div>
   </div>
   <script>
     const CSRF_TOKEN = "{{ csrf_token() }}";
