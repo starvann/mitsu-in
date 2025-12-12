@@ -221,6 +221,7 @@ class DashboardController extends Controller
   public function delete_exam(Exam $exam) {
     Gate::authorize('admin');
     $exam->questions()?->delete();
+    $exam->examResults()?->delete();
     $exam->delete();
     return redirect('/dashboard/manage-exam')->with('success', 'Ujian telah dihapus.');
   }
