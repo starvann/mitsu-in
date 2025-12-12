@@ -549,7 +549,7 @@ textarea:focus {
   cursor: pointer;
 }
 
-a[role="button"] {
+a[role="button"], form button[type="button"] {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -731,8 +731,11 @@ details>div {
   display: flex;
   gap: 10px;
 }
-.btn-group button, .btn-group a[role="button"] {
+.btn-group button, .btn-group a[role="button"], .btn-group form {
   flex: 1;
+}
+form button[type="submit"] {
+  width: 100%;
 }
 .success-msg {
   background-color: #d7ffd6;
