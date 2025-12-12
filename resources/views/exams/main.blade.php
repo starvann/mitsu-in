@@ -81,11 +81,12 @@
           }
           return res.json();
         }).then(data => {
-          console.log('Answer saved:', data);
+          console.log(data);
         }).catch(err => {
           console.error('Fetch error:', err);
         });
       }
+      return true;
     }
     function changeQuestion(idx) {
       const url = "{{ url('exam-get-question') }}";

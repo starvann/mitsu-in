@@ -53,14 +53,22 @@ class ExamController extends Controller
     ]);
   }
   public function save_answer(Request $req) {
-    $idx = $req->query('idx', 0);
-    $choice = intval($req->query('choice', 0));
+    if(!$req->has('idx')) return abort(400);
+    $idx = $req->input('idx');
+    if(!is_numeric($idx)) return abort(400);
+    $idx = intval($idx);
+    if(!$req->has('choice')) return abort(400);
+    $choice = $req->input('choice');
+    if(!is_numeric($choice)) return abort(400);
+    $choice = intval($choice);
     if(!isset(session('questions', [])[$idx])) return abort(404);
     $question = session('questions')[$idx];
     if($choice < 0) return abort(400);
     if($choice > (count($question['jawaban']) - 1)) return abort(400);
-    session(["answers.$idx" => $choice]);
-    return response(['message' => 'Answer Saved'], 200);
+    $answers = session('answers');
+    $answers[$idx] = $choice;
+    Session::put('answers', $answers);
+    return response(['success']);
   }
   public function calc_result() {
     if(!Session::exists(['questions', 'questions_count', 'answers', 'exam_id'])) return abort(400);
