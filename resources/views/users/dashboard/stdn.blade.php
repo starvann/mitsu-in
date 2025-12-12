@@ -79,6 +79,7 @@
         <a href="{{ url('exam/'.$exam->id) }}" class="button-secondary" role="button" @if(!$has_done) onclick="return confirm('Yakin?');" @endif>{{ $has_done ? 'Lihat Hasil' : 'Kerjakan' }}</a>
       </div>
       @empty
+      <span style="font-style: italic; color: gray; text-align: center; display: block;">-- Kosong --</span>
       @endforelse
     </div>
     @endif
