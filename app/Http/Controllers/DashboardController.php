@@ -117,7 +117,7 @@ class DashboardController extends Controller
         $users = User::limit(10)->pluck('id');
       }
       if($users->isEmpty()) return response()->json([]);
-      $datas = ExamResult::whereIn('user_id', $users)->with('user:nama,email')->get();
+      $datas = ExamResult::whereIn('user_id', $users)->with('user:id,nama,email')->get();
       $datas = $datas->map(function($item, $key) {
         return [
           'id' => $item->id,
