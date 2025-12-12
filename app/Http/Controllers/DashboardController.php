@@ -104,6 +104,7 @@ class DashboardController extends Controller
   public function get_exam_results(Request $req, Exam $exam) {
     Gate::authorize('admin');
     $users = [];
+    $datas = [];
     if($req->query('q')) {
       $keyword = $req->query('q');
       if(!is_string($keyword)) {
@@ -113,11 +114,11 @@ class DashboardController extends Controller
         return response()->json([], 400);
       }
         $users = User::where('nama', 'like', '%'.$keyword.'%')->orWhere('email', 'like', '%'.$keyword.'%')->limit(10)->pluck('id');
+        $datas = $exam->examResults()->whereIn('user_id', $users);
       } else {
-        $users = User::limit(10)->pluck('id');
+        $datas = $exam->examResults()->limit(10);
       }
-      if($users->isEmpty()) return response()->json([]);
-      $datas = ExamResult::whereIn('user_id', $users)->with('user:id,nama,email')->get();
+      $datas = $datas->with('user:id,nama,email')->get();
       $datas = $datas->map(function($item, $key) {
         return [
           'id' => $item->id,
