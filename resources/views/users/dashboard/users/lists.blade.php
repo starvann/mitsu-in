@@ -90,7 +90,6 @@
 
   <script>
     const BASEURL = "{{ url('/') }}";
-    let dataSiswa = [];
     let searchInput = document.getElementById("search");
     let timeoutId;
 
@@ -100,7 +99,7 @@
         url += `?q=${encodeURIComponent(keyword)}`;
       }
       try {
-        const response = await fetch(url, {credentials: 'include'});
+        const response = await fetch(url);
         const result = await response.json();
         return result;
       } catch (err) {
@@ -142,7 +141,7 @@
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
         renderList(searchInput.value);
-      }, 1000);
+      }, 500);
     });
 
     renderList();

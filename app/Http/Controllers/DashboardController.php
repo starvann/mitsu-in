@@ -101,6 +101,35 @@ class DashboardController extends Controller
     Gate::authorize('admin');
     return view('users.dashboard.exams.result', ['exam' => $exam, 'results' => $exam->examResults()->with('user')->get()]);
   }
+  public function get_exam_results(Request $req, Exam $exam) {
+    Gate::authorize('admin');
+    $users = [];
+    if($req->query('q')) {
+      $keyword = $req->query('q');
+      if(!is_string($keyword)) {
+        return response()->json([], 400);
+      }
+      if(strlen($keyword) < 3) {
+        return response()->json([], 400);
+      }
+        $users = User::where('nama', 'like', '%'.$keyword.'%')->orWhere('email', 'like', '%'.$keyword.'%')->limit(10)->pluck('id');
+      } else {
+        $users = User::limit(10)->pluck('id');
+      }
+      if($users->isEmpty()) return response()->json([]);
+      $datas = ExamResult::whereIn('user_id', $users)->with('user:nama,email')->get();
+      $datas = $datas->map(function($item, $key) {
+        return [
+          'id' => $item->id,
+          'nama' => $item->user->nama,
+          'email' => $item->user->email,
+          'nilai' => $item->nilai,
+          'total_benar' => $item->total_benar,
+          'total_salah' => $item->total_salah
+        ];
+      });
+      return response()->json($datas);
+  }
   public function delete_exam_result(ExamResult $exam_res) {
     Gate::authorize('admin');
     $exam_res->delete();

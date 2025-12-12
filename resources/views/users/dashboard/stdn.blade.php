@@ -89,7 +89,7 @@
     }
     let presenceBox = query("#presenceBox");
     async function renderPrecenceData() {
-      let res = await fetch(`{{ url("/presence/percentage/$user->id") }}`, {credentials: 'include'});
+      let res = await fetch(`{{ url("/presence/percentage/$user->id") }}`);
       let data = await res.json();
       presenceBox.innerHTML = `
       ${data.svg}

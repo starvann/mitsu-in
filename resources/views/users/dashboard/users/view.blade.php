@@ -29,7 +29,11 @@
   @endif
     <div class="btn-group" style="width: 300px; align-self: center;">
       <a href="{{ url('/dashboard/students') }}" role="button">Kembali</a>
-      <a href="{{ url("/dashboard/del-user/$user->id") }}" role="button" onclick="return confirm('Yakin?')">Hapus</a>
+      <form action="{{ url("/dashboard/del-user/$user->id") }}" method="post">
+        @csrf
+        @method('DELETE')
+        <button type="submit" onclick="return confirm('Yakin?')">Hapus</button>
+      </form>
     </div>
   <div>
     <form action="{{ url('/dashboard/edit-user/'.$user->id) }}" method="post">
@@ -246,7 +250,7 @@
     }
     let presenceBox = query("#presenceBox");
     async function renderPrecenceData() {
-      let res = await fetch(`{{ url("/presence/percentage/$user->id") }}`, {credentials: 'include'});
+      let res = await fetch(`{{ url("/presence/percentage/$user->id") }}`);
       let data = await res.json();
       presenceBox.innerHTML = `
       ${data.svg}

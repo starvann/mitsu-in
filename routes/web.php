@@ -34,8 +34,9 @@ Route::middleware('auth')->group(function() {
   Route::put('/dashboard/edit-exam/{exam}', [DashboardController::class, 'update_exam']);
   Route::delete('/dashboard/delete-exam/{exam}', [DashboardController::class, 'delete_exam']);
   Route::get('/dashboard/exam-result/{exam}', [DashboardController::class, 'exam_result']);
-  Route::get('/dashboard/del-exam-result/{exam_res}', [DashboardController::class, 'delete_exam_result']);
-  Route::get('/dashboard/del-all-exam-result/{exam}', [DashboardController::class, 'delete_all_exam_result']);
+  Route::get('/dashboard/get-exam-results/{exam}', [DashboardController::class, 'get_exam_results']);
+  Route::delete('/dashboard/del-exam-result/{exam_res}', [DashboardController::class, 'delete_exam_result']);
+  Route::delete('/dashboard/del-all-exam-result/{exam}', [DashboardController::class, 'delete_all_exam_result']);
   # RUD Students
   Route::get('/dashboard/students', [DashboardController::class, 'lists_user']);
   Route::get('/dashboard/get-students', [DashboardController::class, 'get_students']);
