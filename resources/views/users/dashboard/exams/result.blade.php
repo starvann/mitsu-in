@@ -5,7 +5,7 @@
     <form action="{{ url("/dashboard/del-all-exam-result/$exam->id") }}" method="post">
       @csrf
       @method('DELETE')
-      <button type="submit" onclick="return confirm('Yakin?')">Hapus</button>
+      <button type="submit" onclick="return confirm('Yakin?')">Hapus Semua Hasil Ujian</button>
     </form>
   @endif
   @if(session('success'))
@@ -16,7 +16,7 @@
   <div>
     @if($results->isNotEmpty())
     <div class="search-box">
-      <input type="text" id="search" placeholder="Cari nama siswa..." />
+      <input type="text" id="search" placeholder="Cari nama/email siswa..." />
     </div>
     @endif
     <div id="results"></div>
@@ -71,7 +71,7 @@
         <form action="${DEL_URL}/${data.id}" method="post">
           <input type="hidden" name="_token" value="${CSRF_TOKEN}">
           <input type="hidden" name="_method" value="DELETE">
-          <button type="submit" onclick="return confirm('Yakin?')">Hapus</button>
+          <button type="submit" onclick="return confirm('Yakin?')">Hapus (untuk mengerjakan ulang)</button>
         </form>
       </div>`;
         list.appendChild(el);

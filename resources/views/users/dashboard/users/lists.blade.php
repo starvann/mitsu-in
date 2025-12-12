@@ -24,18 +24,6 @@
         font-size: 20px;
       }
 
-      .search-box {
-        margin-bottom: 18px;
-      }
-
-      .search-box input {
-        width: 95%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        font-size: 14px;
-      }
-
       .student {
         display: flex;
         gap: 12px;
@@ -81,7 +69,7 @@
     <h1>Data Siswa</h1>
 
     <div class="search-box">
-      <input type="text" id="search" placeholder="Cari nama siswa..." />
+      <input type="text" id="search" placeholder="Cari nama/email siswa..." />
     </div>
 
     <div id="list"></div>
