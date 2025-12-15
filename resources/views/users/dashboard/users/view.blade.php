@@ -27,8 +27,9 @@
     {{ session('success') }}
   </div>
   @endif
-    <div class="btn-group" style="width: 300px; align-self: center;">
+    <div class="btn-group" style="width: 350px; align-self: center;">
       <a href="{{ url('/dashboard/students') }}" role="button">Kembali</a>
+      <a href="{{ url("/dashboard/edit-user/$user->id") }}" role="button">Edit</a>
       <form action="{{ url("/dashboard/del-user/$user->id") }}" method="post">
         @csrf
         @method('DELETE')

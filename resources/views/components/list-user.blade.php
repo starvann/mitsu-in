@@ -1,4 +1,4 @@
-<x-base title="Kelola User" no-main>
+<x-base title="Kelola {{ ucfirst($roleName) }}" no-main>
   <x-slot:head>
     <style>
       body {
@@ -66,10 +66,11 @@
   </div>
   @endif
   <div class="card">
-    <h1>Data Siswa</h1>
+    <h1>Data {{ ucfirst($roleName) }}</h1>
+    <p>Jumlah Data : {{ $dataCount }} {{ ucfirst($roleName) }}</p>
 
     <div class="search-box">
-      <input type="text" id="search" placeholder="Cari nama/email siswa..." />
+      <input type="text" id="search" placeholder="Cari nama/email {{ $roleName }}..." />
     </div>
 
     <div id="list"></div>
@@ -82,9 +83,9 @@
     let timeoutId;
 
     async function get_student(keyword = "") {
-      let url = `{{ url('dashboard/get-students') }}`;
+      let url = `{{ url('dashboard/get-users') }}?type={{ $roleCode }}`;
       if(keyword !== '') {
-        url += `?q=${encodeURIComponent(keyword)}`;
+        url += `&q=${encodeURIComponent(keyword)}`;
       }
       try {
         const response = await fetch(url);

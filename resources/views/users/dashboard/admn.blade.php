@@ -35,6 +35,8 @@
     <div class="card">
         <h1>Hi Admin!</h1>
         <a href="{{ url('dashboard/students') }}" role="button">Data Siswa</a>
+        <a href="{{ url('dashboard/referrals') }}" role="button">Data Referral</a>
+        <a href="{{ url('dashboard/admins') }}" role="button">Data Admin</a>
         <a href="{{ url('dashboard/manage-exam') }}" role="button">Kelola Ujian</a>
         <a href="{{ url('dashboard/create-exam') }}" role="button">Buat Ujian</a>
         <a href="{{ url('logout') }}" role="button">Log out</a>

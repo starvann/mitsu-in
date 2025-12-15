@@ -37,11 +37,14 @@ Route::middleware('auth')->group(function() {
   Route::get('/dashboard/get-exam-results/{exam}', [DashboardController::class, 'get_exam_results']);
   Route::delete('/dashboard/del-exam-result/{exam_res}', [DashboardController::class, 'delete_exam_result']);
   Route::delete('/dashboard/del-all-exam-result/{exam}', [DashboardController::class, 'delete_all_exam_result']);
-  # RUD Students
-  Route::get('/dashboard/students', [DashboardController::class, 'lists_user']);
-  Route::get('/dashboard/get-students', [DashboardController::class, 'get_students']);
+  # CRUD Users
+  Route::get('/dashboard/students', [DashboardController::class, 'list_stdns']);
+  Route::get('/dashboard/referrals', [DashboardController::class, 'list_refls']);
+  Route::get('/dashboard/admins', [DashboardController::class, 'list_admns']);
+  Route::get('/dashboard/get-users', [DashboardController::class, 'get_users']);
   Route::get('/dashboard/view-user/{user}', [DashboardController::class, 'view_user']);
   Route::delete('/dashboard/del-user/{user}', [DashboardController::class, 'delete_user']);
+  Route::get('/dashboard/edit-user/{user}', [DashboardController::class, 'edit_user']);
   Route::put('/dashboard/edit-user/{user}', [DashboardController::class, 'update_user']);
   # Presence
   Route::post('/presence', [PresenceController::class, 'store_presence']);

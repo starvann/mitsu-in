@@ -44,28 +44,43 @@ class DashboardController extends Controller
     }
   }
   // users
-  public function lists_user() {
+  public function list_stdns() {
     Gate::authorize('admin');
-    return view('users.dashboard.users.lists');
+    return view('users.dashboard.users.list-stdn', $this->get_user_count());
   }
-  public function get_students(Request $req) {
+  public function list_refls() {
     Gate::authorize('admin');
-    $users = [];
-    if($req->query('q')) {
-      $keyword = $req->query('q');
+    return view('users.dashboard.users.list-refl', $this->get_user_count('refl'));
+  }
+  public function list_admns() {
+    Gate::authorize('admin');
+    return view('users.dashboard.users.list-admn', $this->get_user_count('admn'));
+  }
+  private function get_user_count($role = 'stdn') {
+    return ['dataCount' => User::where('role', $role)->count()];
+  }
+  public function get_users(Request $req) {
+    Gate::authorize('admin');
+    $role = $req->input('type', 'stdn');
+    if(!in_array($role, ['stdn', 'refl', 'admn'])) return response([], 400);
+    $users = User::select('id', 'nama', 'email', 'stat', 'gmb_profil')->where('role', $role);
+    if($req->has('q')) {
+      $keyword = $req->input('q');
       if(!is_string($keyword)) {
-        return response()->json([], 400);
+        return response([], 400);
       }
       if(strlen($keyword) < 3) {
-        return response()->json([], 400);
+        return response([], 400);
       }
-      $users = User::select(['id', 'nama', 'email', 'stat', 'gmb_profil'])
-        ->where('nama', 'like', '%'.$keyword.'%')->orWhere('email', 'like', '%'.$keyword.'%')
-        ->limit(10)->get();
-    } else {
-      $users = User::select(['id', 'nama', 'email', 'stat', 'gmb_profil'])->limit(10)->get()->except(Auth::id());
+      $users = $users->where('nama', 'like', '%'.$keyword.'%')->orWhere('email', 'like', '%'.$keyword.'%');
     }
+    $users = $users->limit(10)->get();
     return response()->json($users);
+  }
+  public function edit_user(User $user) {
+    Gate::authorize('admin');
+    $data = ['user' => $user];
+    return view('users.dashboard.users.edit', $data);
   }
   public function view_user(User $user) {
     Gate::authorize('admin');

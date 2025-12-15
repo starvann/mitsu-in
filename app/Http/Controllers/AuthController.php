@@ -88,7 +88,7 @@ class AuthController extends Controller
           'relasi_di_jepang.nama' => 'required|string|min:3',
           'relasi_di_jepang.relasi' => 'required|string|min:3',
           'relasi_di_jepang.pekerjaan' => 'required|string|min:3',
-          'relasi_di_jepang.umur' => 'required|numeric|integer|max_digits:3',
+          'relasi_di_jepang.usia' => 'required|numeric|integer|max_digits:3',
           'relasi_di_jepang.alamat' => 'required|string|min:3',
         ];
       }
