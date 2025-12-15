@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExamController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\PresenceController;
 use Illuminate\Support\Facades\Route;
 
@@ -54,6 +55,14 @@ Route::middleware('auth')->group(function() {
   Route::get('/exam-calc-result', [ExamController::class, 'calc_result']);
   Route::get('/exam-get-question', [ExamController::class, 'get_question']);
   Route::get('/exam-save-answer', [ExamController::class, 'save_answer']);
+  # CRUD Group
+  Route::get('/dashboard/groups', [GroupController::class, 'index']);
+  Route::get('/dashboard/get-groups', [GroupController::class, 'get_groups']);
+  Route::post('/dashboard/create-group', [GroupController::class, 'store']);
+  Route::get('/dashboard/view-group/{group}', [GroupController::class, 'edit']);
+  Route::put('/dashboard/edit-group/{group}', [GroupController::class, 'update']);
+  Route::get('/dashboard/del-group/{group}', [GroupController::class, 'delete']);
+
 });
 Route::get('/presence', [PresenceController::class, 'store_presence']);
 Route::get('/presence-qr/{id}', [PresenceController::class, 'generate_presence_qr']);

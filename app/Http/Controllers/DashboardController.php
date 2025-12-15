@@ -62,8 +62,9 @@ class DashboardController extends Controller
   public function get_users(Request $req) {
     Gate::authorize('admin');
     $role = $req->input('type', 'stdn');
-    if(!in_array($role, ['stdn', 'refl', 'admn'])) return response([], 400);
-    $users = User::select('id', 'nama', 'email', 'stat', 'gmb_profil')->where('role', $role);
+    if(!in_array($role, ['stdn', 'refl', 'admn', 'no-admn'])) return response([], 400);
+    if($role == 'no-admn') $users = User::select('id', 'nama', 'email', 'stat', 'gmb_profil')->where('role', '!=', 'admn');
+    else $users = User::select('id', 'nama', 'email', 'stat', 'gmb_profil')->where('role', $role);
     if($req->has('q')) {
       $keyword = $req->input('q');
       if(!is_string($keyword)) {
