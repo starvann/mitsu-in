@@ -29,8 +29,8 @@ class User extends Authenticatable
     return $this->hasMany(ExamResult::class);
   }
 
-  public function memberGroups() {
-    return $this->hasMany(MemberGroup::class);
+  public function groups() {
+    return $this->belongsToMany(Group::class, 'member_groups')->withTimestamps();
   }
 
   protected function casts(): array

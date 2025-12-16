@@ -8,7 +8,7 @@ class Group extends Model
 {
   protected $guarded = ['id'];
 
-  public function memberGroups() {
-    return $this->hasMany(MemberGroup::class);
+  public function users() {
+    return $this->belongsToMany(User::class, 'member_groups')->withTimestamps();
   }
 }

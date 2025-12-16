@@ -1,9 +1,10 @@
-<x-base title="Kelola Grup" main-class="page" style="display: flex; flex-direction: column; gap: 16px;">
+<x-base title="Kelola Grup" main-class="page col">
+  <a href="{{ url('dashboard') }}" role="button">Kembali</a>
   <h1>Grup</h1>
   <button type="button" id="showModal">Buat Grup</button>
   <input type="search" name="seacrh" id="search" placeholder="Cari nama/deskripsi grup...">
   <div id="groups"></div>
-  <dialog id="createModal" class="col">
+  <dialog id="createModal">
     <h2>Buat Grup</h2>
     <label>
       Nama
@@ -14,7 +15,7 @@
       <textarea name="deskripsi" id="deskripsi" cols="3"></textarea>
     </label>
     <input type="search" name="seacrh" id="searchStdn" placeholder="Cari nama/email user...">
-    <div id="users"></div>
+    <div id="users" class="users"></div>
     <div class="btn-group">
       <button type="button" id="cancelBtn">Batal</button>
       <button type="button" id="createGroup">Buat</button>
@@ -134,9 +135,12 @@
         groupDesc.value = "";
         chosenUsers = [];
         let data = await res.text();
-        renderStdnList();
+        renderList();
         console.log(data);
+        createModal.close();
       } catch (err) {
+        alert('Error!');
+        window.location.reload();
         console.error(err);
       }
     }

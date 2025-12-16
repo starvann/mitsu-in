@@ -58,10 +58,12 @@ Route::middleware('auth')->group(function() {
   # CRUD Group
   Route::get('/dashboard/groups', [GroupController::class, 'index']);
   Route::get('/dashboard/get-groups', [GroupController::class, 'get_groups']);
+  Route::get('/dashboard/get-user-of-group/{group}', [GroupController::class, 'get_users_of_group']);
   Route::post('/dashboard/create-group', [GroupController::class, 'store']);
-  Route::get('/dashboard/view-group/{group}', [GroupController::class, 'edit']);
+  Route::get('/dashboard/view-group/{group}', [GroupController::class, 'view']);
+  Route::get('/dashboard/edit-group/{group}', [GroupController::class, 'edit']);
   Route::put('/dashboard/edit-group/{group}', [GroupController::class, 'update']);
-  Route::get('/dashboard/del-group/{group}', [GroupController::class, 'delete']);
+  Route::delete('/dashboard/del-group/{group}', [GroupController::class, 'delete']);
 
 });
 Route::get('/presence', [PresenceController::class, 'store_presence']);

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Group::class)->constrained()->cascadeOnDelete();
+            $table->string('role', 4)->default('member');
             $table->timestamps();
         });
     }
