@@ -27,16 +27,12 @@
     <div class="btn-group" style="width: 250px; align-self: center;">
       <a href="{{ url('/dashboard/students') }}" role="button">Kembali</a>
       <a href="{{ url("/dashboard/edit-user/$user->id") }}" role="button">Edit</a>
-      <form action="{{ url("/dashboard/del-user/$user->id") }}" method="post">
-        @csrf
-        @method('DELETE')
-        <button type="submit" onclick="return confirm('Yakin?')">Hapus</button>
-      </form>
     </div>
   <div>
     <form action="{{ url('/dashboard/edit-user/'.$user->id) }}" method="post">
       @csrf
       @method('put')
+      <input type="hidden" name="stat_only">
       <div class="user-details">
         <span>Status</span>
         <select name="stat" onchange="this.parentElement.parentElement.submit()">
@@ -241,6 +237,11 @@
         <p>{{ $ref_users_count }}</p>
       </div>
     @endisset
+    <form action="{{ url("/dashboard/del-user/$user->id") }}" method="post">
+      @csrf
+      @method('DELETE')
+      <button type="submit" onclick="return confirm('Yakin?')">Hapus</button>
+    </form>
   </div>
   <script>
     function query(s) {

@@ -9,7 +9,7 @@
     </label>
     <label>
       Deskripsi
-      <textarea name="deskripsi" cols="3" @error('nama') aria-invalid="true" @enderror>{{ old('deskripsi') ?? $group->deskripsi }}</textarea>
+      <textarea name="deskripsi" rows="3" @error('nama') aria-invalid="true" @enderror>{{ old('deskripsi') ?? $group->deskripsi }}</textarea>
     </label>
     <button type="submit" style="margin-top: 12px;">Simpan</button>
   </form>

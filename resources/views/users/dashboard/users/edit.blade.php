@@ -1,8 +1,33 @@
-<x-base title="Profil Siswa" style="display: flex; flex-direction: column; gap: 8px;">
+<x-base title="Profil Siswa" main-class="page col">
   <x-slot:head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <style>
+      /* Styling tambahan khusus dynamic group */
+      .repeat-group {
+        padding: 16px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        margin-bottom: 16px;
+        background: #fafafa;
+      }
+
+      .remove-btn {
+        background: #c62828;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 6px;
+        margin-top: 6px;
+        cursor: pointer;
+        font-size: 13px;
+      }
+
+      .btn-add {
+        margin-top: 12px;
+      }
+    </style>
   </x-slot:head>
   <div class="top-section">
     <div class="cover" style="background-image: url('{{ url('assets/img/cover-japan.jpg') }}')">
@@ -28,7 +53,7 @@
       @method('put')
       <div class="user-details">
         <span>Status</span>
-        <select name="stat" onchange="this.parentElement.parentElement.submit()">
+        <select name="stat">
           <option value="pending" @selected($user->stat == 'pending')>Proses Daftar Ulang</option>
           <option value="accepted" @selected($user->stat != 'pending')>Terdaftar</option>
         </select>
@@ -36,14 +61,18 @@
       <div class="user-details">
         <span>Role</span>
         <select name="role">
-          <option value="stdn" @selected($user->stat == '')>Proses Daftar Ulang</option>
-          <option value="refl" @selected($user->stat != 'pending')>Terdaftar</option>
-          <option value="admn" @selected($user->stat != 'pending')>Terdaftar</option>
+          <option value="stdn" @selected((old('role') ?? $user->role) == 'stdn')>Siswa</option>
+          <option value="refl" @selected((old('role') ?? $user->role) == 'refl')>Referral</option>
+          <option value="admn" @selected((old('role') ?? $user->role) == 'admn')>Admin</option>
         </select>
       </div>
       <label>
         Nama Lengkap
         <input type="text" name="nama" @error('nama') aria-invalid="true" @enderror value="{{ old('nama') ?? $user->nama }}" required>
+      </label>
+      <label>
+        Email
+        <input type="email" name="email" @error('email') aria-invalid="true" @enderror value="{{ old('email') ?? $user->email }}" required>
       </label>
       <label>
         Foto Profil
@@ -117,7 +146,7 @@
 
       <label>
         Alamat Lengkap
-        <textarea name="alamat" id="alamat" rows="10" @error('alamat') aria-invalid="true" @enderror>{{ old('alamat') ?? $user->alamat }}</textarea>
+        <textarea name="alamat" id="alamat" rows="3" @error('alamat') aria-invalid="true" @enderror>{{ old('alamat') ?? $user->alamat }}</textarea>
       </label>
       <div class="subsection">
         <h2 class="subsection-title">Pendidikan</h2>
@@ -145,7 +174,7 @@
       <div class="subsection">
         <h2 class="subsection-title">Pengalaman</h2>
         <div id="exps">
-          @foreach((old('pengalaman') ?? $user->pengalaman) as $exp)
+          @forelse((old('pengalaman') ?? $user->pengalaman) as $exp)
           <div class="repeat-group exp-group">
             <label>
               Pengalaman Kerja / Magang
@@ -153,6 +182,15 @@
             </label>
             <button type="button" class="remove-btn" onclick="delExp(this.parentElement)">Hapus</button>
           </div>
+          @empty
+          <div class="repeat-group exp-group">
+            <label>
+              Pengalaman Kerja / Magang
+              <input type="text" name="pengalaman[]">
+            </label>
+            <button type="button" class="remove-btn" onclick="delExp(this.parentElement)">Hapus</button>
+          </div>
+          @endforelse
         </div>
         <button type="button" onclick="exp_add()" class="btn-primary btn-small btn-add">Tambah Informasi</button>
       </div>
@@ -163,7 +201,7 @@
       <div class="subsection">
         <h2 class="subsection-title">Susunan Keluarga (utama)</h2>
         <div id="fams">
-          @forelse((old('struktur_keluarga') ?? $user->struktur_keluarga) as $i => $fam)
+          @foreach((old('struktur_keluarga') ?? $user->struktur_keluarga) as $i => $fam)
           <div data-fam-idx="{{ $i }}" class="repeat-group family-group">
             <label>
               Hubungan Keluarga
@@ -187,6 +225,7 @@
             </label>
             <button type="button" class="remove-btn" onclick="delFam(this.parentElement)">Hapus</button>
           </div>
+          @endforeach
         </div>
         <button type="button" onclick="fam_add()" class="btn-primary btn-small btn-add">Tambah Informasi</button>
       </div>
@@ -265,9 +304,9 @@
       @endforelse
       <label>
         Catatan Tambahan
-        <textarea name="catatan_xtra" rows="10" @error('catatan_xtra') aria-invalid="true" @enderror>{{ old('catatan_xtra') ?? $user->catatan_xtra }}</textarea>
+        <textarea name="catatan_xtra" rows="3" @error('catatan_xtra') aria-invalid="true" @enderror>{{ old('catatan_xtra') ?? $user->catatan_xtra }}</textarea>
       </label>
-      <button type="submit">Simpan</button>
+      <button type="submit" style="margin-top: 16px;">Simpan</button>
     </form>
   </div>
   <script>

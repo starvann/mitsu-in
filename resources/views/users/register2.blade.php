@@ -124,7 +124,7 @@
 
     <label for="alamat">
       Alamat Lengkap
-      <textarea name="alamat" id="alamat" rows="10" @error('alamat') aria-invalid="true" @enderror>{{ old('alamat') }}</textarea>
+      <textarea name="alamat" id="alamat" rows="3" @error('alamat') aria-invalid="true" @enderror>{{ old('alamat') }}</textarea>
     </label>
     <div class="subsection">
       <h2 class="subsection-title">Pendidikan</h2>
@@ -316,7 +316,7 @@
     </label>
     <label>
       Catatan Tambahan
-      <textarea name="catatan_xtra" rows="10" @error('catatan_xtra') aria-invalid="true" @enderror>{{ old('catatan_xtra') }}</textarea>
+      <textarea name="catatan_xtra" rows="3" @error('catatan_xtra') aria-invalid="true" @enderror>{{ old('catatan_xtra') }}</textarea>
     </label>
     <button type="submit" class="btn-primary" style="margin-top: 16px">Register</button>
   </form>

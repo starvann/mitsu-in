@@ -12,7 +12,7 @@
     </label>
     <label>
       Deskripsi
-      <textarea name="deskripsi" id="deskripsi" cols="3"></textarea>
+      <textarea name="deskripsi" id="deskripsi" rows="3"></textarea>
     </label>
     <input type="search" name="seacrh" id="searchStdn" placeholder="Cari nama/email user...">
     <div id="users" class="users"></div>
