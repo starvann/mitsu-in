@@ -3,9 +3,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
-    <style>
-
-    </style>
   </x-slot:head>
   <div class="top-section">
     <div class="cover" style="background-image: url('{{ url('assets/img/cover-japan.jpg') }}')">
@@ -27,7 +24,7 @@
     {{ session('success') }}
   </div>
   @endif
-    <div class="btn-group" style="width: 350px; align-self: center;">
+    <div class="btn-group" style="width: 250px; align-self: center;">
       <a href="{{ url('/dashboard/students') }}" role="button">Kembali</a>
       <a href="{{ url("/dashboard/edit-user/$user->id") }}" role="button">Edit</a>
       <form action="{{ url("/dashboard/del-user/$user->id") }}" method="post">

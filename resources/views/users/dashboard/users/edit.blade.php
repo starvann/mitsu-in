@@ -3,9 +3,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
-    <style>
-
-    </style>
   </x-slot:head>
   <div class="top-section">
     <div class="cover" style="background-image: url('{{ url('assets/img/cover-japan.jpg') }}')">
