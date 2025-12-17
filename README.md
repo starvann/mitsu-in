@@ -11,14 +11,15 @@
 
 # Backend Feature List (todo)
 ## Sistem Auth
-- [x] Login
+- [x] Login & Remember Me
 - [x] Daftar
 - [x] Dashboard
-- [x] Remember Me
 - [x] Role:
     - [x] Admin (dapat melihat data-data user dan membuat ujian)
     - [x] Student (siswa yang harus presensi, dan mengerjakan ujian)
     - [x] Referrer (user yang hanya bisa mengajak student lain)
+- [] Ganti Password
+- [] Edit Profil
 
 ## Sistem Presensi
 - [x] Scan QR
@@ -31,3 +32,7 @@
 - [x] Mengerjakan Ujian
 - [x] Melihat nilai
 - [x] Mereset ujian (admin only)
+
+## Grouping System
+- [x] CRUD Grup
+- [x] Menambahkan/kick user

@@ -63,10 +63,9 @@ class AuthController extends Controller
           $data['kode_ref_saya'] = Str::random(8);
           while(User::where('kode_ref_saya', $data['kode_ref_saya'])->exists()) {
             $data['kode_ref_saya'] = Str::random(8);
-	  }
-	  $data['stat'] = 'accepted';
+          }
+          $data['stat'] = 'accepted';
         }
-        
         if($req->hasFile('gmb_profil')) $data['gmb_profil'] = $req->file('gmb_profil')->store('assets/profiles');
         else unset($data['gmb_profil']);
         
@@ -79,14 +78,14 @@ class AuthController extends Controller
     }
     public function create_user2(Request $req) {
       $rules = [];
-      $is_any_field_filled = !empty($req->input('relasi_di_jepang.nama')) or !empty($req->input('relasi_di_jepang.relasi'))
-        or !empty($req->input('relasi_di_jepang.umur')) or !empty($req->input('relasi_di_jepang.pekerjaan'))
+      $is_any_field_filled = !empty($req->input('relasi_di_jepang.nama')) or !empty($req->input('relasi_di_jepang.hubungan'))
+        or !empty($req->input('relasi_di_jepang.usia')) or !empty($req->input('relasi_di_jepang.pekerjaan'))
         or !empty($req->input('relasi_di_jepang.alamat'));
       if($is_any_field_filled) {
         $rules = [
           'relasi_di_jepang' => 'required|array',
           'relasi_di_jepang.nama' => 'required|string|min:3',
-          'relasi_di_jepang.relasi' => 'required|string|min:3',
+          'relasi_di_jepang.hubungan' => 'required|string|min:3',
           'relasi_di_jepang.pekerjaan' => 'required|string|min:3',
           'relasi_di_jepang.usia' => 'required|numeric|integer|max_digits:3',
           'relasi_di_jepang.alamat' => 'required|string|min:3',
@@ -135,7 +134,7 @@ class AuthController extends Controller
       ];
       $data = $req->validate($rules);
       if(!$is_any_field_filled) {
-        $data['relasi_di_jepang'] = [];
+        unset($data['relasi_di_jepang']);
       }
       if(!in_array($data['kode'], ['admn', 'stdn', 'refl'])) return redirect('/register');
       // set role

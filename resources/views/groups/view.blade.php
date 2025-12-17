@@ -40,14 +40,10 @@
     let chosenUsers = [];
     let timeoutId;
 
-    queryAll('.cam-inp').forEach(element => {
-      element.parentElement.innerHTML += `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`
-    });
-
     async function get_students_of_group(keyword = "") {
       let url = `{{ url('dashboard/get-user-of-group') }}/{{ $group->id }}`;
       if(keyword !== '') {
-        url += `&q=${encodeURIComponent(keyword)}`;
+        url += `?q=${encodeURIComponent(keyword)}`;
       }
       try {
         const response = await fetch(url);
@@ -82,14 +78,16 @@
       } else {
         dataSiswa = await get_students_of_group(keyword);
       }
-      const list = users2 ? query("#users2") : query("#users");
+      let list = users2 ? query("#users2") : query("#users");
       if(!dataSiswa) {return;}
       list.innerHTML = "";
       if(dataSiswa.length < 1) {list.innerHTML = `<p class="empty" style="text-align: center;">-- Kosong --</p>`;}
 
+      console.log(users2);
       dataSiswa.forEach((data) => {
         let id = data.id;
         if(users2 === true && chosenUsers.includes(id)) {return;}
+        if(!users2) {console.log(data.nama);}
         const el = document.createElement("div");
         let selected = chosenUsers.includes(id) ? 'checked' : '';
         el.dataset.id = id;
@@ -113,6 +111,7 @@
     searchInput.addEventListener("input", function () {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
+        console.log('search');
         renderStdnList(searchInput.value);
       }, 500);
     });

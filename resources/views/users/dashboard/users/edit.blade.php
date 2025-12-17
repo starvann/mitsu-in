@@ -39,7 +39,7 @@
       <div id="studentName" class="student-name">{{ $user->nama }}</div>
     </div>
   </div>
-  <a href="{{ url('/dashboard/students') }}" role="button" style="align-self: center;">Kembali</a>
+  <a href="{{ $isAdmin ? $back_url : url('dashboard') }}" role="button" style="align-self: center;">Kembali</a>
   @if(!empty($errors->all()))
   <div class="err-messages">
     @foreach($errors->all() as $err_msg)
@@ -48,9 +48,10 @@
   </div>
   @endif
   <div>
-    <form action="{{ url('/dashboard/edit-user/'.$user->id) }}" method="post">
+    <form action="{{ url('/dashboard/edit-user/'.$user->id) }}" method="post" enctype="multipart/form-data">
       @csrf
       @method('put')
+      @if(auth()->user()->role == 'admn')
       <div class="user-details">
         <span>Status</span>
         <select name="stat">
@@ -66,6 +67,7 @@
           <option value="admn" @selected((old('role') ?? $user->role) == 'admn')>Admin</option>
         </select>
       </div>
+      @endif
       <label>
         Nama Lengkap
         <input type="text" name="nama" @error('nama') aria-invalid="true" @enderror value="{{ old('nama') ?? $user->nama }}" required>
@@ -178,7 +180,7 @@
           <div class="repeat-group exp-group">
             <label>
               Pengalaman Kerja / Magang
-              <input type="text" name="pengalaman[]" value="{{ $exp }}">
+              <input type="text" name="pengalaman[]" @if($exp) value="{{ $exp }}" @endif>
             </label>
             <button type="button" class="remove-btn" onclick="delExp(this.parentElement)">Hapus</button>
           </div>

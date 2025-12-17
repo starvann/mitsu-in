@@ -11,10 +11,11 @@ use App\Models\ExamResult;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Password;
+use Illuminate\Validation\Rules\Password;
 
 class DashboardController extends Controller
 {
@@ -81,13 +82,20 @@ class DashboardController extends Controller
     return response()->json($users);
   }
   public function edit_user(User $user) {
-    Gate::authorize('admin');
-    $data = ['user' => $user];
+    if(Gate::none(['same', 'admin'], $user)) return abort(403);
+    $data = [
+      'user' => $user,
+      'isAdmin' => Gate::allows('admin'),
+      'back_url' => $user->role == 'stdn' ? url('dashboard/students') : ($user->role == 'refl' ? url('dashboard/referrals') : url('dashboard/admins'))
+    ];
     return view('users.dashboard.users.edit', $data);
   }
   public function view_user(User $user) {
     Gate::authorize('admin');
-    $data = ['user' => $user];
+    $data = [
+      'user' => $user,
+      'back_url' => $user->role == 'stdn' ? url('dashboard/students') : ($user->role == 'refl' ? url('dashboard/referrals') : url('dashboard/admins'))
+    ];
     if($user->kode_ref != null) {
       $data['referrer_id'] = User::where('kode_ref_saya', $user->kode_ref)->first()->id;
     } else if($user->role == 'refl') {
@@ -106,8 +114,8 @@ class DashboardController extends Controller
     return redirect('/dashboard/students')->with('success', 'User telah dihapus.');
   }
   public function update_user(Request $req, User $user) {
-    Gate::authorize('admin');
-    if($req->has('stat_only')) {
+    if(Gate::none(['same', 'admin'], $user)) return abort(403);
+    if($req->has('stat_only') and Gate::allows('admin')) {
       $data = $req->validate([
         'stat' => ['required', Rule::in(['pending', 'accepted'])]
       ]);
@@ -115,26 +123,33 @@ class DashboardController extends Controller
       return redirect("dashboard/view-user/$user->id")->with('success', 'Berhasil update!');
     }
     $rules = [];
-    $is_any_field_filled = !empty($req->input('relasi_di_jepang.nama')) or !empty($req->input('relasi_di_jepang.relasi'))
-      or !empty($req->input('relasi_di_jepang.umur')) or !empty($req->input('relasi_di_jepang.pekerjaan'))
-      or !empty($req->input('relasi_di_jepang.alamat'));
+    if(Gate::allows('admin')) {
+      $rules += [
+        'stat' => ['required', Rule::in(['pending', 'accepted'])],
+        'role' => ['required', Rule::in(['stdn', 'refl', 'admn'])]
+      ];
+    }
+    $is_any_field_filled = !empty($req->input('relasi_di_jepang.nama')) or !empty($req->input('relasi_di_jepang.hubungan'))
+    or !empty($req->input('relasi_di_jepang.usia')) or !empty($req->input('relasi_di_jepang.pekerjaan'))
+    or !empty($req->input('relasi_di_jepang.alamat'));
     if($is_any_field_filled) {
-      $rules = [
+      $rules += [
         'relasi_di_jepang' => 'required|array',
         'relasi_di_jepang.nama' => 'required|string|min:3',
-        'relasi_di_jepang.relasi' => 'required|string|min:3',
+        'relasi_di_jepang.hubungan' => 'required|string|min:3',
         'relasi_di_jepang.pekerjaan' => 'required|string|min:3',
         'relasi_di_jepang.usia' => 'required|numeric|integer|max_digits:3',
         'relasi_di_jepang.alamat' => 'required|string|min:3',
       ];
     }
+    if($req->has('gmb_profil')) {
+      $rules += ['gmb_profil' => 'file|image|max:2048'];
+    }
     $rules = $rules + [
       'email' => ['required', 'email', Rule::unique('users', 'email')->ignore($user->id)],
-      'role' => ['required', 'string', Rule::in(['stdn', 'refl', 'admn'])],
       'kode_ref' => 'nullable|string|max:8|exists:users,kode_ref_saya',
       'nama' => 'required|string|min:3',
       'no_hp' => 'required|string|digits_between:9,16',
-      'gmb_profil' => 'nullable|file|image|max:2048',
       'gender' => ['required', Rule::in(['laki-laki', 'perempuan'])],
       'umur' => 'required|numeric|integer|min:1',
       'tinggi_badan' => 'required|numeric|integer|min:1',
@@ -150,7 +165,7 @@ class DashboardController extends Controller
       'pendidikan.*.tahun' => 'required|numeric|integer|digits:4',
       'pendidikan.*.nama_sekolah' => 'required|string|min:4',
       'pendidikan.*.jurusan' => 'required|string',
-      'pengalaman' => 'nullable|array|list',
+      'pengalaman' => 'required|array|list',
       'struktur_keluarga' => 'required|array',
       'struktur_keluarga.*.relasi' => 'required|string|min:3',
       'struktur_keluarga.*.nama' => 'required|string|min:3',
@@ -172,16 +187,58 @@ class DashboardController extends Controller
     if(!$is_any_field_filled) {
       $data['relasi_di_jepang'] = [];
     }
+    $idxs = [];
+    foreach($data['pengalaman'] as $i => $exp) {
+      if(!is_string($exp)) {
+        $idxs[] = $i;
+        continue;
+      }
+      if(strlen($exp) === 0) {
+        $idxs[] = $i;
+        continue;
+      }
+    }
+    foreach($idxs as $i) {
+      unset($data['pengalaman'][$i]);
+    }
+    if(count($data['pengalaman']) === 0) {
+      $data['pengalaman'] = [];
+    }
     // upload profile picture if exists
     if($req->hasFile('gmb_profil')) {
-      Storage::delete($user->gmb_profil);
+      if($user->gmb_profil != 'assets/profiles/default.webp') Storage::delete($user->gmb_profil);
       $data['gmb_profil'] = $req->file('gmb_profil')->store('assets/profiles');
     }
     else unset($data['gmb_profil']);
     $data['status_pernikahan'] = str($data['status_pernikahan'])->ucfirst();
     $user->update($data);
-    return redirect('/dashboard/view-user/'.$user->id)->with('success', 'Berhasil update!');
+    if(Gate::allows('admin')) {
+      return redirect('/dashboard/view-user/'.$user->id)->with('success', 'Berhasil update!');
+    }
+    return redirect('dashboard');
   }
+
+  public function edit_password(User $user) {
+    Gate::authorize('same', $user);
+    return view('users.dashboard.change-pass', ['id' => $user->id]);
+  }
+
+  public function update_password(Request $req, User $user) {
+    Gate::authorize('same', $user);
+    $data = $req->validate([
+      'password_lama' => 'required|string',
+      'password_baru' => ['required', 'string', Password::min(8)->mixedCase()->numbers()->symbols()],
+      'ulangi_password_baru' => 'required|same:password_baru'
+    ]);
+    if(!Hash::check($data['password_lama'], $user->password)) {
+      return back()->withErrors(['password_lama' => 'Password lama tidak sama!']);
+    }
+    $user->update([
+      'password' => Hash::make($data['password_baru'])
+    ]);
+    return redirect('dashboard')->with('success', 'Password telah diupdate!');
+  }
+
   // exams
   public function manage_exams() {
     Gate::authorize('admin');

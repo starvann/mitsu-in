@@ -13,7 +13,6 @@ class User extends Authenticatable
 
   protected $guarded = [
     'id',
-    'stat',
   ];
 
   protected $hidden = [

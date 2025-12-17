@@ -32,7 +32,13 @@
       {{ session('success') }}
     </div>
     @endif
-    <a href="{{ url('logout') }}" role="button" style="margin: 16px auto;">Logout</a>
+    <div style="max-width: 250px; margin: 16px auto;">
+      <div class="btn-group">
+        <a href="{{ url('logout') }}" role="button">Logout</a>
+        <a href="{{ url("dashboard/edit-user/$user->id") }}" role="button">Edit Profil</a>
+      </div>
+      <a href="{{ url("dashboard/change-pass/$user->id") }}" role="button" style="width: 100%; margin-top: 16px;">Ganti Password</a>
+    </div>
 
     <!-- IZIN -->
     @if($user->stat === 'accepted')

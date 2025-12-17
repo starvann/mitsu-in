@@ -34,11 +34,19 @@
     </x-slot:head>
     <div class="card">
         <h1>Hi Admin!</h1>
-        <a href="{{ url('dashboard/students') }}" role="button">Data Siswa</a>
-        <a href="{{ url('dashboard/referrals') }}" role="button">Data Referral</a>
-        <a href="{{ url('dashboard/admins') }}" role="button">Data Admin</a>
-        <a href="{{ url('dashboard/groups') }}" role="button">Kelola Grup</a>
+        <div class="btn-group">
+          <a href="{{ url('dashboard/students') }}" role="button">Data Siswa</a>
+          <a href="{{ url('dashboard/referrals') }}" role="button">Data Referral</a>
+        </div>
+        <div class="btn-group">
+          <a href="{{ url('dashboard/admins') }}" role="button">Data Admin</a>
+          <a href="{{ url('dashboard/groups') }}" role="button">Kelola Grup</a>
+        </div>
         <a href="{{ url('dashboard/manage-exam') }}" role="button">Kelola Ujian</a>
+        <div class="btn-group">
+          <a href="{{ url('dashboard/change-pass') }}/{{ auth()->id() }}" role="button">Ganti Password</a>
+          <a href="{{ url('dashboard/edit-user') }}/{{ auth()->id() }}" role="button">Edit Profil</a>
+        </div>
         <a href="{{ url('logout') }}" role="button">Log out</a>
     </div>
 </x-base>

@@ -24,39 +24,39 @@ class DatabaseSeeder extends Seeder
             'role' => 'admn',
             'stat' => 'accepted'
         ]);
-        User::create([
-            'email' => 'test1@example.org',
-            'nama' => 'Lorem Ipsum',
-            'password' => Hash::make('123'),
-            'stat' => 'accepted'
-        ]);
-        User::create([
-            'email' => 'test2@example.org',
-            'nama' => 'Lorem Dolor',
-            'password' => Hash::make('123'),
-        ]);
-        User::create([
-            'email' => 'test3@example.org',
-            'nama' => 'Ipsum Lorem',
-            'password' => Hash::make('123'),
-            'role' => 'refl',
-            'kode_ref_saya' => 'ipsum78',
-            'stat' => 'accepted'
-        ]);
-        User::create([
-            'email' => 'test4@example.org',
-            'nama' => 'Ipsum Dolor',
-            'password' => Hash::make('123'),
-            'role' => 'refl',
-            'kode_ref_saya' => 'lorem80',
-            'stat' => 'accepted'
-        ]);
-        User::create([
-            'email' => 'test5@example.org',
-            'nama' => 'Dolor Lorem',
-            'password' => Hash::make('123'),
-            'kode_ref' => 'ipsum78',
-            'stat' => 'accepted'
-        ]);
+        // User::create([
+        //     'email' => 'test1@example.org',
+        //     'nama' => 'Lorem Ipsum',
+        //     'password' => Hash::make('12345678'),
+        //     'stat' => 'accepted'
+        // ]);
+        // User::create([
+        //     'email' => 'test2@example.org',
+        //     'nama' => 'Lorem Dolor',
+        //     'password' => Hash::make('12345678'),
+        // ]);
+        // User::create([
+        //     'email' => 'test3@example.org',
+        //     'nama' => 'Ipsum Lorem',
+        //     'password' => Hash::make('12345678'),
+        //     'role' => 'refl',
+        //     'kode_ref_saya' => 'ipsum78',
+        //     'stat' => 'accepted'
+        // ]);
+        // User::create([
+        //     'email' => 'test4@example.org',
+        //     'nama' => 'Ipsum Dolor',
+        //     'password' => Hash::make('12345678'),
+        //     'role' => 'refl',
+        //     'kode_ref_saya' => 'lorem80',
+        //     'stat' => 'accepted'
+        // ]);
+        // User::create([
+        //     'email' => 'test5@example.org',
+        //     'nama' => 'Dolor Lorem',
+        //     'password' => Hash::make('12345678'),
+        //     'kode_ref' => 'ipsum78',
+        //     'stat' => 'accepted'
+        // ]);
     }
 }

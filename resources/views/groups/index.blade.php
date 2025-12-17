@@ -2,7 +2,7 @@
   <a href="{{ url('dashboard') }}" role="button">Kembali</a>
   <h1>Grup</h1>
   <button type="button" id="showModal">Buat Grup</button>
-  <input type="search" name="seacrh" id="search" placeholder="Cari nama/deskripsi grup...">
+  <input type="search" id="search" placeholder="Cari nama/deskripsi grup...">
   <div id="groups"></div>
   <dialog id="createModal">
     <h2>Buat Grup</h2>

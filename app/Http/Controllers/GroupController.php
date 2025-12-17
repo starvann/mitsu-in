@@ -33,7 +33,7 @@ class GroupController extends Controller
 
   public function get_users_of_group(Request $req, Group $group) {
     Gate::authorize('admin');
-    $users = MemberGroup::where('group_id', $group->id)->with('user')->get();
+    $users = $group->users();
     if($req->has('q')) {
       $keyword = $req->input('q');
       if(!is_string($keyword)) {
@@ -42,14 +42,15 @@ class GroupController extends Controller
       if(strlen($keyword) < 3) {
         return response([], 400);
       }
-      $users = $users->where('nama', 'like', '%'.$keyword.'%')->orWhere('deskripsi', 'like', '%'.$keyword.'%')->get();
+      $users = $users->where('nama', 'like', '%'.$keyword.'%')->orWhere('email', 'like', '%'.$keyword.'%');
     }
-    $users = $users->map(function($item, $key) {
+    $users = $users->get();
+    $users = $users->map(function($user, $key) {
       return [
-        'id' => $item->user->id,
-        'nama' => $item->user->nama,
-        'email' => $item->user->email,
-        'gmb_profil' => $item->user->gmb_profil,
+        'id' => $user->id,
+        'nama' => $user->nama,
+        'email' => $user->email,
+        'gmb_profil' => $user->gmb_profil,
       ];
     });
     return response()->json($users);

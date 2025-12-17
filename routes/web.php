@@ -26,6 +26,8 @@ Route::middleware('guest')->group(function()  {
 Route::middleware('auth')->group(function() {
   # dashboard
   Route::get('/dashboard', [DashboardController::class, 'index']);
+  Route::get('/dashboard/change-pass/{user}', [DashboardController::class, 'edit_password']);
+  Route::put('/dashboard/change-pass/{user}', [DashboardController::class, 'update_password']);
   Route::get('/logout', [AuthController::class, 'logout']);
   # CRUD Exam
   Route::get('dashboard/create-exam', [DashboardController::class, 'create_exam']);

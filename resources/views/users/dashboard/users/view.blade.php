@@ -24,18 +24,18 @@
     {{ session('success') }}
   </div>
   @endif
-    <div class="btn-group" style="width: 250px; align-self: center;">
-      <a href="{{ url('/dashboard/students') }}" role="button">Kembali</a>
-      <a href="{{ url("/dashboard/edit-user/$user->id") }}" role="button">Edit</a>
-    </div>
+  <div class="btn-group" style="width: 250px; align-self: center;">
+    <a href="{{ $back_url }}" role="button">Kembali</a>
+    <a href="{{ url("/dashboard/edit-user/$user->id") }}" role="button">Edit</a>
+  </div>
   <div>
-    <form action="{{ url('/dashboard/edit-user/'.$user->id) }}" method="post">
+    <form action="{{ url('/dashboard/edit-user/'.$user->id) }}" method="post" id="edit-user">
       @csrf
-      @method('put')
-      <input type="hidden" name="stat_only">
+      @method('PUT')
+      <input type="hidden" name="stat_only" value="true">
       <div class="user-details">
         <span>Status</span>
-        <select name="stat" onchange="this.parentElement.parentElement.submit()">
+        <select name="stat" onchange="query('#edit-user').submit()">
           <option value="pending" @selected($user->stat == 'pending')>Proses Daftar Ulang</option>
           <option value="accepted" @selected($user->stat != 'pending')>Terdaftar</option>
         </select>
@@ -101,7 +101,7 @@
       </div>
       <div class="user-details">
         <span>Tangan Ahli</span>
-        <p>{{ $user->tangan_utama }}</p>
+        <p>{{ ucfirst($user->tangan_utama) }}</p>
       </div>
       <div class="user-details">
         <span>Alamat Lengkap</span>
@@ -230,13 +230,14 @@
       </div>
       @endif
       @endif
-    </div>
-    @isset($ref_users_count)
-      <div class="user-details">
-        <span>Jumlah Pengguna Kode Ref.</span>
-        <p>{{ $ref_users_count }}</p>
-      </div>
-    @endisset
+      @isset($ref_users_count)
+        <div class="user-details">
+          <span>Jumlah Pengguna Kode Ref.</span>
+          <p>{{ $ref_users_count }}</p>
+        </div>
+      @endisset
+    </form>
+
     <form action="{{ url("/dashboard/del-user/$user->id") }}" method="post">
       @csrf
       @method('DELETE')
