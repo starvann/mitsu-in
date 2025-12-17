@@ -16,17 +16,17 @@ Route::get('/onboarding', function() {
 });
 # auth
 Route::middleware('guest')->group(function()  {
-    Route::get('/login', [AuthController::class, 'login'])->name('login');
-    Route::post('/login', [AuthController::class, 'try_login']);
-    Route::get('/register', [AuthController::class, 'register']);
-    Route::post('/register', [AuthController::class, 'create_user']);
-    Route::get('/register2', [AuthController::class, 'register2']);
-    Route::post('/register2', [AuthController::class, 'create_user2']);
+  Route::get('/login', [AuthController::class, 'login'])->name('login');
+  Route::post('/login', [AuthController::class, 'try_login']);
+  Route::get('/register', [AuthController::class, 'register']);
+  Route::post('/register', [AuthController::class, 'create_user']);
+  Route::get('/register2', [AuthController::class, 'register2']);
+  Route::post('/register2', [AuthController::class, 'create_user2']);
 });
 Route::middleware('auth')->group(function() {
     # dashboard
-    Route::get('/dashboard', [DashboardController::class, 'index']);
-    Route::get('/pending', [DashboardController::class, 'pending']);
+  Route::get('/dashboard', [DashboardController::class, 'index']);
+  Route::get('/pending', [DashboardController::class, 'pending']);
   Route::get('/dashboard/change-pass/{user}', [DashboardController::class, 'edit_password']);
   Route::put('/dashboard/change-pass/{user}', [DashboardController::class, 'update_password']);
   Route::get('/logout', [AuthController::class, 'logout']);
