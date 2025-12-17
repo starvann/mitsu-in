@@ -24,8 +24,9 @@ Route::middleware('guest')->group(function()  {
     Route::post('/register2', [AuthController::class, 'create_user2']);
 });
 Route::middleware('auth')->group(function() {
-  # dashboard
-  Route::get('/dashboard', [DashboardController::class, 'index']);
+    # dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/pending', [DashboardController::class, 'pending']);
   Route::get('/dashboard/change-pass/{user}', [DashboardController::class, 'edit_password']);
   Route::put('/dashboard/change-pass/{user}', [DashboardController::class, 'update_password']);
   Route::get('/logout', [AuthController::class, 'logout']);

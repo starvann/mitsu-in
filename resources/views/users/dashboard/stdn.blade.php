@@ -19,14 +19,6 @@
       </div>
       @endif
     </div>
-    @if($user->stat === 'pending')
-    <section class="card" style="margin-top: 16px">
-      <h2 class="section-title">Status Pembayaran</h2>
-      <div id="paymentStatusBox" class="payment-status pending">
-        <span id="paymentStatusText">Menunggu konfirmasi</span>
-      </div>
-    </section>
-    @endif
     @if(session('success'))
     <div class="success-msg">
       {{ session('success') }}

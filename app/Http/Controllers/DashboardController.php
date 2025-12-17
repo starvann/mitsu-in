@@ -19,8 +19,25 @@ use Illuminate\Validation\Rules\Password;
 
 class DashboardController extends Controller
 {
+  public function pending(Request $req) {
+    $user = Auth::user();
+    if($user->stat == 'accepted') {
+      return redirect()->intended('dashboard');
+    }
+    if($user->role == 'admn') {
+      Auth::logout();
+      $req->session()->invalidate();
+      $req->session()->regenerateToken();
+      return redirect('/login')->withErrors(['Admin tidak terverifikasi!']);
+    }
+    return view('users.pending', ['user' => $user]);
+  }
+
   public function index(Request $req) {
     $role = Auth::user()->role;
+    if(Auth::user()->stat == 'pending') {
+      return redirect('pending');
+    }
     if($role == 'admn') {
       if(Auth::user()->stat == 'pending') {
         Auth::logout();

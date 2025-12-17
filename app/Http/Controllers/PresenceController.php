@@ -15,20 +15,24 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 class PresenceController extends Controller
 {
   public function store_presence(Request $req) {
-    // jika rekaman presensi sudah ada maka alihkan
-    if(Presence::where('user_id', Auth::user()->id)->whereDay('created_at', today())->exists()) return abort(403);
     // presensi lewat token (qr/link)
     if($req->query('token')) {
       $id = Cache::get($req->query('token'));
       // pengecekan user id
       if(is_null($id)) return abort(404);
+      if(Presence::where('user_id', $id)->whereDate('created_at', today())->exists()) return abort(403);
       // catat presensi
       Presence::create([
         'user_id' => $id,
         'status' => 'hadir'
       ]);
-      return redirect('/dashboard')->with('success', 'Berhasil presensi');
+      if(Auth::check()) {
+        return redirect('/dashboard')->with('success', 'Berhasil presensi');
+      }
+      return response('Berhasil presensi');
     }
+    if(!Auth::check()) return abort(403);
+    if(Presence::where('user_id', Auth::user()->id)->whereDate('created_at', today())->exists()) return abort(403);
     // validasi dan catat izin/sakit
     $data = $req->validate([
       'status' => ['required', Rule::in(['sakit', 'izin', 'darurat'])],

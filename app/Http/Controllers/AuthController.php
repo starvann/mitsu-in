@@ -140,6 +140,23 @@ class AuthController extends Controller
       // set role
       $data['role'] = $data['kode'];
       unset($data['kode']);
+      $idxs = [];
+      foreach($data['pengalaman'] as $i => $exp) {
+        if(!is_string($exp)) {
+          $idxs[] = $i;
+          continue;
+        }
+        if(strlen($exp) === 0) {
+          $idxs[] = $i;
+          continue;
+        }
+      }
+      foreach($idxs as $i) {
+        unset($data['pengalaman'][$i]);
+      }
+      if(count($data['pengalaman']) === 0) {
+        $data['pengalaman'] = [];
+      }
       // hash password and delete the session
       $data['password'] = Hash::make($data['password']);
       Session::forget('password');
