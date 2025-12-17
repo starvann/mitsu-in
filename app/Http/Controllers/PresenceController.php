@@ -9,11 +9,29 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PresenceController extends Controller
 {
+  public function lists_presence(User $user) {
+    Gate::authorize('admin');
+    $presences = $user->presences()->orderBy('created_at', 'desc')->get();
+    $presences = $presences->groupBy(function($item) {
+      return Carbon::parse($item->created_at)->translatedFormat('F Y');
+    });
+    $presences = $presences->map(function($group) {
+      return $group->sortBy('created_at');
+    });
+    return view('users.dashboard.presences.index', ['user' => $user, 'presences' => $presences]);
+  }
+
+  public function view_presence(Presence $presence) {
+    Gate::authorize('admin');
+    return view('users.dashboard.presences.view', ['presence' => $presence->load('user')]);
+  }
+
   public function store_presence(Request $req) {
     // presensi lewat token (qr/link)
     if($req->query('token')) {
@@ -37,7 +55,7 @@ class PresenceController extends Controller
     $data = $req->validate([
       'status' => ['required', Rule::in(['sakit', 'izin', 'darurat'])],
       'alasan' => 'required|min:24',
-      'doc_xtra' => 'required|file|max:4096|mimetypes:image/png,image/jpeg,image/webp,application/pdf'
+      'doc_xtra' => 'required|file|max:4096|mimetypes:image/png,image/jpeg,image/webp'
     ]);
     $data['user_id'] = Auth::user()->id;
     $data['doc_xtra'] = $req->file('doc_xtra')->store('assets/presence_docs');

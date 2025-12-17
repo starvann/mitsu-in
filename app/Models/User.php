@@ -32,6 +32,10 @@ class User extends Authenticatable
     return $this->belongsToMany(Group::class, 'member_groups')->withTimestamps();
   }
 
+  public function paymentProof() {
+    return $this->hasOne(PaymentProof::class);
+  }
+
   protected function casts(): array
   {
     return [

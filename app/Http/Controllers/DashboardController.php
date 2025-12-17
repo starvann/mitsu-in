@@ -8,6 +8,7 @@ use App\Models\Presence;
 use App\Models\Question;
 use App\Http\Controllers\PresenceController;
 use App\Models\ExamResult;
+use App\Models\PaymentProof;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -19,20 +20,6 @@ use Illuminate\Validation\Rules\Password;
 
 class DashboardController extends Controller
 {
-  public function pending(Request $req) {
-    $user = Auth::user();
-    if($user->stat == 'accepted') {
-      return redirect()->intended('dashboard');
-    }
-    if($user->role == 'admn') {
-      Auth::logout();
-      $req->session()->invalidate();
-      $req->session()->regenerateToken();
-      return redirect('/login')->withErrors(['Admin tidak terverifikasi!']);
-    }
-    return view('users.pending', ['user' => $user]);
-  }
-
   public function index(Request $req) {
     $role = Auth::user()->role;
     if(Auth::user()->stat == 'pending') {
@@ -126,8 +113,9 @@ class DashboardController extends Controller
     foreach($files as $file) {
       if($file) Storage::delete($file);
     }
+    Storage::delete($user->paymentProof->file);
     $user->delete();
-    Storage::delete($user->gmb_profil);
+    if($user->gmb_profil != 'assets/profiles/default.webp') Storage::delete($user->gmb_profil);
     return redirect('/dashboard/students')->with('success', 'User telah dihapus.');
   }
   public function update_user(Request $req, User $user) {
@@ -387,4 +375,39 @@ class DashboardController extends Controller
     $exam->delete();
     return redirect('/dashboard/manage-exam')->with('success', 'Ujian telah dihapus.');
   }
+
+  public function pending(Request $req) {
+    $user = Auth::user();
+    if($user->stat == 'accepted') {
+      return redirect()->intended('dashboard');
+    }
+    if($user->role == 'admn') {
+      Auth::logout();
+      $req->session()->invalidate();
+      $req->session()->regenerateToken();
+      return redirect('/login')->withErrors(['Admin tidak terverifikasi!']);
+    }
+    return view('users.payment-proof.pending', ['user' => $user]);
+  }
+
+  public function view_payment(User $user) {
+    return view('users.payment-proof.view', ['user' => $user->load('paymentProof')]);
+  }
+
+  public function pending_confirm(Request $req) {
+    $data = $req->validate([
+      'file' => 'required|file|image|max:2048'
+    ]);
+    $data['file'] = $req->file('file')->store('assets/payment_proofs');
+    $user = Auth::user();
+    $proof = PaymentProof::where('user_id', $user->id)->first();
+    if($proof) {
+      Storage::delete($proof->file);
+      $proof->update($data);
+    } else {
+      $proof = $user->paymentProof()->create($data);
+    }
+    return redirect('pending')->with('info', 'Mohon bersabar sampai admin memverifikasi akun anda.');
+  }
+
 }

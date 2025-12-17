@@ -24,10 +24,21 @@
     {{ session('success') }}
   </div>
   @endif
-  <div class="btn-group" style="width: 250px; align-self: center;">
+  @if($user->role == 'stdn')
+  <div class="col" style="width: 300px; align-self: center;">
+    <div class="btn-group">
+      <a href="{{ $back_url }}" role="button">Kembali</a>
+      <a href="{{ url("/dashboard/presences/$user->id") }}" role="button">Presensi</a>
+      <a href="{{ url("/dashboard/edit-user/$user->id") }}" role="button">Edit</a>
+    </div>
+    <a href="{{ url("view-payment/$user->id") }}" role="button" style="width: 100%;">Bukti Pembayaran</a>
+  </div>
+  @else
+  <div class="btn-group" style="width: 300px; align-self: center;">
     <a href="{{ $back_url }}" role="button">Kembali</a>
     <a href="{{ url("/dashboard/edit-user/$user->id") }}" role="button">Edit</a>
   </div>
+  @endif
   <div>
     <form action="{{ url('/dashboard/edit-user/'.$user->id) }}" method="post" id="edit-user">
       @csrf

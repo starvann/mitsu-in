@@ -24,9 +24,11 @@ Route::middleware('guest')->group(function()  {
   Route::post('/register2', [AuthController::class, 'create_user2']);
 });
 Route::middleware('auth')->group(function() {
-    # dashboard
+  # dashboard
   Route::get('/dashboard', [DashboardController::class, 'index']);
   Route::get('/pending', [DashboardController::class, 'pending']);
+  Route::get('/view-payment/{user}', [DashboardController::class, 'view_payment']);
+  Route::post('/pending', [DashboardController::class, 'pending_confirm']);
   Route::get('/dashboard/change-pass/{user}', [DashboardController::class, 'edit_password']);
   Route::put('/dashboard/change-pass/{user}', [DashboardController::class, 'update_password']);
   Route::get('/logout', [AuthController::class, 'logout']);
@@ -53,6 +55,8 @@ Route::middleware('auth')->group(function() {
   # Presence
   Route::post('/presence', [PresenceController::class, 'store_presence']);
   Route::get('/presence/percentage/{user}', [PresenceController::class, 'get_presence_data']);
+  Route::get('/dashboard/presences/{user}', [PresenceController::class, 'lists_presence']);
+  Route::get('/dashboard/view-presence/{presence}', [PresenceController::class, 'view_presence']);
   # Exam (for students)
   Route::get('/exam/{exam}', [ExamController::class, 'index']);
   Route::get('/exam-calc-result', [ExamController::class, 'calc_result']);
