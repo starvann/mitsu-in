@@ -46,7 +46,7 @@
     <label>
       Bukti Pembayaran (gambar)
       <input type="file" name="file" id="inputImg" accept="image/png,image/jpeg,image/webp" required>
-      <img src="{{ auth()->user()->paymentProof ? url(auth()->user()->paymentProof?->file) : '' }}" alt="Preview" style="width: 100%; height: 100%; display: none; object-fit: cover;" id="prevImg">
+      <img @if(auth()->user()->paymentProof) src="{{ url(auth()->user()->paymentProof->file) }}" @endif alt="Preview" style="width: 100%; height: 100%; display: none; object-fit: cover;" id="prevImg">
     </label>
     <button type="submit">Update</button>
     <p class="status-info">
@@ -61,7 +61,7 @@
     }
     let prevImg = query("#prevImg");
     let inputImg = query("#inputImg");
-    if(prevImg.src != '') {
+    if(prevImg.hasAttribute('src')) {
       prevImg.style.display = 'block';
     }
     inputImg.onchange = () => {
