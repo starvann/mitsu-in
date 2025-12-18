@@ -1,4 +1,27 @@
 <x-base title="Menunggu Pembayaran" main-class="page col">
+  <x-slot:head>
+    <style>
+      .payment-card {
+        padding: 20px;
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        margin-top: 20px;
+      }
+      .price {
+        font-size: 22px;
+        font-weight: 700;
+        color: #8B0000;
+        margin-bottom: 10px;
+        margin-top: 5px;
+      }
+      .status-info {
+        margin-top: 10px;
+        font-size: 14px;
+        color: #777;
+      }
+    </style>
+  </x-slot:head>
   <div class="top-section">
     <div class="cover" style="background-image: url('{{ url('assets/img/cover-japan.jpg') }}')">
       <div class="avatar-wrapper">
@@ -11,9 +34,14 @@
   </div>
   <form action="{{ url('pending') }}" class="card" style="margin-top: 16px" method="post" enctype="multipart/form-data">
     @csrf
-    <h2 class="section-title">Status Pembayaran</h2>
+    <h2 class="section-title">Detail Pembayaran</h2>
+    <div class="price">Rp 250.000</div>
+    <p><strong>Transfer ke rekening berikut:</strong></p>
+    <p><strong>BCA:</strong> 123456789 – a/n PT MITSU INDOJAYA</p>
+    <p><strong>QRIS:</strong> LPK MITS GAKUEN</p>
+    <img src="{{ url("assets/img/qris.jpeg") }}" alt="QRIS" style="width:50%; border-radius: 8px; margin-top: 10px;">
     <div id="paymentStatusBox" class="payment-status pending">
-      <span id="paymentStatusText">Menunggu konfirmasi</span>
+      <span id="paymentStatusText">{{ auth()->user()->paymentProof ? 'Menunggu Konfirmasi Admin' : 'Menunggu Bukti Pembayaran'}}</span>
     </div>
     <label>
       Bukti Pembayaran (gambar)
@@ -21,8 +49,11 @@
       <img src="{{ auth()->user()->paymentProof ? url(auth()->user()->paymentProof?->file) : '' }}" alt="Preview" style="width: 100%; height: 100%; display: none; object-fit: cover;" id="prevImg">
     </label>
     <button type="submit">Update</button>
+    <p class="status-info">
+      Setelah mengirim bukti pembayaran, statusmu akan otomatis menjadi:  
+      <strong>Menunggu Konfirmasi Admin</strong>.
+    </p>
   </form>
-
   <a href="{{ url('pending') }}" role="button" style="margin-top: 16px; align-self: center;">Refresh</a>
   <script>
     function query(s) {

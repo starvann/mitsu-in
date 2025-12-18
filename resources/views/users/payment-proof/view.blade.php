@@ -10,7 +10,11 @@
     <div class="user-details">
       <span>Bukti Pembayaran</span>
       <p>
-        <img src="{{ $user->paymentProof ? url($user->paymentProof->file) : '' }}" alt="Bukti" style="width: 100%; height: auto;">
+        @if($user->paymentProof)
+        <img src="{{ url($user->paymentProof->file) }}" alt="Bukti" style="width: 100%; height: auto;">
+        @else
+        Belum Mengirimkan
+        @endif
       </p>
     </div>
     <form action="{{ url('/dashboard/edit-user/'.$user->id) }}" method="post" id="edit-user">
