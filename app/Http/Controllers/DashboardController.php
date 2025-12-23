@@ -82,7 +82,7 @@ class DashboardController extends Controller
       }
       $users = $users->where('nama', 'like', '%'.$keyword.'%')->orWhere('email', 'like', '%'.$keyword.'%');
     }
-    $users = $users->limit(10)->get();
+    $users = $users->get();
     return response()->json($users);
   }
   public function edit_user(User $user) {
@@ -113,7 +113,7 @@ class DashboardController extends Controller
     foreach($files as $file) {
       if($file) Storage::delete($file);
     }
-    Storage::delete($user->paymentProof->file);
+    if($user->paymentProof) Storage::delete($user->paymentProof->file);
     $user->delete();
     if($user->gmb_profil != 'assets/profiles/default.webp') Storage::delete($user->gmb_profil);
     return redirect('/dashboard/students')->with('success', 'User telah dihapus.');
@@ -265,10 +265,10 @@ class DashboardController extends Controller
       if(strlen($keyword) < 3) {
         return response()->json([], 400);
       }
-        $users = User::where('nama', 'like', '%'.$keyword.'%')->orWhere('email', 'like', '%'.$keyword.'%')->limit(10)->pluck('id');
+        $users = User::where('nama', 'like', '%'.$keyword.'%')->orWhere('email', 'like', '%'.$keyword.'%')->pluck('id');
         $datas = $exam->examResults()->whereIn('user_id', $users);
       } else {
-        $datas = $exam->examResults()->limit(10);
+        $datas = $exam->examResults();
       }
       $datas = $datas->with('user:id,nama,email')->get();
       $datas = $datas->map(function($item, $key) {

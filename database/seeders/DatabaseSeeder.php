@@ -58,5 +58,6 @@ class DatabaseSeeder extends Seeder
         //     'kode_ref' => 'ipsum78',
         //     'stat' => 'accepted'
         // ]);
+        // User::create(['email' => 'test2@example.org', 'nama' => 'Lorem Dolor', 'password' => Hash::make('12345678')]);
     }
 }

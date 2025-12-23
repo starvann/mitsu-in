@@ -215,7 +215,7 @@
           </div>
           <div class="user-details">
             <span>Hubungan/Relasi</span>
-            <p>{{ $user->relasi_di_jepang['relasi'] }}</p>
+            <p>{{ $user->relasi_di_jepang['hubungan'] }}</p>
           </div>
           <div class="user-details">
             <span>Pekerjaan</span>

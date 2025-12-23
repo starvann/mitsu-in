@@ -1,4 +1,12 @@
 <x-base title="Hasil Ujian" main-class="page" style="display: flex; flex-direction: column; gap: 12px;">
+  <x-slot:head>
+    <style>
+      #results {
+        max-height: 400px;
+        overflow-y: auto;
+      }
+    </style>
+  </x-slot:head>
   <a href="{{ url('dashboard/manage-exam') }}" role="button">Kembali</a>
   <h1 style="color: #7b0000;">Hasil "{{ $exam->judul }}"</h1>
   @if($results->isNotEmpty())

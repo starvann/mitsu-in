@@ -58,6 +58,10 @@
         font-size: 13px;
         color: #666;
       }
+      #list {
+        max-height: 400px;
+        overflow-y: auto;
+      }
     </style>
   </x-slot:head>
   @if(session('success'))

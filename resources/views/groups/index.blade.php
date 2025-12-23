@@ -1,4 +1,12 @@
 <x-base title="Kelola Grup" main-class="page col">
+  <x-slot:head>
+    <style>
+      #groups {
+        max-height: 400px;
+        overflow-y: auto;
+      }
+    </style>
+  </x-slot:head>
   <a href="{{ url('dashboard') }}" role="button">Kembali</a>
   <h1>Grup</h1>
   <button type="button" id="showModal">Buat Grup</button>

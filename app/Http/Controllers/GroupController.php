@@ -27,7 +27,7 @@ class GroupController extends Controller
       }
       $groups = $groups->where('nama', 'like', '%'.$keyword.'%')->orWhere('deskripsi', 'like', '%'.$keyword.'%');
     }
-    $groups = $groups->limit(10)->get();
+    $groups = $groups->get();
     return response()->json($groups);
   }
 
