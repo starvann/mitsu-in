@@ -885,6 +885,7 @@ hr {
   border-radius: 50%;
   width: 64px;
   height: 64px;
+  object-fit: cover;
 }
 .hbox div span {
   font-weight: 600;
