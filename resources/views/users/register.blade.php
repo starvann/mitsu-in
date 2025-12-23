@@ -61,8 +61,10 @@
     function checkFProfil() {
       if(kode.value === 'stdn') {
         fProfil.style.display = 'none';
-      } else {
+      } else if(kode.value === 'admn' || kode.value === 'refl') {
         fProfil.style.display = 'flex';
+      } else {
+        fProfil.style.display = 'none';
       }
     }
     checkFProfil();
