@@ -223,7 +223,7 @@
           </div>
           <div class="user-details">
             <span>Umur</span>
-            <p>{{ $user->relasi_di_jepang['umur'] }} Tahun</p>
+            <p>{{ $user->relasi_di_jepang['usia'] }} Tahun</p>
           </div>
           <div class="user-details">
             <span>Alamat</span>

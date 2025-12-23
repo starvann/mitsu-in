@@ -37,6 +37,7 @@ class AutoAlpha extends Command
         for($day = 1; $day <= $prevDays; $day++) {
           $date = Carbon::create($year, $month, $day);
           if($date->isWeekend()) continue;
+          if($date->lt($user->created_at)) continue;
           // jika sudah presensi maka skip
           if(Presence::where('user_id', $user->id)->whereDate('created_at', $date)->exists()) continue;
           // alpha jika masih belum presensi
