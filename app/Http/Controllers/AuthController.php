@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserRegistered;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -69,7 +70,8 @@ class AuthController extends Controller
         if($req->hasFile('gmb_profil')) $data['gmb_profil'] = $req->file('gmb_profil')->store('assets/profiles');
         else unset($data['gmb_profil']);
         
-        User::create($data);
+        $user = User::create($data);
+        event(new UserRegistered($user));
         return redirect('login')->with('success', 'Pendaftaran berhasil!');
       }
       Session::put('password', $req->input('password'));
@@ -165,7 +167,8 @@ class AuthController extends Controller
       else unset($data['gmb_profil']);
       $data['status_pernikahan'] = str($data['status_pernikahan'])->ucfirst();
       // create and redirect
-      User::create($data);
+      $user = User::create($data);
+      event(new UserRegistered($user));
       return redirect('/login')->with('success', "Pendaftaran Berhasil!");
     }
 }

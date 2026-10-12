@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminNotificationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExamController;
@@ -27,7 +28,7 @@ Route::middleware('auth')->group(function() {
   # dashboard
   Route::get('/dashboard', [DashboardController::class, 'index']);
   Route::get('/pending', [DashboardController::class, 'pending']);
-  Route::get('/view-payment/{user}', [DashboardController::class, 'view_payment']);
+  Route::get('/view-payment/{user}', [DashboardController::class, 'view_payment'])->name('view_payment');
   Route::post('/pending', [DashboardController::class, 'pending_confirm']);
   Route::get('/dashboard/change-pass/{user}', [DashboardController::class, 'edit_password']);
   Route::put('/dashboard/change-pass/{user}', [DashboardController::class, 'update_password']);
@@ -48,7 +49,7 @@ Route::middleware('auth')->group(function() {
   Route::get('/dashboard/referrals', [DashboardController::class, 'list_refls']);
   Route::get('/dashboard/admins', [DashboardController::class, 'list_admns']);
   Route::get('/dashboard/get-users', [DashboardController::class, 'get_users']);
-  Route::get('/dashboard/view-user/{user}', [DashboardController::class, 'view_user']);
+  Route::get('/dashboard/view-user/{user}', [DashboardController::class, 'view_user'])->name('view_user');
   Route::delete('/dashboard/del-user/{user}', [DashboardController::class, 'delete_user']);
   Route::get('/dashboard/edit-user/{user}', [DashboardController::class, 'edit_user']);
   Route::put('/dashboard/edit-user/{user}', [DashboardController::class, 'update_user']);
@@ -71,7 +72,9 @@ Route::middleware('auth')->group(function() {
   Route::get('/dashboard/edit-group/{group}', [GroupController::class, 'edit']);
   Route::put('/dashboard/edit-group/{group}', [GroupController::class, 'update']);
   Route::delete('/dashboard/del-group/{group}', [GroupController::class, 'delete']);
-
+  # Notifications
+  Route::get('/dashboard/notifications', [AdminNotificationController::class, 'index']);
+  Route::post('/dashboard/notifications/{id}/read', [AdminNotificationController::class, 'mark_as_read']);
 });
 Route::get('/presence', [PresenceController::class, 'store_presence']);
 Route::get('/presence-qr/{id}', [PresenceController::class, 'generate_presence_qr']);

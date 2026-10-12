@@ -7,8 +7,10 @@ use App\Models\Exam;
 use App\Models\Presence;
 use App\Models\Question;
 use App\Http\Controllers\PresenceController;
+use App\Listeners\NotifyAdminOfNewPaymentProof;
 use App\Models\ExamResult;
 use App\Models\PaymentProof;
+use App\Notifications\PaymentProofUpdated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -399,7 +401,7 @@ class DashboardController extends Controller
       'file' => 'required|file|image|max:2048'
     ]);
     $data['file'] = $req->file('file')->store('assets/payment_proofs');
-    $user = Auth::user();
+    $user = User::find(Auth::id());
     $proof = PaymentProof::where('user_id', $user->id)->first();
     if($proof) {
       Storage::delete($proof->file);
@@ -407,6 +409,7 @@ class DashboardController extends Controller
     } else {
       $proof = $user->paymentProof()->create($data);
     }
+    event(new PaymentProofUpdated($user));
     return redirect('pending')->with('info', 'Mohon bersabar sampai admin memverifikasi akun anda.');
   }
 
