@@ -23,7 +23,7 @@
       <input type="hidden" name="stat_only" value="true">
       <div class="user-details">
         <span>Status</span>
-        <select name="stat" onchange="query('#edit-user').submit()">
+        <select name="status" onchange="query('#edit-user').submit()">
           <option value="pending" @selected($user->status == 'pending')>Proses Daftar Ulang</option>
           <option value="accepted" @selected($user->status != 'pending')>Terdaftar</option>
         </select>

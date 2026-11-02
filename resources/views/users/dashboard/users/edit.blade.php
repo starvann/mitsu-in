@@ -55,7 +55,7 @@
             @if (auth()->user()->role == 'admn')
                 <div class="user-details">
                     <span>Status</span>
-                    <select name="stat">
+                    <select name="status">
                         <option value="pending" @selected($user->status == 'pending')>Proses Daftar Ulang</option>
                         <option value="accepted" @selected($user->status != 'pending')>Terdaftar</option>
                     </select>
