@@ -134,8 +134,9 @@ class DashboardController extends Controller
       return redirect("dashboard/view-user/$user->id")->with('success', 'Berhasil update!');
     }
     $rules = [];
+    $baseRules = [];
     if(Gate::allows('admin')) {
-      $rules += [
+      $baseRules = [
         'status' => ['required', Rule::in(['pending', 'accepted'])],
         'role' => ['required', Rule::in(['stdn', 'refl', 'admn'])]
       ];
@@ -144,7 +145,7 @@ class DashboardController extends Controller
     or !empty($req->input('relasi_di_jepang.usia')) or !empty($req->input('relasi_di_jepang.pekerjaan'))
     or !empty($req->input('relasi_di_jepang.alamat'));
     if($is_any_field_filled) {
-      $rules += [
+      $rules = [
         'relasi_di_jepang' => 'required|array',
         'relasi_di_jepang.nama' => 'required|string|min:3',
         'relasi_di_jepang.hubungan' => 'required|string|min:3',
@@ -154,17 +155,17 @@ class DashboardController extends Controller
       ];
     }
     if($req->has('gambar_profil')) {
-      $rules += ['gambar_profil' => 'file|image|max:2048'];
+      $baseRules += ['gambar_profil' => 'file|image|max:2048'];
     }
-    $baseUserData = $req->validate([
+    $baseUserData = $req->validate(array_merge($baseRules, [
         'nama' => 'required|string|min:3',
         'gambar_profil' => 'nullable|file|image|max:2048',
         'email' => ['required', 'email', Rule::unique('users', 'email')->ignore($user->id)],
         'no_hp' => 'required|string|digits_between:9,16',
         'tanggal_lahir' => ['required', Rule::date()->before(today()->subYears(16))],
         'gender' => ['required', Rule::in(['laki-laki', 'perempuan'])],
-      ]);
-    $rules = $rules + [
+      ]));
+    $rules = array_merge($rules, [
       'tinggi_badan' => 'required|numeric|integer|min:1',
       'berat_badan' => 'required|numeric|integer|min:1',
       'status_pernikahan' => 'required|string',
@@ -195,7 +196,7 @@ class DashboardController extends Controller
       'sertif_lain' => 'nullable|max:256',
       'relasi_di_jepang' => 'nullable',
       'catatan_extra' => 'nullable|max:512',
-    ];
+    ]);
     $userDetailData = $req->validate($rules);
     if(!$is_any_field_filled) {
       $userDetailData['relasi_di_jepang'] = [];

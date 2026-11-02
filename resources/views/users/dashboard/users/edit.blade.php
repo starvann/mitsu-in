@@ -101,7 +101,7 @@
             <label for="tanggal_lahir">
                 Tanggal Lahir
                 <input type="date" name="tanggal_lahir" id="tanggal_lahir"
-                    @error('tanggal_lahir') aria-invalid="true" @enderror value="{{ old('tanggal_lahir') }}" required>
+                    @error('tanggal_lahir') aria-invalid="true" @enderror value="{{ old('tanggal_lahir') ?? $user->tanggal_lahir->format('Y-m-d') }}" required>
             </label>
             <label>
                 Tinggi Badan (cm)
