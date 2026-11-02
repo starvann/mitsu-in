@@ -159,15 +159,12 @@ class DashboardController extends Controller
     $baseUserData = $req->validate([
         'nama' => 'required|string|min:3',
         'gambar_profil' => 'nullable|file|image|max:2048',
-        'email' => 'required|email|unique:users,email',
-        'password' => ['required', 'string', Password::min(8)->mixedCase()->numbers()->symbols()],
-        'kode' => 'required|string',
-        'kode_ref' => 'nullable|string|max:8|exists:users,kode_ref_saya',
+        'email' => ['required', 'email', Rule::unique('users', 'email')->ignore($user->id)],
         'no_hp' => 'required|string|digits_between:9,16',
         'tanggal_lahir' => ['required', Rule::date()->before(today()->subYears(16))],
+        'gender' => ['required', Rule::in(['laki-laki', 'perempuan'])],
       ]);
     $rules = $rules + [
-      'gender' => ['required', Rule::in(['laki-laki', 'perempuan'])],
       'tinggi_badan' => 'required|numeric|integer|min:1',
       'berat_badan' => 'required|numeric|integer|min:1',
       'status_pernikahan' => 'required|string',
