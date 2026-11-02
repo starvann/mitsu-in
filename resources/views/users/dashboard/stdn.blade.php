@@ -2,13 +2,13 @@
     <div class="top-section">
       <div class="cover" style="background-image: url('{{ url('assets/img/cover-japan.jpg') }}')">
         <div class="avatar-wrapper">
-          <img id="studentAvatar" src="{{ url($user->gmb_profil) }}" />
+          <img id="studentAvatar" src="{{ url("/assets/profiles/".$user->gambar_profil) }}" />
         </div>
       </div>
       <div class="header-block">
         <div id="studentName" class="student-name">{{ $user->nama }}</div>
       </div>
-      @if($user->stat === 'accepted')
+      @if($user->status === 'accepted')
       <div class="status-row">
         @if(!$hasPresence)
         <a class="qr-box" href="{{ url('presence/?token='.$token) }}">
@@ -33,7 +33,7 @@
     </div>
 
     <!-- IZIN -->
-    @if($user->stat === 'accepted')
+    @if($user->status === 'accepted')
       @if(!$hasPresence)
         @if(!empty($errors->all()))
         <div class="err-messages">

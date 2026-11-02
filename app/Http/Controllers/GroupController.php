@@ -50,7 +50,7 @@ class GroupController extends Controller
         'id' => $user->id,
         'nama' => $user->nama,
         'email' => $user->email,
-        'gmb_profil' => $user->gmb_profil,
+        'gambar_profil' => $user->gambar_profil,
       ];
     });
     return response()->json($users);

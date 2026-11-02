@@ -13,7 +13,7 @@
     </style>
   </x-slot:head>
   <div class="hbox">
-    <img src="{{ url($presence->user->gmb_profil) }}" alt="Profil">
+    <img src="{{ url("/assets/profiles/".$presence->user->gambar_profil) }}" alt="Profil">
     <div>
       <span>{{ $presence->user->nama }}</span>
       <p>{{ $presence->user->email }}</p>
@@ -26,9 +26,9 @@
     </div>
     <div class="user-details">
       <span>Status</span>
-      <p>{{ ucfirst($presence->status) }}</p>
+      <p>{{ ucfirst($presence->status ) }}</p>
     </div>
-    @if($presence->status != 'hadir' and $presence->status != 'alpha')
+    @if($presence->status  != 'hadir' and $presence->status  != 'alpha')
     <div class="user-details">
       <span>Alasan</span>
       <p>{{ $presence->alasan }}</p>

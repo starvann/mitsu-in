@@ -110,7 +110,7 @@
         const el = document.createElement("div");
         let selected = chosenUsers.includes(data.id) ? 'checked' : '';
         el.innerHTML = `
-        <img src="${BASEURL}/${data.gmb_profil}">
+        <img src="${BASEURL}/assets/profiles/${data.gambar_profil}">
         <div>
           <span>${data.nama}</span>
           <p>${data.email}</p>

@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Events\UserRegistered;
 use App\Models\User;
+use App\Models\UserDetail;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
@@ -42,17 +46,19 @@ class AuthController extends Controller
       return view('users.register');
     }
     public function register2() {
-      if(!old('email') or !old('nama') or !Session::has('password') or !old('kode')) return redirect('/register');
+      if(!old('email') or !old('nama') or !Session::has('password') or !old('kode') or !old('no_hp') or !old('tanggal_lahir')) return redirect('/register');
       return view('users.register2');
     }
     public function create_user(Request $req) {
       $data = $req->validate([
         'nama' => 'required|string|min:3',
-        'gmb_profil' => 'nullable|file|image|max:2048',
+        'gambar_profil' => 'nullable|file|image|max:2048',
         'email' => 'email|unique:users,email',
         'password' => ['required', 'string', Password::min(8)->mixedCase()->numbers()->symbols()],
         'password_confirm' => 'required|same:password',
         'kode' => 'required|string',
+        'no_hp' => 'required|string|digits_between:9,16',
+        'tanggal_lahir' => ['required', Rule::date()->before(today()->subYears(17))],
       ]);
       if(!in_array($data['kode'], ['admn', 'stdn', 'refl'])) return redirect('/register')->withErrors(['kode' => 'Kode tidak valid.']);
       if($data['kode'] === 'admn' or $data['kode'] === 'refl') {
@@ -65,10 +71,10 @@ class AuthController extends Controller
           while(User::where('kode_ref_saya', $data['kode_ref_saya'])->exists()) {
             $data['kode_ref_saya'] = Str::random(8);
           }
-          $data['stat'] = 'accepted';
+          $data['status'] = 'accepted';
         }
-        if($req->hasFile('gmb_profil')) $data['gmb_profil'] = $req->file('gmb_profil')->store('assets/profiles');
-        else unset($data['gmb_profil']);
+        if($req->hasFile('gambar_profil')) $data['gambar_profil'] = $req->file('gambar_profil')->store('assets/profiles');
+        else unset($data['gambar_profil']);
         
         $user = User::create($data);
         event(new UserRegistered($user));
@@ -93,20 +99,22 @@ class AuthController extends Controller
           'relasi_di_jepang.alamat' => 'required|string|min:3',
         ];
       }
-      $rules = $rules + [
+      $baseUserData = $req->validate([
+        'nama' => 'required|string|min:3',
+        'gambar_profil' => 'nullable|file|image|max:2048',
         'email' => 'required|email|unique:users,email',
         'password' => ['required', 'string', Password::min(8)->mixedCase()->numbers()->symbols()],
         'kode' => 'required|string',
         'kode_ref' => 'nullable|string|max:8|exists:users,kode_ref_saya',
-        'nama' => 'required|string|min:3',
         'no_hp' => 'required|string|digits_between:9,16',
-        'gmb_profil' => 'nullable|file|image|max:2048',
+        'tanggal_lahir' => ['required', Rule::date()->before(today()->subYears(16))],
+      ]);
+      $rules = $rules + [
         'gender' => ['required', Rule::in(['laki-laki', 'perempuan'])],
-        'umur' => 'required|numeric|integer|min:1',
         'tinggi_badan' => 'required|numeric|integer|min:1',
         'berat_badan' => 'required|numeric|integer|min:1',
         'status_pernikahan' => 'required|string',
-        'gol_darah' => 'required|max:2|alpha:ascii|uppercase',
+        'golongan_darah' => 'required|max:2|alpha:ascii|uppercase',
         'agama' => 'required|string|max:32',
         'pernah_ke_jepang' => 'required|boolean',
         'punya_paspor' => 'required|boolean',
@@ -132,18 +140,18 @@ class AuthController extends Controller
         'punya_sim_a' => 'required|boolean',
         'sertif_lain' => 'nullable|max:256',
         'relasi_di_jepang' => 'nullable',
-        'catatan_xtra' => 'nullable|max:512',
+        'catatan_extra' => 'nullable|max:512',
       ];
-      $data = $req->validate($rules);
+      $userDetailData = $req->validate($rules);
       if(!$is_any_field_filled) {
-        unset($data['relasi_di_jepang']);
+        unset($userDetailData['relasi_di_jepang']);
       }
-      if(!in_array($data['kode'], ['admn', 'stdn', 'refl'])) return redirect('/register');
+      if(!in_array($baseUserData['kode'], ['admn', 'stdn', 'refl'])) return redirect('/register');
       // set role
-      $data['role'] = $data['kode'];
-      unset($data['kode']);
+      $baseUserData['role'] = $userDetailData['kode'];
+      unset($baseUserData['kode']);
       $idxs = [];
-      foreach($data['pengalaman'] as $i => $exp) {
+      foreach($userDetailData['pengalaman'] as $i => $exp) {
         if(!is_string($exp)) {
           $idxs[] = $i;
           continue;
@@ -153,22 +161,31 @@ class AuthController extends Controller
           continue;
         }
       }
-      foreach($idxs as $i) {
-        unset($data['pengalaman'][$i]);
-      }
-      if(count($data['pengalaman']) === 0) {
-        $data['pengalaman'] = [];
+      foreach($idxs as $i) unset($userDetailData['pengalaman'][$i]);
+      if(count($userDetailData['pengalaman']) === 0) {
+        $userDetailData['pengalaman'] = [];
       }
       // hash password and delete the session
-      $data['password'] = Hash::make($data['password']);
+      $baseUserData['password'] = Hash::make($baseUserData['password']);
       Session::forget('password');
       // upload profile picture if exists
-      if($req->hasFile('gmb_profil')) $data['gmb_profil'] = $req->file('gmb_profil')->store('assets/profiles');
-      else unset($data['gmb_profil']);
-      $data['status_pernikahan'] = str($data['status_pernikahan'])->ucfirst();
+      if($req->hasFile('gambar_profil')) $baseUserData['gambar_profil'] = $req->file('gambar_profil')->store('assets/profiles');
+      else unset($userDetailData['gambar_profil']);
+      $userDetailData['status_pernikahan'] = str($userDetailData['status_pernikahan'])->ucfirst();
       // create and redirect
-      $user = User::create($data);
-      event(new UserRegistered($user));
-      return redirect('/login')->with('success', "Pendaftaran Berhasil!");
+      try {
+
+        DB::beginTransaction();
+        $user = User::create($baseUserData);
+        $userDetailData["user_id"] = $user->id;
+        UserDetail::create($userDetailData);
+        DB::commit();
+        event(new UserRegistered($user));
+        return redirect('/login')->with('success', "Pendaftaran Berhasil!");
+      } catch(Exception $e) {
+        DB::rollBack();
+        Log::error("Create User failed.", $e->getMessage());
+        return redirect('/login')->withErrors(["Registrasi gagal"]);
+      }
     }
 }

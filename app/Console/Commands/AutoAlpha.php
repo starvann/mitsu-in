@@ -28,7 +28,7 @@ class AutoAlpha extends Command
      */
     public function handle()
     {
-      $users = User::select('id')->where('role', 'stdn')->where('stat', 'accepted')->get();
+      $users = User::select('id')->where('role', 'stdn')->where('status', 'accepted')->get();
       $prevDays = today()->startOfMonth()->diffInDays(today()) + 1;
       $year = today()->year;
       $month = today()->month;

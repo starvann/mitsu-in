@@ -29,10 +29,11 @@
       }
     </style>
   </x-slot:head>
+  @php $userDetail = $user->userDetail; @endphp
   <div class="top-section">
     <div class="cover" style="background-image: url('{{ url('assets/img/cover-japan.jpg') }}')">
       <div class="avatar-wrapper">
-        <img id="studentAvatar" src="{{ url($user->gmb_profil) }}" />
+        <img id="studentAvatar" src="{{ url("/assets/profiles/".$user->gambar_profil) }}" />
       </div>
     </div>
     <div class="header-block">
@@ -55,8 +56,8 @@
       <div class="user-details">
         <span>Status</span>
         <select name="stat">
-          <option value="pending" @selected($user->stat == 'pending')>Proses Daftar Ulang</option>
-          <option value="accepted" @selected($user->stat != 'pending')>Terdaftar</option>
+          <option value="pending" @selected($user->status == 'pending')>Proses Daftar Ulang</option>
+          <option value="accepted" @selected($user->status != 'pending')>Terdaftar</option>
         </select>
       </div>
       <div class="user-details">
@@ -78,8 +79,8 @@
       </label>
       <label>
         Foto Profil
-        <input type="file" name="gmb_profil" id="gmb_profil" @error('gmb_profil') aria-invalid="true" @enderror accept="image/png,image/jpeg,image/webp">
-        <img src="{{ url($user->gmb_profil) }}" id="prevImg" style="border-radius: 50%; width: 80px; height: 80px; display: none; object-fit: cover;">
+        <input type="file" name="gambar_profil" id="gambar_profil" @error('gambar_profil') aria-invalid="true" @enderror accept="image/png,image/jpeg,image/webp">
+        <img src="{{ url("/assets/profiles/".$user->gambar_profil) }}" id="prevImg" style="border-radius: 50%; width: 80px; height: 80px; display: none; object-fit: cover;">
       </label>
       <label>
         No. Handphone
@@ -88,21 +89,21 @@
       <label>
       Jenis Kelamin
         <select name="gender" id="gender" @error('gender') aria-invalid="true" @enderror>
-          <option value="laki-laki" @selected((old('gender') ?? $user->gender) != 'perempuan')>Laki-Laki</option>
-          <option value="perempuan" @selected((old('gender') ?? $user->gender) == 'perempuan')>Perempuan</option>
+          <option value="laki-laki" @selected((old('gender') ?? $userDetail?->gender) != 'perempuan')>Laki-Laki</option>
+          <option value="perempuan" @selected((old('gender') ?? $userDetail?->gender) == 'perempuan')>Perempuan</option>
         </select>
       </label>
       <label>
         Usia
-        <input type="number" name="umur" id="umur" inputmode="numeric" min="15" @error('umur') aria-invalid="true" @enderror value="{{ old('umur') ?? $user->umur }}" required>
+        <input type="number" name="umur" id="umur" inputmode="numeric" min="15" @error('umur') aria-invalid="true" @enderror value="{{ old('umur') ?? $userDetail?->umur }}" required>
       </label>
       <label>
         Tinggi Badan (cm)
-        <input type="text" name="tinggi_badan" id="tinggi_badan" inputmode="numeric" @error('tinggi_badan') aria-invalid="true" @enderror value="{{ old('tinggi_badan') ?? $user->tinggi_badan }}" required>
+        <input type="text" name="tinggi_badan" id="tinggi_badan" inputmode="numeric" @error('tinggi_badan') aria-invalid="true" @enderror value="{{ old('tinggi_badan') ?? $userDetail?->tinggi_badan }}" required>
       </label>
       <label>
         Berat Badan (kg)
-        <input type="text" name="berat_badan" id="berat_badan" inputmode="numeric" @error('berat_badan') aria-invalid="true" @enderror value="{{ old('berat_badan') ?? $user->berat_badan }}" required>
+        <input type="text" name="berat_badan" id="berat_badan" inputmode="numeric" @error('berat_badan') aria-invalid="true" @enderror value="{{ old('berat_badan') ?? $userDetail?->berat_badan }}" required>
       </label>
 
       <div class="section-divider"></div>
@@ -110,36 +111,36 @@
 
       <label>
         Status Pernikahan
-        <input type="text" name="status_pernikahan" id="status_pernikahan" placeholder="Belum menikah, Sudah menikah, Cerai, dll..." @error('status_pernikahan') aria-invalid="true" @enderror value="{{ old('status_pernikahan') ?? $user->status_pernikahan }}" required>
+        <input type="text" name="status_pernikahan" id="status_pernikahan" placeholder="Belum menikah, Sudah menikah, Cerai, dll..." @error('status_pernikahan') aria-invalid="true" @enderror value="{{ old('status_pernikahan') ?? $userDetail?->status_pernikahan }}" required>
       </label>
       <label>
         Golongan Darah
-        <input type="text" name="gol_darah" id="gol_darah" @error('gol_darah') aria-invalid="true" @enderror value="{{ old('gol_darah') ?? $user->gol_darah }}" required>
+        <input type="text" name="golongan_darah" id="golongan_darah" @error('golongan_darah') aria-invalid="true" @enderror value="{{ old('golongan_darah') ?? $userDetail?->golongan_darah }}" required>
       </label>
       <label>
         Agama
-        <input type="text" name="agama" id="agama" @error('agama') aria-invalid="true" @enderror value="{{ old('agama') ?? $user->agama }}" required>
+        <input type="text" name="agama" id="agama" @error('agama') aria-invalid="true" @enderror value="{{ old('agama') ?? $userDetail?->agama }}" required>
       </label>
       <label>
         Pernah ke Jepang
         <select name="pernah_ke_jepang" id="pernah_ke_jepang" @error('pernah_ke_jepang') aria-invalid="true" @enderror>
-          <option value="1" @selected(old('pernah_ke_jepang') ?? $user->pernah_ke_jepang)>Pernah ke Jepang</option>
-          <option value="0" @selected(!(old('pernah_ke_jepang') ?? $user->pernah_ke_jepang))>Belum Pernah ke Jepang</option>
+          <option value="1" @selected(old('pernah_ke_jepang') ?? $userDetail?->pernah_ke_jepang)>Pernah ke Jepang</option>
+          <option value="0" @selected(!(old('pernah_ke_jepang') ?? $userDetail?->pernah_ke_jepang))>Belum Pernah ke Jepang</option>
         </select>
       </label>
       <label>
         Punya Paspor
         <select name="punya_paspor" id="punya_paspor" @error('punya_paspor') aria-invalid="true" @enderror>
-          <option value="1" @selected(old('punya_paspor') ?? $user->punya_paspor)>Punya Paspor</option>
-          <option value="0" @selected(!(old('punya_paspor') ?? $user->punya_paspor))>Belum Punya Paspor</option>
+          <option value="1" @selected(old('punya_paspor') ?? $userDetail?->punya_paspor)>Punya Paspor</option>
+          <option value="0" @selected(!(old('punya_paspor') ?? $userDetail?->punya_paspor))>Belum Punya Paspor</option>
         </select>
       </label>
       <label>
         Tangan Ahli
         <select name="tangan_utama" @error('tangan_utama') aria-invalid="true" @enderror>
-          <option value="kanan" @selected((old('tangan_utama') ?? $user->tangan_utama) == 'kanan')>Kanan</option>
-          <option value="kiri" @selected((old('tangan_utama') ?? $user->tangan_utama) == 'kiri')>Kiri</option>
-          <option value="kiri" @selected((old('tangan_utama') ?? $user->tangan_utama) == 'keduanya')>Keduanya</option>
+          <option value="kanan" @selected((old('tangan_utama') ?? $userDetail?->tangan_utama) == 'kanan')>Kanan</option>
+          <option value="kiri" @selected((old('tangan_utama') ?? $userDetail?->tangan_utama) == 'kiri')>Kiri</option>
+          <option value="kiri" @selected((old('tangan_utama') ?? $userDetail?->tangan_utama) == 'keduanya')>Keduanya</option>
         </select>
       </label>
 
@@ -148,12 +149,12 @@
 
       <label>
         Alamat Lengkap
-        <textarea name="alamat" id="alamat" rows="3" @error('alamat') aria-invalid="true" @enderror>{{ old('alamat') ?? $user->alamat }}</textarea>
+        <textarea name="alamat" id="alamat" rows="3" @error('alamat') aria-invalid="true" @enderror>{{ old('alamat') ?? $userDetail?->alamat }}</textarea>
       </label>
       <div class="subsection">
         <h2 class="subsection-title">Pendidikan</h2>
         <div id="edus">
-          @foreach((old('pendidikan') ?? $user->pendidikan) as $i => $edu)
+          @foreach((old('pendidikan') ?? $userDetail?->pendidikan ?? []) as $i => $edu)
           <div data-edu-idx="{{ $i }}" class="repeat-group edu-group">
             <label>
               Tahun Lulus
@@ -176,7 +177,7 @@
       <div class="subsection">
         <h2 class="subsection-title">Pengalaman</h2>
         <div id="exps">
-          @forelse((old('pengalaman') ?? $user->pengalaman) as $exp)
+          @forelse((old('pengalaman') ?? $userDetail?->pengalaman ?? []) as $exp)
           <div class="repeat-group exp-group">
             <label>
               Pengalaman Kerja / Magang
@@ -203,7 +204,7 @@
       <div class="subsection">
         <h2 class="subsection-title">Susunan Keluarga (utama)</h2>
         <div id="fams">
-          @foreach((old('struktur_keluarga') ?? $user->struktur_keluarga) as $i => $fam)
+          @foreach((old('struktur_keluarga') ?? $userDetail?->struktur_keluarga ?? []) as $i => $fam)
           <div data-fam-idx="{{ $i }}" class="repeat-group family-group">
             <label>
               Hubungan Keluarga
@@ -237,47 +238,47 @@
 
       <label>
         Tujuan ke Jepang
-        <input type="text" name="tujuan_ke_jepang" @error('tujuan_ke_jepang') aria-invalid="true" @enderror value="{{ old('tujuan_ke_jepang') ?? $user->tujuan_ke_jepang }}" required>
+        <input type="text" name="tujuan_ke_jepang" @error('tujuan_ke_jepang') aria-invalid="true" @enderror value="{{ old('tujuan_ke_jepang') ?? $userDetail?->tujuan_ke_jepang }}" required>
       </label>
       <label>
         Setelah pulang dari Jepang, rencana apa?
-        <input type="text" name="tujuan_stlh_kembali" @error('tujuan_stlh_kembali') aria-invalid="true" @enderror value="{{ old('tujuan_stlh_kembali') ?? $user->tujuan_stlh_kembali }}" required>
+        <input type="text" name="tujuan_stlh_kembali" @error('tujuan_stlh_kembali') aria-invalid="true" @enderror value="{{ old('tujuan_stlh_kembali') ?? $userDetail?->tujuan_stlh_kembali }}" required>
       </label>
       <label>
         Kelebihan
-        <input type="text" name="kelebihan" @error('stengths') aria-invalid="true" @enderror value="{{ old('kelebihan') ?? $user->kelebihan }}" required>
+        <input type="text" name="kelebihan" @error('stengths') aria-invalid="true" @enderror value="{{ old('kelebihan') ?? $userDetail?->kelebihan }}" required>
       </label>
       <label>
         Kekurangan
-        <input type="text" name="kekurangan" @error('kekurangan') aria-invalid="true" @enderror value="{{ old('kekurangan') ?? $user->kekurangan }}" required>
+        <input type="text" name="kekurangan" @error('kekurangan') aria-invalid="true" @enderror value="{{ old('kekurangan') ?? $userDetail?->kekurangan }}" required>
       </label>
       <label>
         Hobi
-        <input type="text" name="hobi" @error('hobi') aria-invalid="true" @enderror value="{{ old('hobi') ?? $user->hobi }}" required>
+        <input type="text" name="hobi" @error('hobi') aria-invalid="true" @enderror value="{{ old('hobi') ?? $userDetail?->hobi }}" required>
       </label>
       <div class="subsection">
         <h2 class="subsection-title">Sertifikat yang Dimiliki</h2>
         <label>
           Sertifikat JLPT/Setara
-          <input type="text" name="sertif_jlpt" @error('sertif_jlpt') aria-invalid="true" @enderror value="{{ old('sertif_jlpt') ?? $user->sertif_jlpt }}">
+          <input type="text" name="sertif_jlpt" @error('sertif_jlpt') aria-invalid="true" @enderror value="{{ old('sertif_jlpt') ?? $userDetail?->sertif_jlpt }}">
         </label>
         <label>
           Punya SIM A
           <select name="punya_sim_a" @error('punya_sim_a') aria-invalid="true" @enderror>
-            <option value="1" @selected((old('punya_sim_a') ?? $user->punya_sim_a))>Punya SIM A</option>
-            <option value="0" @selected(!(old('punya_sim_a') ?? $user->punya_sim_a))>Belum Punya SIM A</option>
+            <option value="1" @selected((old('punya_sim_a') ?? $userDetail?->punya_sim_a))>Punya SIM A</option>
+            <option value="0" @selected(!(old('punya_sim_a') ?? $userDetail?->punya_sim_a))>Belum Punya SIM A</option>
           </select>
         </label>
         <label>
           Sertifikat Lainnya
-          <input type="text" name="sertif_lain" @error('sertif_lain') aria-invalid="true" @enderror value="{{ old('sertif_lain') ?? $user->sertif_lain }}">
+          <input type="text" name="sertif_lain" @error('sertif_lain') aria-invalid="true" @enderror value="{{ old('sertif_lain') ?? $userDetail?->sertif_lain }}">
         </label>
       </div>
 
       <div class="section-divider"></div>
       <h2 class="section-title">Kerabat / Kenalan di Jepang</h2>
 
-      @forelse((old('relasi_di_jepang') ?? $user->relasi_di_jepang ?? []) as $key => $val)
+      @forelse((old('relasi_di_jepang') ?? $userDetail?->relasi_di_jepang ?? []) as $key => $val)
       <label>
         {{ ucfirst($key) }} Kerabat/Kenalan di Jepang
         <input type="{{ $key != 'usia' ? 'text' : 'number' }}" name="relasi_di_jepang[{{ $key }}]" @error("relasi_di_jepang.$key") aria-invalid="true" @enderror value="{{ $val }}">
@@ -306,7 +307,7 @@
       @endforelse
       <label>
         Catatan Tambahan
-        <textarea name="catatan_xtra" rows="3" @error('catatan_xtra') aria-invalid="true" @enderror>{{ old('catatan_xtra') ?? $user->catatan_xtra }}</textarea>
+        <textarea name="catatan_extra" rows="3" @error('catatan_extra') aria-invalid="true" @enderror>{{ old('catatan_extra') ?? $userDetail?->catatan_extra }}</textarea>
       </label>
       <button type="submit" style="margin-top: 16px;">Simpan</button>
     </form>
@@ -325,7 +326,7 @@
     let exps = query('#exps');
     let fams = query('#fams');
     let prevImg = query("#prevImg");
-    let inputImg = query("#gmb_profil");
+    let inputImg = query("#gambar_profil");
     inputImg.onchange = () => {
       const reader = new FileReader();
       reader.readAsDataURL(inputImg.files[0]);

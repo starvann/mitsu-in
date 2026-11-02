@@ -10,11 +10,15 @@ use App\Http\Controllers\PresenceController;
 use App\Listeners\NotifyAdminOfNewPaymentProof;
 use App\Models\ExamResult;
 use App\Models\PaymentProof;
+use App\Models\UserDetail;
 use App\Notifications\PaymentProofUpdated;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Session;
@@ -24,11 +28,11 @@ class DashboardController extends Controller
 {
   public function index(Request $req) {
     $role = Auth::user()->role;
-    if(Auth::user()->stat == 'pending') {
+    if(Auth::user()->status == 'pending') {
       return redirect('pending');
     }
     if($role == 'admn') {
-      if(Auth::user()->stat == 'pending') {
+      if(Auth::user()->status == 'pending') {
         Auth::logout();
         $req->session()->invalidate();
         $req->session()->regenerateToken();
@@ -37,7 +41,7 @@ class DashboardController extends Controller
       return view('users.dashboard.admn');
     }
     elseif($role == 'refl') {
-      $refUsers = User::select(['nama', 'gmb_profil', 'stat'])->where('kode_ref', Auth::user()->kode_ref_saya)->get();
+      $refUsers = User::select(['nama', 'gambar_profil', 'status'])->where('kode_ref', Auth::user()->kode_ref_saya)->get();
       return view('users.dashboard.refl', ['refUsers' => $refUsers, 'user' => Auth::user()]);
     }
     else {
@@ -72,8 +76,8 @@ class DashboardController extends Controller
     Gate::authorize('admin');
     $role = $req->input('type', 'stdn');
     if(!in_array($role, ['stdn', 'refl', 'admn', 'no-admn'])) return response([], 400);
-    if($role == 'no-admn') $users = User::select('id', 'nama', 'email', 'stat', 'gmb_profil')->where('role', '!=', 'admn');
-    else $users = User::select('id', 'nama', 'email', 'stat', 'gmb_profil')->where('role', $role);
+    if($role == 'no-admn') $users = User::select('id', 'nama', 'email', 'status', 'gambar_profil')->where('role', '!=', 'admn');
+    else $users = User::select('id', 'nama', 'email', 'status', 'gambar_profil')->where('role', $role);
     if($req->has('q')) {
       $keyword = $req->input('q');
       if(!is_string($keyword)) {
@@ -117,14 +121,14 @@ class DashboardController extends Controller
     }
     if($user->paymentProof) Storage::delete($user->paymentProof->file);
     $user->delete();
-    if($user->gmb_profil != 'assets/profiles/default.webp') Storage::delete($user->gmb_profil);
+    if($user->gambar_profil != 'assets/profiles/default.webp') Storage::delete($user->gambar_profil);
     return redirect('/dashboard/students')->with('success', 'User telah dihapus.');
   }
   public function update_user(Request $req, User $user) {
     if(Gate::none(['same', 'admin'], $user)) return abort(403);
     if($req->has('stat_only') and Gate::allows('admin')) {
       $data = $req->validate([
-        'stat' => ['required', Rule::in(['pending', 'accepted'])]
+        'status' => ['required', Rule::in(['pending', 'accepted'])]
       ]);
       $user->update($data);
       return redirect("dashboard/view-user/$user->id")->with('success', 'Berhasil update!');
@@ -132,7 +136,7 @@ class DashboardController extends Controller
     $rules = [];
     if(Gate::allows('admin')) {
       $rules += [
-        'stat' => ['required', Rule::in(['pending', 'accepted'])],
+        'status' => ['required', Rule::in(['pending', 'accepted'])],
         'role' => ['required', Rule::in(['stdn', 'refl', 'admn'])]
       ];
     }
@@ -149,20 +153,25 @@ class DashboardController extends Controller
         'relasi_di_jepang.alamat' => 'required|string|min:3',
       ];
     }
-    if($req->has('gmb_profil')) {
-      $rules += ['gmb_profil' => 'file|image|max:2048'];
+    if($req->has('gambar_profil')) {
+      $rules += ['gambar_profil' => 'file|image|max:2048'];
     }
+    $baseUserData = $req->validate([
+        'nama' => 'required|string|min:3',
+        'gambar_profil' => 'nullable|file|image|max:2048',
+        'email' => 'required|email|unique:users,email',
+        'password' => ['required', 'string', Password::min(8)->mixedCase()->numbers()->symbols()],
+        'kode' => 'required|string',
+        'kode_ref' => 'nullable|string|max:8|exists:users,kode_ref_saya',
+        'no_hp' => 'required|string|digits_between:9,16',
+        'tanggal_lahir' => ['required', Rule::date()->before(today()->subYears(16))],
+      ]);
     $rules = $rules + [
-      'email' => ['required', 'email', Rule::unique('users', 'email')->ignore($user->id)],
-      'kode_ref' => 'nullable|string|max:8|exists:users,kode_ref_saya',
-      'nama' => 'required|string|min:3',
-      'no_hp' => 'required|string|digits_between:9,16',
       'gender' => ['required', Rule::in(['laki-laki', 'perempuan'])],
-      'umur' => 'required|numeric|integer|min:1',
       'tinggi_badan' => 'required|numeric|integer|min:1',
       'berat_badan' => 'required|numeric|integer|min:1',
       'status_pernikahan' => 'required|string',
-      'gol_darah' => 'required|max:2|alpha:ascii|uppercase',
+      'golongan_darah' => 'required|max:2|alpha:ascii|uppercase',
       'agama' => 'required|string|max:32',
       'pernah_ke_jepang' => 'required|boolean',
       'punya_paspor' => 'required|boolean',
@@ -188,14 +197,14 @@ class DashboardController extends Controller
       'punya_sim_a' => 'required|boolean',
       'sertif_lain' => 'nullable|max:256',
       'relasi_di_jepang' => 'nullable',
-      'catatan_xtra' => 'nullable|max:512',
+      'catatan_extra' => 'nullable|max:512',
     ];
-    $data = $req->validate($rules);
+    $userDetailData = $req->validate($rules);
     if(!$is_any_field_filled) {
-      $data['relasi_di_jepang'] = [];
+      $userDetailData['relasi_di_jepang'] = [];
     }
     $idxs = [];
-    foreach($data['pengalaman'] as $i => $exp) {
+    foreach($userDetailData['pengalaman'] as $i => $exp) {
       if(!is_string($exp)) {
         $idxs[] = $i;
         continue;
@@ -206,23 +215,32 @@ class DashboardController extends Controller
       }
     }
     foreach($idxs as $i) {
-      unset($data['pengalaman'][$i]);
+      unset($userDetailData['pengalaman'][$i]);
     }
-    if(count($data['pengalaman']) === 0) {
-      $data['pengalaman'] = [];
+    if(count($userDetailData['pengalaman']) === 0) {
+      $userDetailData['pengalaman'] = [];
     }
     // upload profile picture if exists
-    if($req->hasFile('gmb_profil')) {
-      if($user->gmb_profil != 'assets/profiles/default.webp') Storage::delete($user->gmb_profil);
-      $data['gmb_profil'] = $req->file('gmb_profil')->store('assets/profiles');
+    if($req->hasFile('gambar_profil')) {
+      $baseUserData['gambar_profil'] = $req->file('gambar_profil')->store('assets/profiles');
+      if($user->gambar_profil != 'assets/profiles/default.webp') Storage::delete($user->gambar_profil);
     }
-    else unset($data['gmb_profil']);
-    $data['status_pernikahan'] = str($data['status_pernikahan'])->ucfirst();
-    $user->update($data);
-    if(Gate::allows('admin')) {
-      return redirect('/dashboard/view-user/'.$user->id)->with('success', 'Berhasil update!');
+    else unset($baseUserData['gambar_profil']);
+    $userDetailData['status_pernikahan'] = str($userDetailData['status_pernikahan'])->ucfirst();
+    try {
+      DB::beginTransaction();
+      $user->update($baseUserData);
+      $user->userDetail()->update($userDetailData);
+      DB::commit();
+      if(Gate::allows('admin')) {
+        return redirect('/dashboard/view-user/'.$user->id)->with('success', 'Berhasil update!');
+      }
+      return redirect('dashboard');
+    } catch(Exception $e) {
+      DB::rollBack();
+      Log::error("Failed to update user.", $e->getMessage() . "|Trace: " . $e->getTraceAsString());
+      return redirect()->back()->withErrors(["Gagal mengubah data pengguna"]);
     }
-    return redirect('dashboard');
   }
 
   public function edit_password(User $user) {
@@ -246,141 +264,10 @@ class DashboardController extends Controller
     return redirect('dashboard')->with('success', 'Password telah diupdate!');
   }
 
-  // exams
-  public function manage_exams() {
-    Gate::authorize('admin');
-    return view('users.dashboard.exams.manage', ['exams' => Exam::all()]);
-  }
-  public function exam_result(Exam $exam) {
-    Gate::authorize('admin');
-    return view('users.dashboard.exams.result', ['exam' => $exam, 'results' => $exam->examResults()->with('user')->get()]);
-  }
-  public function get_exam_results(Request $req, Exam $exam) {
-    Gate::authorize('admin');
-    $users = [];
-    $datas = [];
-    if($req->query('q')) {
-      $keyword = $req->query('q');
-      if(!is_string($keyword)) {
-        return response()->json([], 400);
-      }
-      if(strlen($keyword) < 3) {
-        return response()->json([], 400);
-      }
-        $users = User::where('nama', 'like', '%'.$keyword.'%')->orWhere('email', 'like', '%'.$keyword.'%')->pluck('id');
-        $datas = $exam->examResults()->whereIn('user_id', $users);
-      } else {
-        $datas = $exam->examResults();
-      }
-      $datas = $datas->with('user:id,nama,email')->get();
-      $datas = $datas->map(function($item, $key) {
-        return [
-          'id' => $item->id,
-          'nama' => $item->user->nama,
-          'email' => $item->user->email,
-          'nilai' => $item->nilai,
-          'total_benar' => $item->total_benar,
-          'total_salah' => $item->total_salah
-        ];
-      });
-      return response()->json($datas);
-  }
-  public function delete_exam_result(ExamResult $exam_res) {
-    Gate::authorize('admin');
-    $exam_res->delete();
-    return redirect('/dashboard/exam-result/'.$exam_res->exam_id)->with('success', 'Hasil ujian telah dihapus.');
-  }
-  public function delete_all_exam_result(Exam $exam) {
-    Gate::authorize('admin');
-    $exam->examResults()->delete();
-    return redirect('/dashboard/exam-result/'.$exam->id)->with('success', 'Semua hasil ujian telah dihapus.');
-  }
-  public function create_exam() {
-    Gate::authorize('admin');
-    return view('users.dashboard.exams.create');
-  }
-  public function store_exam(Request $req) {
-    Gate::authorize('admin');
-    //dd($req->input());
-    $data = $req->validate([
-      'judul' => 'required|string|unique:exams,judul',
-      'deskripsi' => 'required|string',
-      'soal' => 'required|array|list',
-      'soal.*.jwbn_yg_benar' => 'required|numeric|max_digits:2',
-      'soal.*.soal' => 'required|string',
-      'soal.*.jawaban' => 'required|array|list',
-      'soal.*.jawaban.*' => 'required|string',
-      'deadline' => 'nullable|datetime',
-      'siap_rilis' => 'nullable',
-      'acak_soal' => 'nullable',
-    ]);
-    if(isset($data['siap_rilis'])) $data['siap_rilis'] = true;
-    else $data['siap_rilis'] = false;
-    if(isset($data['acak_soal'])) $data['acak_soal'] = true;
-    else $data['acak_soal'] = false;
-    $soals = $data['soal'];
-    unset($data['soal']);
-    $data['user_id'] = Auth::user()->id;
-    $exam = Exam::create($data);
-    $exam->questions()->createMany($soals);
-    return redirect('/dashboard/manage-exam')->with('success', 'Ujian berhasil dibuat!');
-  }
-  public function edit_exam(Exam $exam) {
-    Gate::authorize('admin');
-    return view('users.dashboard.exams.edit', ['exam' => $exam, 'questions' => $exam->questions]);
-  }
-  public function update_exam(Request $req, Exam $exam) {
-    Gate::authorize('admin');
-    $data = $req->validate([
-      'judul' => ['required', 'string', Rule::unique('exams', 'judul')->ignore($exam->id)],
-      'deskripsi' => 'required|string',
-      'soal' => 'required|array|list',
-      'soal.*.jwbn_yg_benar' => 'required|numeric|max_digits:2',
-      'soal.*.soal' => 'required|string',
-      'soal.*.jawaban' => 'required|array|list',
-      'soal.*.jawaban.*' => 'required|string',
-      'deadline' => 'nullable|datetime',
-      'siap_rilis' => 'nullable',
-      'acak_soal' => 'nullable',
-    ]);
-    if(isset($data['siap_rilis'])) $data['siap_rilis'] = true;
-    else $data['siap_rilis'] = false;
-    if(isset($data['acak_soal'])) $data['acak_soal'] = true;
-    else $data['acak_soal'] = false;
-    $soals = $data['soal'];
-    unset($data['soal']);
-    $exam->update($data);
-    foreach($exam->questions as $i => $question) {
-      if(!isset($soals[$i])) {
-        $question->delete();
-        continue;
-      }
-      $question->soal = $soals[$i]['soal'];
-      $question->jawaban = $soals[$i]['jawaban'];
-      $question->jwbn_yg_benar = $soals[$i]['jwbn_yg_benar'];
-      $question->save();
-    }
-    if(count($soals) > $exam->questions->count()) {
-      for($i = $exam->questions->count(); $i < count($soals); $i++) {
-        Question::create([
-          'exam_id' => $exam->id,
-          'soal' => $soals[$i]['soal'],
-          'jawaban' => $soals[$i]['jawaban'],
-          'jwbn_yg_benar' => $soals[$i]['jwbn_yg_benar']
-        ]);
-      }
-    }
-    return redirect('/dashboard/manage-exam')->with('success', 'Ujian berhasil diupdate!');
-  }
-  public function delete_exam(Exam $exam) {
-    Gate::authorize('admin');
-    $exam->delete();
-    return redirect('/dashboard/manage-exam')->with('success', 'Ujian telah dihapus.');
-  }
-
+  // payments
   public function pending(Request $req) {
     $user = Auth::user();
-    if($user->stat == 'accepted') {
+    if($user->status == 'accepted') {
       return redirect()->intended('dashboard');
     }
     if($user->role == 'admn') {

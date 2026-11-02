@@ -18,6 +18,10 @@
       Email
       <input type="email" name="email" @error('email') aria-invalid="true" @enderror value="{{ old('email') }}" required>
     </label>
+    <label for="no_hp">
+      No. Handphone
+      <input type="text" name="no_hp" @error('no_hp') aria-invalid="true" @enderror value="{{ old('no_hp') }}" required>
+    </label>
     <label>
       Password
       <input type="password" name="password" @error('password') aria-invalid="true" @enderror required>
@@ -26,9 +30,9 @@
       Ulangi Password
       <input type="password" name="password_confirm" @error('password_confirm') aria-invalid="true" @enderror required>
     </label>
-    <label for="gmb_profil" id="f-profil">
+    <label for="gambar_profil" id="f-profil">
       Foto Profil
-      <input type="file" name="gmb_profil" id="gmb_profil" @error('gmb_profil') aria-invalid="true" @enderror accept="image/png,image/jpeg,image/webp">
+      <input type="file" name="gambar_profil" id="gambar_profil" @error('gambar_profil') aria-invalid="true" @enderror accept="image/png,image/jpeg,image/webp">
       <img src="" id="prevImg" style="border-radius: 50%; width: 80px; height: 80px; display: none; object-fit: cover;">
     </label>
     <label for="kode">
@@ -48,7 +52,7 @@
     let fProfil = query("#f-profil");
     let kode = query("#kode");
     let prevImg = query("#prevImg");
-    let inputImg = query("#gmb_profil");
+    let inputImg = query("#gambar_profil");
     kode.oninput = checkFProfil;
     inputImg.onchange = () => {
       const reader = new FileReader();

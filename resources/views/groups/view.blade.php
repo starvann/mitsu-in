@@ -92,7 +92,7 @@
         let selected = chosenUsers.includes(id) ? 'checked' : '';
         el.dataset.id = id;
         el.innerHTML = `
-        <img src="${BASEURL}/${data.gmb_profil}" onclick="viewUser(${id})">
+        <img src="${BASEURL}/assets/profiles/${data.gambar_profil}" onclick="viewUser(${id})">
         <div onclick="viewUser(${id})">
           <span>${data.nama}</span>
           <p>${data.email}</p>

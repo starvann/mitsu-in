@@ -1,6 +1,6 @@
 <x-base title="Lihat Bukti Pembayaran" main-class="page col-center">
   <div class="hbox">
-    <img src="{{ url($user->gmb_profil) }}" alt="Foto Profil">
+    <img src="{{ url("/assets/profiles/".$user->gambar_profil) }}" alt="Foto Profil">
     <div>
       <span>{{ $user->nama }}</span>
       <p>{{ $user->email }}</p>
@@ -24,8 +24,8 @@
       <div class="user-details">
         <span>Status</span>
         <select name="stat" onchange="query('#edit-user').submit()">
-          <option value="pending" @selected($user->stat == 'pending')>Proses Daftar Ulang</option>
-          <option value="accepted" @selected($user->stat != 'pending')>Terdaftar</option>
+          <option value="pending" @selected($user->status == 'pending')>Proses Daftar Ulang</option>
+          <option value="accepted" @selected($user->status != 'pending')>Terdaftar</option>
         </select>
       </div>
     </form>

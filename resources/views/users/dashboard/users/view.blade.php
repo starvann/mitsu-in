@@ -4,16 +4,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
   </x-slot:head>
+  @php $userDetail = $user->userDetail; @endphp
   <div class="top-section">
     <div class="cover" style="background-image: url('{{ url('assets/img/cover-japan.jpg') }}')">
       <div class="avatar-wrapper">
-        <img id="studentAvatar" src="{{ url($user->gmb_profil) }}" />
+        <img id="studentAvatar" src="{{ url("/assets/profiles/".$user->gambar_profil) }}" />
       </div>
     </div>
     <div class="header-block">
       <div id="studentName" class="student-name">{{ $user->nama }}</div>
     </div>
-    @if($user->role === 'stdn' and $user->stat === 'accepted')
+    @if($user->role === 'stdn' and $user->status === 'accepted')
     <div class="status-row">
       <div class="progress-box" id="presenceBox"></div>
     </div>
@@ -47,8 +48,8 @@
       <div class="user-details">
         <span>Status</span>
         <select name="stat" onchange="query('#edit-user').submit()">
-          <option value="pending" @selected($user->stat == 'pending')>Proses Daftar Ulang</option>
-          <option value="accepted" @selected($user->stat != 'pending')>Terdaftar</option>
+          <option value="pending" @selected($user->status == 'pending')>Proses Daftar Ulang</option>
+          <option value="accepted" @selected($user->status != 'pending')>Terdaftar</option>
         </select>
       </div>
       <div class="user-details">
@@ -80,48 +81,48 @@
       </div>
       <div class="user-details">
         <span>Jenis Kelamin</span>
-        <p>{{ $user->gender }}</p>
+        <p>{{ $userDetail->gender ?? "?" }}</p>
       </div>
       <div class="user-details">
         <span>Tinggi Badan</span>
-        <p>{{ $user->tinggi_badan }} cm</p>
+        <p>{{ $userDetail->tinggi_badan ?? "?" }} cm</p>
       </div>
       <div class="user-details">
         <span>Berat Badan</span>
-        <p>{{ $user->berat_badan }} kg</p>
+        <p>{{ $userDetail->berat_badan ?? "?" }} kg</p>
       </div>
       <div class="user-details">
         <span>Status Pernikahan</span>
-        <p>{{ $user->status_pernikahan }}</p>
+        <p>{{ $userDetail->status_pernikahan ?? "?" }}</p>
       </div>
       <div class="user-details">
         <span>Golongan Darah</span>
-        <p>{{ $user->gol_darah }}</p>
+        <p>{{ $userDetail->golongan_darah ?? "?" }}</p>
       </div>
       <div class="user-details">
         <span>Agama</span>
-        <p>{{ $user->agama }}</p>
+        <p>{{ $userDetail->agama ?? "?" }}</p>
       </div>
       <div class="user-details">
         <span>Pernah ke Jepang</span>
-        <p>{{ $user->pernah_ke_jepang ? 'Ya' : 'Tidak' }}</p>
+        <p>{{ $userDetail->pernah_ke_jepang ?? false ? 'Ya' : 'Tidak' }}</p>
       </div>
       <div class="user-details">
         <span>Punya Paspor</span>
-        <p>{{ $user->punya_paspor ? 'Ya' : 'Tidak' }}</p>
+        <p>{{ $userDetail->punya_paspor ?? false ? 'Ya' : 'Tidak' }}</p>
       </div>
       <div class="user-details">
         <span>Tangan Ahli</span>
-        <p>{{ ucfirst($user->tangan_utama) }}</p>
+        <p>{{ ucfirst($userDetail->tangan_utama ?? "?") }}</p>
       </div>
       <div class="user-details">
         <span>Alamat Lengkap</span>
-        <p>{{ $user->alamat }}</p>
+        <p>{{ $userDetail->alamat ?? "?" }}</p>
       </div>
       <div class="section-divider"></div>
       <span class="details-title">Pendidikan</span>
       <div class="details-group">
-        @foreach($user->pendidikan as $pend)
+        @foreach($userDetail->pendidikan ?? [] as $pend)
         <div>
           <div class="user-details">
             <span>Tahun Lulus</span>
@@ -140,7 +141,7 @@
       </div>
       <span class="details-title">Pengalaman</span>
       <div class="user-details">
-        @forelse($user->pengalaman as $exp)
+        @forelse($userDetail->pengalaman ?? [] as $exp)
         <p>{{ $exp }}</p>
         @empty
         <p class="empty">-- Tidak ada --</p>
@@ -148,7 +149,7 @@
       </div>
       <span class="details-title">Struktur Keluarga</span>
       <div class="details-group">
-        @foreach($user->struktur_keluarga as $fam)
+        @foreach($userDetail->struktur_keluarga ?? [] as $fam)
         <div>
           <div class="user-details">
             <span>Hubungan/Relasi</span>
@@ -175,69 +176,69 @@
       </div>
       <div class="user-details">
         <span>Tujuan ke Jepang</span>
-        <p>{{ $user->tujuan_ke_jepang }}</p>
+        <p>{{ $userDetail->tujuan_ke_jepang ?? "?" }}</p>
       </div>
       <div class="user-details">
         <span>Tujuan setelah kembali dari Jepang</span>
-        <p>{{ $user->tujuan_stlh_kembali }}</p>
+        <p>{{ $userDetail->tujuan_stlh_kembali ?? "?" }}</p>
       </div>
       <div class="user-details">
         <span>Kelebihan</span>
-        <p>{{ $user->kelebihan }}</p>
+        <p>{{ $userDetail->kelebihan ?? "?" }}</p>
       </div>
       <div class="user-details">
         <span>Kekurangan</span>
-        <p>{{ $user->kekurangan }}</p>
+        <p>{{ $userDetail->kekurangan ?? "?" }}</p>
       </div>
       <div class="user-details">
         <span>Hobi</span>
-        <p>{{ $user->hobi }}</p>
+        <p>{{ $userDetail->hobi ?? "?" }}</p>
       </div>
       <div class="user-details">
         <span>Punya Sertifikat JLPT</span>
-        <p>{{ $user->sertif_jlpt ?? "Tidak ada" }}</p>
+        <p>{{ $userDetail->sertif_jlpt ?? "Tidak ada" }}</p>
       </div>
       <div class="user-details">
         <span>Punya SIM A</span>
-        <p>{{ $user->punya_sim_a ? 'Ya' : 'Tidak' }}</p>
+        <p>{{ $userDetail->punya_sim_a ?? false ? 'Ya' : 'Tidak' }}</p>
       </div>
       <div class="user-details">
         <span>Sertifikat Lain</span>
-        <p @if(!$user->sertif_lain) class="empty" @endif>{{ $user->sertif_lain ?? '-- Tidak Ada --' }}</p>
+        <p @if(!$userDetail?->sertif_lain) class="empty" @endif>{{ $userDetail->sertif_lain ?? '-- Tidak Ada --' }}</p>
       </div>
       <span class="details-title">Relasi di Jepang</span>
-      @if(!empty($user->relasi_di_jepang))
+      @if(!empty($userDetail->relasi_di_jepang))
       <div class="details-group">
         <div>
           <div class="user-details">
             <span>Nama</span>
-            <p>{{ $user->relasi_di_jepang['nama'] }}</p>
+            <p>{{ $userDetail->relasi_di_jepang['nama'] }}</p>
           </div>
           <div class="user-details">
             <span>Hubungan/Relasi</span>
-            <p>{{ $user->relasi_di_jepang['hubungan'] }}</p>
+            <p>{{ $userDetail->relasi_di_jepang['hubungan'] }}</p>
           </div>
           <div class="user-details">
             <span>Pekerjaan</span>
-            <p>{{ $user->relasi_di_jepang['pekerjaan'] }}</p>
+            <p>{{ $userDetail->relasi_di_jepang['pekerjaan'] }}</p>
           </div>
           <div class="user-details">
             <span>Umur</span>
-            <p>{{ $user->relasi_di_jepang['usia'] }} Tahun</p>
+            <p>{{ $userDetail->relasi_di_jepang['usia'] }} Tahun</p>
           </div>
           <div class="user-details">
             <span>Alamat</span>
-            <p>{{ $user->relasi_di_jepang['alamat'] }}</p>
+            <p>{{ $userDetail->relasi_di_jepang['alamat'] }}</p>
           </div>
         </div>
       </div>
       @else
       <p class="empty">-- Tidak Punya --</p>
       @endif
-      @if($user->catatan_xtra != null)
+      @if($userDetail?->catatan_extra != null)
       <div class="user-details">
         <span>Catatan Extra</span>
-        <p>{{ $user->catatan_xtra }}</p>
+        <p>{{ $userDetail->catatan_extra }}</p>
       </div>
       @endif
       @endif

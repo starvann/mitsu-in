@@ -18,8 +18,8 @@
     - [x] Admin (dapat melihat data-data user dan membuat ujian)
     - [x] Student (siswa yang harus presensi, dan mengerjakan ujian)
     - [x] Referrer (user yang hanya bisa mengajak student lain)
-- [] Ganti Password
-- [] Edit Profil
+- [x] Ganti Password
+- [x] Edit Profil
 
 ## Sistem Presensi
 - [x] Scan QR

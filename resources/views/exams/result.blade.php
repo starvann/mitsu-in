@@ -2,7 +2,7 @@
   <div class="top-section">
       <div class="cover" style="background-image: url('{{ url('assets/img/cover-japan.jpg') }}')">
         <div class="avatar-wrapper">
-          <img id="studentAvatar" src="{{ url(auth()->user()->gmb_profil) }}" />
+          <img id="studentAvatar" src="{{ url("/assets/profiles/" . auth()->user()->gambar_profil) }}" />
         </div>
       </div>
       <div class="header-block">

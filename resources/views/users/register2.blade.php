@@ -52,9 +52,9 @@
       Nama Lengkap
       <input type="text" name="nama" @error('nama') aria-invalid="true" @enderror value="{{ old('nama') }}" required>
     </label>
-    <label for="gmb_profil">
+    <label for="gambar_profil">
       Foto Profil
-      <input type="file" name="gmb_profil" id="gmb_profil" @error('gmb_profil') aria-invalid="true" @enderror accept="image/png,image/jpeg,image/webp" required>
+      <input type="file" name="gambar_profil" id="gambar_profil" @error('gambar_profil') aria-invalid="true" @enderror accept="image/png,image/jpeg,image/webp" required>
       <img src="" id="prevImg" style="border-radius: 50%; width: 80px; height: 80px; display: none; object-fit: cover;">
     </label>
     <label for="no_hp">
@@ -68,9 +68,9 @@
         <option value="perempuan" @selected(old('gender') == 'perempuan')>Perempuan</option>
       </select>
     </label>
-    <label for="umur">
-      Usia
-      <input type="number" name="umur" id="umur" inputmode="numeric" min="15" @error('umur') aria-invalid="true" @enderror value="{{ old('umur') }}" required>
+    <label for="tanggal_lahir">
+      Tanggal Lahir
+      <input type="date" name="tanggal_lahir" id="tanggal_lahir" @error('tanggal_lahir') aria-invalid="true" @enderror value="{{ old('tanggal_lahir') }}" required>
     </label>
     <label for="tinggi_badan">
       Tinggi Badan (cm)
@@ -88,9 +88,9 @@
       Status Pernikahan
       <input type="text" name="status_pernikahan" id="status_pernikahan" placeholder="Belum menikah, Sudah menikah, Cerai, dll..." @error('status_pernikahan') aria-invalid="true" @enderror value="{{ old('status_pernikahan') }}" required>
     </label>
-    <label for="gol_darah">
+    <label for="golongan_darah">
       Golongan Darah
-      <input type="text" name="gol_darah" id="gol_darah" @error('gol_darah') aria-invalid="true" @enderror value="{{ old('gol_darah') }}" required>
+      <input type="text" name="golongan_darah" id="golongan_darah" @error('golongan_darah') aria-invalid="true" @enderror value="{{ old('golongan_darah') }}" required>
     </label>
     <label for="agama">
       Agama
@@ -316,7 +316,7 @@
     </label>
     <label>
       Catatan Tambahan
-      <textarea name="catatan_xtra" rows="3" @error('catatan_xtra') aria-invalid="true" @enderror>{{ old('catatan_xtra') }}</textarea>
+      <textarea name="catatan_extra" rows="3" @error('catatan_extra') aria-invalid="true" @enderror>{{ old('catatan_extra') }}</textarea>
     </label>
     <button type="submit" class="btn-primary" style="margin-top: 16px">Register</button>
   </form>
@@ -334,7 +334,7 @@
     let exps = query('#exps');
     let fams = query('#fams');
     let prevImg = query("#prevImg");
-    let inputImg = query("#gmb_profil");
+    let inputImg = query("#gambar_profil");
     inputImg.onchange = () => {
       const reader = new FileReader();
       reader.readAsDataURL(inputImg.files[0]);

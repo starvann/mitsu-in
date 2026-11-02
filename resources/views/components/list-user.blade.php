@@ -119,10 +119,10 @@
         };
 
         el.innerHTML = `
-      <img src="${BASEURL + '/' + s.gmb_profil}">
+      <img src="${BASEURL + '/assets/profiles/' + s.gambar_profil}">
       <div class="student-info">
         <div class="name">${s.nama}</div>
-        <div class="desc">${s.email} • ${s.stat == 'accepted' ? 'Terdaftar' : 'Proses Daftar Ulang'}</div>
+        <div class="desc">${s.email} • ${s.status == 'accepted' ? 'Terdaftar' : 'Proses Daftar Ulang'}</div>
       </div>`;
 
         list.appendChild(el);

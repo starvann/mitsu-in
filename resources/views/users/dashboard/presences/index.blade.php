@@ -36,7 +36,7 @@
     </style>
   </x-slot:head>
   <div class="hbox">
-    <img src="{{ url($user->gmb_profil) }}" alt="Profil">
+    <img src="{{ url("/assets/profiles/".$user->gambar_profil) }}" alt="Profil">
     <div>
       <span>{{ $user->nama }}</span>
       <p>{{ $user->email }}</p>
@@ -48,7 +48,7 @@
       <span>{{ $month }}</span>
       <div>
         @forelse ($presences2 as $pre)
-          <a href="{{ url("dashboard/view-presence/$pre->id") }}" role="button" class="{{ $pre->status == 'hadir' ? 'green' : ($pre->status == 'alpha' ? 'red' : 'yellow') }}">{{ $pre->created_at->day }}</a>
+          <a href="{{ url("dashboard/view-presence/$pre->id") }}" role="button" class="{{ $pre->status  == 'hadir' ? 'green' : ($pre->status  == 'alpha' ? 'red' : 'yellow') }}">{{ $pre->created_at->day }}</a>
         @empty
           <p class="empty">Kosong</p>
         @endforelse

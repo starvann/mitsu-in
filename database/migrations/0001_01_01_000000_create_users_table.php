@@ -14,59 +14,19 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('nama', 256)->default("Tebak?");
+            $table->string('nama', 256);
             $table->string('email')->unique();
             // $table->timestamp('email_verified_at')->nullable();
-            $table->string('password', 1024);
-            $table->string('no_hp', 16)->default('080000000000');
-            $table->string('gmb_profil', 256)->default('assets/profiles/default.webp');
+            $table->string('password', 256);
+            $table->string('no_hp', 16);
+            $table->string('gambar_profil', 256)->default('default.webp');
             $table->string('kode_ref_saya', 8)->nullable();
             $table->string('kode_ref', 8)->nullable();
-            $table->unsignedTinyInteger('umur')->default(20);
+            $table->date('tanggal_lahir');
+            $table->boolean('tanggal_lahir_estimasi')->default(false);
             $table->enum('role', ['admn', 'stdn', 'refl'])->default('stdn');
             $table->enum('gender', ['laki-laki', 'perempuan'])->default('laki-laki');
-            $table->enum('stat', ['pending', 'accepted'])->default('pending');
-            $table->unsignedSmallInteger('tinggi_badan')->default(180);
-            $table->unsignedSmallInteger('berat_badan')->default(60);
-            $table->string('status_pernikahan', 32)->default('Belum menikah');
-            $table->string('gol_darah', 2)->default('A');
-            $table->string('agama', 32)->default('null');
-            $table->boolean('pernah_ke_jepang')->default(false);
-            $table->boolean('punya_paspor')->default(false);
-            $table->enum('tangan_utama', ['kanan', 'kiri', 'keduanya'])->default('kanan');
-            $table->string('alamat', 512)->default('Planet Bumi, Sistem Planet Matahari, Galaksi Bimasakti');
-            /* education structure: [{
-            'tahun': 2000, 
-            'nam_sekolah': 'Idk Bruv', 
-            'jurusan': 'Software Engineering'
-            }, ...]*/
-            $table->json('pendidikan')->default(new Expression('(JSON_ARRAY(JSON_OBJECT("tahun",2000, "nama_sekolah","SD Lorem", "jurusan","Ipsum")))'));
-            $table->json('pengalaman')->default(new Expression('(JSON_ARRAY())')); # ['exp1', 'exp2', 'etc...']
-            /* family structure: [{
-            'relasi': 'Father', 
-            'nama': 'Lloyd', 
-            'umur': 40,
-            'pekerjaan': 'Artist',
-            'gaji': 'Rp10.000.000 per month'
-            }, ...]*/
-            $table->json('struktur_keluarga')->default(new Expression('(JSON_ARRAY(JSON_OBJECT("relasi","Teman", "nama","Sisi Lain diriku", "umur",20, "pekerjaan","ga ada", "gaji","ga ada")))'));
-            $table->string('tujuan_ke_jepang', 256)->default("Menjadi manusia yang lebih baik");
-            $table->string('tujuan_stlh_kembali', 256)->default("Menjadi manusia yang lebih baik dari sebelumnya");
-            $table->string('kelebihan', 256)->default("Dapat menahan intrusive thought");
-            $table->string('kekurangan', 256)->default("Memiliki intrusive thought yang berbahaya");
-            $table->string('hobi', 256)->default("Jalan-jalan");
-            $table->string('sertif_jlpt', 32)->nullable();
-            $table->boolean('punya_sim_a')->default(false);
-            $table->string('sertif_lain', 256)->nullable();
-            /* japan relation structure: {
-            'nama': 'Izumi Fujimiya', 
-            'relasi': 'Friend', 
-            'pekerjaan': 'Artist',
-            'umur': 40,
-            'alamat': 'idk bruv'
-            }*/
-            $table->json('relasi_di_jepang')->nullable();
-            $table->string('catatan_xtra', 512)->nullable();
+            $table->enum('status', ['pending', 'accepted'])->default('pending');
             $table->rememberToken();
             $table->timestamps();
         });

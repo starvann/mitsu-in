@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminNotificationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DashboardExamController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\PresenceController;
@@ -34,16 +35,16 @@ Route::middleware('auth')->group(function() {
   Route::put('/dashboard/change-pass/{user}', [DashboardController::class, 'update_password']);
   Route::get('/logout', [AuthController::class, 'logout']);
   # CRUD Exam
-  Route::get('dashboard/create-exam', [DashboardController::class, 'create_exam']);
-  Route::post('/dashboard/create-exam', [DashboardController::class, 'store_exam']);
-  Route::get('/dashboard/manage-exam', [DashboardController::class, 'manage_exams']);
-  Route::get('/dashboard/edit-exam/{exam}', [DashboardController::class, 'edit_exam']);
-  Route::put('/dashboard/edit-exam/{exam}', [DashboardController::class, 'update_exam']);
-  Route::delete('/dashboard/delete-exam/{exam}', [DashboardController::class, 'delete_exam']);
-  Route::get('/dashboard/exam-result/{exam}', [DashboardController::class, 'exam_result']);
-  Route::get('/dashboard/get-exam-results/{exam}', [DashboardController::class, 'get_exam_results']);
-  Route::delete('/dashboard/del-exam-result/{exam_res}', [DashboardController::class, 'delete_exam_result']);
-  Route::delete('/dashboard/del-all-exam-result/{exam}', [DashboardController::class, 'delete_all_exam_result']);
+  Route::get('dashboard/create-exam', [DashboardExamController::class, 'create_exam']);
+  Route::post('/dashboard/create-exam', [DashboardExamController::class, 'store_exam']);
+  Route::get('/dashboard/manage-exam', [DashboardExamController::class, 'manage_exams']);
+  Route::get('/dashboard/edit-exam/{exam}', [DashboardExamController::class, 'edit_exam']);
+  Route::put('/dashboard/edit-exam/{exam}', [DashboardExamController::class, 'update_exam']);
+  Route::delete('/dashboard/delete-exam/{exam}', [DashboardExamController::class, 'delete_exam']);
+  Route::get('/dashboard/exam-result/{exam}', [DashboardExamController::class, 'exam_result']);
+  Route::get('/dashboard/get-exam-results/{exam}', [DashboardExamController::class, 'get_exam_results']);
+  Route::delete('/dashboard/del-exam-result/{exam_res}', [DashboardExamController::class, 'delete_exam_result']);
+  Route::delete('/dashboard/del-all-exam-result/{exam}', [DashboardExamController::class, 'delete_all_exam_result']);
   # CRUD Users
   Route::get('/dashboard/students', [DashboardController::class, 'list_stdns']);
   Route::get('/dashboard/referrals', [DashboardController::class, 'list_refls']);

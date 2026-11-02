@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -23,6 +25,10 @@ class User extends Authenticatable
     return $this->hasMany(Presence::class);
   }
 
+  public function userDetail() {
+    return $this->hasOne(UserDetail::class);
+  }
+
   public function examResults() {
     return $this->hasMany(ExamResult::class);
   }
@@ -35,15 +41,15 @@ class User extends Authenticatable
     return $this->hasOne(PaymentProof::class);
   }
 
+  public function umur(): Attribute {
+    return Attribute::make(get: fn() => $this->tanggal_lahir?->age);
+  }
+
   protected function casts(): array
   {
     return [
-      'email_verified_at' => 'datetime',
       'password' => 'hashed',
-      'pendidikan' => 'array',
-      'struktur_keluarga' => 'array',
-      'relasi_di_jepang' => 'array',
-      'pengalaman' => 'array'
+      'tanggal_lahir' => 'date',
     ];
   }
 }

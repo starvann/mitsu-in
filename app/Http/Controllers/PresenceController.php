@@ -69,7 +69,7 @@ class PresenceController extends Controller
   }
   public function get_presence_data(User $user) {
     // dd();
-    if($user->stat == 'pending') return abort(403);
+    if($user->status == 'pending') return abort(403);
     if(in_array(Auth::user()->role, ['stdn', 'refl']) and Auth::id() != $user->id) return abort(403);
     $data = $this->get_presence_percentage($user);
     $percent = $data['percent'];
