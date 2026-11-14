@@ -5,7 +5,7 @@
   {{--  Document Title  --}}
   <title>{{ $title ?? 'Unknown' }}</title>
   <link rel="icon" type="image/x-icon" href="{{ url('assets/img/mitsu-in.ico') }}">
-  <link rel="stylesheet" href="{!! url('assets/css/stylev0.css') !!}">
+  <link rel="stylesheet" href="{!! url('assets/css/style-v1.css') !!}">
   {{--  HTML Extra Heading  --}}
   {!! $head ?? '' !!}
 </head>
