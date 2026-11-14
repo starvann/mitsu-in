@@ -74,4 +74,5 @@
     checkFProfil();
 
   </script>
+  <script src="/js/password-toggler.js"></script>
 </x-base>

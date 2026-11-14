@@ -32,4 +32,5 @@
       Belum memiliki akun? <a href="{{ url('register') }}">Daftar di sini</a>
     </p>
   </form>
+  <script src="/js/password-toggler.js"></script>
 </x-base>

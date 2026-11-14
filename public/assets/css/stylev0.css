@@ -56,11 +56,24 @@ label {
   color: #333;
   display: flex;
   flex-direction: column;
+  position: relative;
   gap: 4px;
 }
 
 label.checkbox {
   flex-direction: row;
+}
+
+label > div.toggler {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(5%);
+}
+
+label > div.toggler > svg {
+  width: 20px;
+  height: 20px;
 }
 
 input,
